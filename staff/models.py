@@ -5,6 +5,8 @@ from django.core.exceptions import ValidationError
 from datetime import timedelta, date
 from django.db import models 
 from django.urls import reverse
+from django.contrib import messages
+
 
 
 def valMax(v):
@@ -82,7 +84,7 @@ class Profile(models.Model):
 
 
 class Qualification(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='qual')
     school = models.CharField(max_length=300,null=True, blank=True)
     types=(('PRIMARY','PRIMARY'),('SECONDARY','SECONDARY'), ('COLLEGE OF EDUCATION','COLLEGE OF EDUCATION'),('POLYTECHNIC','POLYTECHNIC')('UNIVERSITY','UNIVERSITY'))
     school_category=models.CharField(choices=types, max_length=300, null=True, blank=True)
@@ -100,7 +102,7 @@ class Qualification(models.Model):
 
 
 class ProfessionalQualification(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='pro_qual')
     institute = models.CharField(max_length=300,null=True,blank=True)
     inst_address = models.CharField('institute address', null=True,max_length=300,blank=True)
     qual_obtained = models.CharField('qualification obtained',null=True,max_length=300,blank=True)
@@ -169,10 +171,9 @@ class GovernmentAppointment(models.Model):
     tc=(('JUNIOR','JUNIOR'), ('SENIOR','SENIOR'),('EXECUTIVE','EXECUTIVE'))
     type_of_cadre=models.CharField(choices=tc, null=True, blank=True, max_length=100)
     exams_status = models.CharField(null=True, blank=True, max_length=100)
-    retire=models.CharField(null=True, blank=True,max_length=50)
+    retire=models.BooleanField(null=True, blank=True)
     rtb=models.CharField('retired by', null=True, blank=True,max_length=50)
-    due=models.BooleanField('due for promotion', null=True, blank=True,max_length=100)
-    lv=models.BooleanField('leave has ended', null=True,blank=True,max_length=100)
+    due=models.BooleanField('due for promotion', null=True, blank=True)
     timestamp = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -183,10 +184,18 @@ class GovernmentAppointment(models.Model):
         if self.user:
             return f"{self.user.first_name} {self.user.last_name}"
 
+    #step calculation
+    def step_inc(self):
+        today=date.today()
+        if self.step is not None:
+            if today.month == 1 and today.day == 1:
+                self.step +=1
+         
 
 class Promotion(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='promotion')
     cpost = models.CharField('current post',null=True,max_length=300,blank=True)
+    govapp=models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='govapp')
     prom_date = models.DateField('promotion date',null=True,blank=True)
     gl = models.PositiveIntegerField('grade level',null=True,blank=True)
     step = models.PositiveIntegerField(null=True,blank=True)
@@ -202,9 +211,37 @@ class Promotion(models.Model):
         if self.user:
             return f"{self.user.last_name} {self.user.first_name}"
 
+    #promotion calculation
+    def prom_cal(self,request):
+        today=date.today()
+
+        if self.govapp.date_capt is not None:
+            cal=self.govapp.date_capt.year
+            ex=self.govapp.exams_status
+            gl=self.govapp.grade_level
+            tc=self.govapp.type_of_cadre
+            
+            #performing checks
+            if cal is not None:
+                if today.year-cal  == 3 and int(gl) >= 6 and ex == 'pass' and tc == 'SENIOR':
+                    self.govapp.due = True  
+                    self.govapp.save()
+                    return messages.success(request,'DUE FOR PROMOTION')
+                elif today.year-cal  == 2 and int(gl) <= 5 and ex == 'pass' and tc == 'JUNIOR':
+                    self.govapp.due = True    
+                    self.govapp.save()
+                    return messages.success(request,'DUE FOR PROMOTION')
+                elif today.year-cal  == 4 and int(gl) >= 13 and ex == 'pass' and tc == 'EXECUTIVE':
+                    self.govapp.due = True    
+                    self.govapp.save()
+                    return messages.success(request,'DUE FOR PROMOTION')
+                else:
+                    self.govapp.due = False
+                    self.govapp.save()
+
 
 class Discipline(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='discipline')
     offense = models.TextField(null=True,blank=True)
     decision = models.TextField(null=True,blank=True)
     date = models.DateField(null=True,blank=True)
@@ -224,7 +261,7 @@ class Discipline(models.Model):
 
 
 class Leave(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='leave')
     nature = models.CharField('nature of leave', null=True,max_length=300,blank=True)
     year = models.PositiveIntegerField(null=True,blank=True)
     start_date = models.DateField(null=True,blank=False)
@@ -232,6 +269,7 @@ class Leave(models.Model):
     balance=models.PositiveIntegerField(null=True,blank=True)
     granted = models.PositiveIntegerField('number of days granted',null=True, blank=False)
     status = models.CharField(null=True,max_length=300,blank=True)
+    lv=models.BooleanField(blank=True, null=True)
     comments = models.TextField('comments if any', null=True,blank=True)
     timestamp = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -268,9 +306,16 @@ class Leave(models.Model):
                 if new_date is not None:
                     return new_date
     
+    def over(self):        
+        today=date.today()
+        if self.remain() is not None and self.remain() <= 0 and today == self.return_on:
+            self.lv = True
+        else:
+            self.lv = False
+        self.lv.save()
 
 class ExecutiveAppointment(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='execapp')
     designation = models.CharField(null=True,max_length=300,blank=True)
     date = models.DateField(null=True,blank=True)
     status = models.CharField(null=True,max_length=300,blank=True)
@@ -286,8 +331,10 @@ class ExecutiveAppointment(models.Model):
 
 
 class Retirement(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     date = models.DateField(null=True,blank=True)
+    govapp=models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='govapp')
+    profile=models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='profile')
     status = models.CharField(null=True,max_length=300,blank=True)
     timestamp = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -298,3 +345,23 @@ class Retirement(models.Model):
     def __str__(self):
         if self.user:
             return f"{self.user.last_name} {self.user.first_name}"
+    
+    def rt(self):
+        today=date.today()
+        art=self.profile.age()
+        drt=self.govapp.date_fapt
+
+        if drt is not None:
+            drt=today.year-drt.year
+
+        if art is not None and art >= 65:
+            self.govapp.retire = True
+            self.govapp.rtb = "RETIRE BY DATE OF BIRTH"
+            self.govapp.save()
+        elif drt is not None and drt >= 35:
+            self.govapp.retire = True
+            self.govapp.rtb = "RETIRE BY DATE OF APPOINTMENT"
+            self.govapp.save()
+        else:
+            self.govapp.retire = False
+            self.govapp.save()
