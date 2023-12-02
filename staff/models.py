@@ -30,7 +30,8 @@ class Profile(models.Model):
     place_of_birth = models.CharField(max_length=150, null=True, blank=True)
     ns=(('NIGERIAN','NIGERIAN'),('NON-CITIZEN','NON-CITIZEN'))   
     nationality = models.CharField(choices=ns, max_length=200, null=True, blank=True)
-    geo_political_zone=(('NORTH-EAST','NORTH-EAST'),('NORTH-WEST','NORTH-WEST'),('NORTH-CENTRAL','NORTH-CENTRAL'),('SOUTH-EAST','SOUTH-EAST'),('SOUTH-WEST','SOUTH-WEST'),('SOUTH-SOUTH','SOUTH-SOUTH')) 
+    geo_political_zone=(('NORTH-EAST','NORTH-EAST'),('NORTH-WEST','NORTH-WEST'),('NORTH-CENTRAL','NORTH-CENTRAL'),
+                        ('SOUTH-EAST','SOUTH-EAST'),('SOUTH-WEST','SOUTH-WEST'),('SOUTH-SOUTH','SOUTH-SOUTH')) 
     zone = models.CharField(blank=True, choices=geo_political_zone, max_length=300, null=True)
     state=models.CharField(blank=True,max_length=300, null=True)
     lga=models.CharField(blank=True,max_length=300, null=True)
@@ -166,7 +167,8 @@ class GovernmentAppointment(models.Model):
     sfapt = models.FloatField('salary_per_annum_at_date_of_first_appointment', null=True,max_length=300,blank=True)    
     ss=(('CONHESS','CONHESS'),('CONMESS','CONMESS'), ('GIPMIS','GIPMIS'))
     salary_scale = models.CharField(choices=ss, null=True,max_length=300,blank=True)    
-    gl=(('03','03'),('04','04'),('05','05'),('06','06'),('07','07'),('08','08'),('09','09'),('11','11'),('12','12'),('13','13'),('14','14'),('15','15'))
+    gl=(('03','03'),('04','04'),('05','05'),('06','06'),('07','07'),('08','08'),('09','09'),
+        ('11','11'),('12','12'),('13','13'),('14','14'),('15','15'))
     grade_level = models.CharField(choices=gl, null=True,max_length=300,blank=True)
     step = models.PositiveIntegerField(null=True, blank=True)
     tc=(('JUNIOR','JUNIOR'), ('SENIOR','SENIOR'),('EXECUTIVE','EXECUTIVE'))
