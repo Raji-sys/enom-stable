@@ -17,13 +17,14 @@ def valMax(v):
     
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    email=models.EmailField(blank=True, null=True, max_length=100, unique=True)
     photo = models.ImageField(null=True)
     file_no = models.PositiveIntegerField('file number', null=True, unique=True, blank=False, validators=[valMax, MaxValueValidator(999999)])
     title = models.CharField(max_length=300, null=True, blank=True)
     sex=(('MALE','MALE'),('FEMALE','FEMALE'))
     gender = models.CharField(choices=sex, max_length=10, null=True, blank=True)
     dob = models.DateField('date of birth',null=True, blank=True)
-    phone = models.PositiveIntegerField(null=True, blank=True)
+    phone = models.PositiveIntegerField(null=True, blank=True, unique=True)
     m_status=(('MARRIED','MARRIED'), ('SINGLE','SINGLE'), ('DIVORCED','DIVORCED'), ('DIVORCEE','DIVORCEE'), ('WIDOW','WIDOW'), ('WIDOWER','WIDOWER'))
     marital_status = models.CharField(choices=m_status, max_length=100, null=True, blank=True)
     place_of_birth = models.CharField(max_length=150, null=True, blank=True)

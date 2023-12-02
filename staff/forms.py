@@ -6,8 +6,8 @@ from django import forms
 
 
 class CustomUserCreationForm(UserCreationForm):
-    middle_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
+    middle_name = forms.CharField(max_length=30, required=False)
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'middle_name']
+        fields = ['username', 'middle_name', 'first_name', 'last_name', 'password1', 'password2']
