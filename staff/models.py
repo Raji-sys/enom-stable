@@ -174,9 +174,6 @@ class GovernmentAppointment(models.Model):
     tc=(('JUNIOR','JUNIOR'), ('SENIOR','SENIOR'),('EXECUTIVE','EXECUTIVE'))
     type_of_cadre=models.CharField(choices=tc, null=True, blank=True, max_length=100)
     exams_status = models.CharField(null=True, blank=True, max_length=100)
-    retire=models.BooleanField(null=True, blank=True)
-    rtb=models.CharField('retired by', null=True, blank=True,max_length=50)
-    due=models.BooleanField('due for promotion', null=True, blank=True)
     timestamp = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -204,6 +201,7 @@ class Promotion(models.Model):
     step = models.PositiveIntegerField(null=True,blank=True)
     inc_date = models.DateField('increment date', null=True,blank=True)
     conf_date = models.DateField('confirmation date', null=True,blank=True)
+    due=models.BooleanField(null=True, blank=True)
     timestamp = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -227,20 +225,20 @@ class Promotion(models.Model):
             #performing checks
             if cal is not None:
                 if today.year-cal  == 3 and int(gl) >= 6 and ex == 'pass' and tc == 'SENIOR':
-                    self.govapp.due = True  
-                    self.govapp.save()
+                    self.due = True  
+                    self.save()
                     return messages.success(request,'DUE FOR PROMOTION')
                 elif today.year-cal  == 2 and int(gl) <= 5 and ex == 'pass' and tc == 'JUNIOR':
-                    self.govapp.due = True    
-                    self.govapp.save()
+                    self.due = True    
+                    self.save()
                     return messages.success(request,'DUE FOR PROMOTION')
                 elif today.year-cal  == 4 and int(gl) >= 13 and ex == 'pass' and tc == 'EXECUTIVE':
-                    self.govapp.due = True    
-                    self.govapp.save()
+                    self.due = True    
+                    self.save()
                     return messages.success(request,'DUE FOR PROMOTION')
                 else:
-                    self.govapp.due = False
-                    self.govapp.save()
+                    self.due = False
+                    self.save()
 
 
 class Discipline(models.Model):
@@ -297,7 +295,7 @@ class Leave(models.Model):
 
         r = self.remain()
         if r <= 0 or self.granted == 0:
-            raise ValidationError('Invalid entry. Please try again.')
+            raise ValidationError('your leave is over.')
         
     @property    
     def return_on(self):
@@ -339,6 +337,8 @@ class Retirement(models.Model):
     govapp=models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='govapp')
     profile=models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='profile')
     status = models.CharField(null=True,max_length=300,blank=True)
+    retire=models.BooleanField(null=True, blank=True)
+    rtb=models.CharField('retired by', null=True, blank=True,max_length=50)
     timestamp = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -358,13 +358,13 @@ class Retirement(models.Model):
             drt=today.year-drt.year
 
         if art is not None and art >= 65:
-            self.govapp.retire = True
-            self.govapp.rtb = "RETIRE BY DATE OF BIRTH"
-            self.govapp.save()
+            self.retire = True
+            self.rtb = "RETIRE BY DATE OF BIRTH"
+            self.save()
         elif drt is not None and drt >= 35:
-            self.govapp.retire = True
-            self.govapp.rtb = "RETIRE BY DATE OF APPOINTMENT"
-            self.govapp.save()
+            self.retire = True
+            self.rtb = "RETIRE BY DATE OF APPOINTMENT"
+            self.save()
         else:
-            self.govapp.retire = False
-            self.govapp.save()
+            self.retire = False
+            self.save()

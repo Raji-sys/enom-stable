@@ -20,7 +20,7 @@ def user_is_in(user):
     return not user.is_authenticated
 
 
-@method_decorator(user_passes_test(user_is_in, login_url='/'), name='dispatch')
+# @method_decorator(user_passes_test(user_is_in, login_url='/'), name='dispatch')
 class CustomLoginView(LoginView):
     template_name='login.html'
     success_url=reverse_lazy('/')
