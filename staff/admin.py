@@ -5,6 +5,7 @@ from .models import *
 from django import forms
 
 
+
 admin.site.site_header="ADMIN PANEL"
 admin.site.index_title="ENOM"
 admin.site.site_title="ENOM"
