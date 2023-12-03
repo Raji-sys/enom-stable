@@ -1,0 +1,40 @@
+<div x-data="{ subcategories: [] }">
+  <label for="category">Category:</label>
+  <select name="category" id="category"
+          x-on:change="fetchSubcategories($event.target.value)">
+    <option value="">-- Select a category --</option>
+    {% for category in categories %}
+      <option value="{{ category.id }}">{{ category.name }}</option>
+    {% endfor %}
+  </select>
+
+  <label for="subcategory">Subcategory:</label>
+  <select name="subcategory" id="subcategory">
+    <option value="">-- Select a subcategory --</option>
+    <template x-for="subcategory in subcategories" :key="subcategory.id">
+      <option :value="subcategory.id" x-text="subcategory.name"></option>
+    </template>
+  </select>
+</div>
+
+<script>
+  function fetchSubcategories(categoryId) {
+    if (categoryId) {
+      fetch(`/subcategory/${categoryId}`)
+        .then(response => response.json())
+        .then(data => {
+          const subcategories = data.subcategories;
+          Alpine.store('subcategories').set(subcategories);
+        })
+        .catch(error => console.error(error));
+    } else {
+      Alpine.store('subcategories').set([]);
+    }
+  }
+
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('subcategories', () => ({
+      subcategories: [],
+    }));
+  });
+</script>

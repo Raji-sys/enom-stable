@@ -1,0 +1,123 @@
+{%extends "base.html" %}
+
+{% block title %}staff list{% endblock%}
+{% block main %}
+{%load widget_tweaks %}
+    <p class=" text-2xl text-blue-500 uppercase">
+  {% for m in messages%}
+      {{m}}
+    {%endfor%}  
+</p>
+<section class=" flex text-center border-t-2 border-green-800">
+    <form method="get">
+        <div class="mt-4 flex flex-row justify-center">
+        {% for field in staffFilter.form %}
+        <div>{{field.label_tag}} 
+            {%render_field field class="mt-2 focus:outline-none border-b-4 border-gray-300 inBtn text-white px-6 rounded shadow-lg hover:shadow-xl"%}
+            {%endfor%}
+            <button class="mb-2 mt-2 focus:opacity-10 border-b-4 border-gray-600 focus:border-green-600 bg-gradient-to-r from-green-900 via-green-600 to-green-900 text-white px-2 py-2 rounded shadow-lg hover:shadow-xl text-center w-1/6" type="submit"><i class="fa-solid fa-search fa-xl"></i></button>
+        </div>
+    </div>
+        </form>
+    </section>
+        <div class=" text-center mb-4">
+                {% if request.GET.urlencode %}
+                <a href="{% url 'staff:staffhome' %}" class=" px-4 py-2 focus:opacity-10 border-b-4 border-gray-500 focus:border-green-600 bg-gradient-to-r
+                from-orange-700 via-orange-600 to-orange-900  text-white  rounded shadow-lg hover:shadow-xl text-center w-full">
+                <i class="fa-solid fa-rotate fa-2xl"></i></a>
+                {%else%}
+                <div class="max-sm:mt-4 max-sm:ml-4">
+                    <a class=" px-4 py-2 mb-2 focus:opacity-10 border-b-4 border-gray-600 focus:border-cyan-600 bg-gradient-to-r from-cyan-900 via-cyan-600
+                    to-cyan-900 text-white rounded shadow-lg hover:shadow-xl text-center w-full" href="{% url 'ems:register' %}">
+                    <i class="fa-solid fa-plus fa-2xl"></i></a>
+                </div>
+                {%endif%}
+              </div>    
+<div class="p-1 mt-1 max-sm:p-2 text-sm rounded-lg text-center">
+    <table class="table-auto mt-0 max-sm:flex flex shadow-2xl rounded-xl mb-10 items-center justify-center">
+        <tbody class="text-green-800 border-2 shadow-2xl rounded-xl max-sm:p-4 p-1 overflow-x-auto border-green-600 bg-white">            
+            <tr class="text-sm bg-gradient-to-r from-green-800 via-green-600 to-green-800 rounded-xl text-white">
+                <th scope="col" class="border-l-2 border-b-2 border-b-white border-green-800 border-t-2 border-t-white p-2">S/N</th>
+                <th scope="col" class="border-2 border-white p-2">SURNAME</th>
+                <th scope="col" class="border-2 border-white p-2">MIDDLE NAME</th>
+                <th scope="col" class="border-2 border-white p-2">FIRST NAME</th>
+                <th scope="col" class="border-2 border-white p-2">FILE NUMBER</th>
+                <th scope="col" class="border-2 border-white p-2">IPPIS NUMBER</th>
+                <th scope="col" class="border-2 border-white p-2">SEX</th>
+                <th scope="col" class="border-2 border-white p-2" >DEPARTMENT</th>
+                <th scope="col" class="border-2 border-white p-2">CURRENT POST</th>
+                <th scope="col" class="border-2 border-white p-4">DATE OF FIRST APPOINTMENT</th>
+                <th scope="col" class="border-2 border-green-800 text-gray-100 p-2 border-t-2 border-t-white border-b-white">FULL DETAILS</th>
+            </tr>
+        {% for u in page_obj %}
+        {% if u.is_active and u.is_superuser == False %}
+        <tr class="text-xs">
+           <td class="border-2 border-green-800 p-1 text-center">
+            {{forloop.counter}}
+           </td> 
+            <td class="border-2 border-green-800 p-4 text-center">
+               {{u.last_name|default_if_none:''|upper}}
+            </td>
+            <td class="border-2 border-green-800 p-4 text-center">
+                {{u.personaldetail.middlename|default_if_none:''|upper}}
+            </td>
+            <td class="border-2 border-green-800 p-4 text-center">
+                {{u.first_name|default_if_none:''|upper}}
+            </td>
+            <td class="border-2 border-green-800 p-1 text-center">
+                {{u.personaldetail.staff_no|default_if_none:''}}
+            </td>
+            <td class="border-2 border-green-800 p-1 text-center">
+                {{u.governmentappointment.ippis_no|default_if_none:''}}
+            </td>
+            <td class="border-2 border-green-800 p-4 text-center">
+                {{u.personaldetail.gender|default_if_none:''|upper}}
+            </td>
+            <td class="border-2 border-green-800 p-2 text-center">                
+                {{u.governmentappointment.department|default_if_none:''|upper}}
+            </td>
+            <td class="border-2 border-green-800 p-4 text-center">
+                {{u.governmentappointment.current_post|default_if_none:''|upper}}
+            </td>
+            <td class="border-2 border-green-800 p-4 text-center">
+                {{u.governmentappointment.date_of_first_appointment|date:'d-M-Y'|default_if_none:''|upper}}
+            </td>
+             <td class="p-1 border-2 border-green-800"> 
+            <a class="" href="{% url 'staff:staffdetail' u.id %}"><i class="fa-solid fa-folder-open fa-2xl text-orange-800"></i></a>
+                </td> 
+            </tr>
+            {% endif %}
+            {% empty %}
+            <p class="uppercase text-2xl text-blue-500 mt-4 mb-4">NOT FOUND</p>
+        {% endfor %}
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="p-4 text-center">
+                
+                <div class="pagination flex justify-center text-green-800">
+                    <span class="step-links">
+                {% if page_obj.has_previous %}
+                <!-- <a href="?page=1">&laquo; first</a> -->
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="current">
+                {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+            
+                <!-- &nbsp;<a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>  -->
+            {% endif %}
+        </span>
+    </div>
+    </td>
+    </tr>
+</tbody>
+</table>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+ {% block title %}government appointment form{% endblock%} 
+ {% block main %}
+<br />
+    <div class="">
+      government appointment form
+      <form action="" method="POST">
+        {% csrf_token %} 
+        <hr>
+        {{form}}
+        <input type="submit" name="submit" value="submit "/>
+      </form>
+    </div>
+{% endblock %}
+

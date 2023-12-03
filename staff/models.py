@@ -88,7 +88,7 @@ class Profile(models.Model):
 class Qualification(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='qual')
     school = models.CharField(max_length=300,null=True, blank=True)
-    types=(('PRIMARY','PRIMARY'),('SECONDARY','SECONDARY'), ('COLLEGE OF EDUCATION','COLLEGE OF EDUCATION'),('POLYTECHNIC','POLYTECHNIC')('UNIVERSITY','UNIVERSITY'))
+    types=(('PRIMARY','PRIMARY'),('SECONDARY','SECONDARY'), ('COLLEGE OF EDUCATION','COLLEGE OF EDUCATION'),('POLYTECHNIC','POLYTECHNIC'),('UNIVERSITY','UNIVERSITY'))
     school_category=models.CharField(choices=types, max_length=300, null=True, blank=True)
     qual = models.CharField('qualification',max_length=300,null=True,blank=True)    
     date_obtained = models.DateField(null=True,blank=True)
@@ -195,7 +195,7 @@ class GovernmentAppointment(models.Model):
 class Promotion(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='promotion')
     cpost = models.CharField('current post',null=True,max_length=300,blank=True)
-    govapp=models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='govapp')
+    govapp=models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='progovapp')
     prom_date = models.DateField('promotion date',null=True,blank=True)
     gl = models.PositiveIntegerField('grade level',null=True,blank=True)
     step = models.PositiveIntegerField(null=True,blank=True)
@@ -318,6 +318,7 @@ class Leave(models.Model):
 class ExecutiveAppointment(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='execapp')
     designation = models.CharField(null=True,max_length=300,blank=True)
+    govapp=models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='execgovapp')
     date = models.DateField(null=True,blank=True)
     status = models.CharField(null=True,max_length=300,blank=True)
     timestamp = models.DateTimeField('date added', auto_now_add=True)
@@ -334,7 +335,7 @@ class ExecutiveAppointment(models.Model):
 class Retirement(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     date = models.DateField(null=True,blank=True)
-    govapp=models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='govapp')
+    govapp=models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='rtgovapp')
     profile=models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='profile')
     status = models.CharField(null=True,max_length=300,blank=True)
     retire=models.BooleanField(null=True, blank=True)
