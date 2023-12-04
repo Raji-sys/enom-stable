@@ -51,7 +51,6 @@ class Profile(models.Model):
     snok_addr = models.CharField('second next of address', max_length=300, null=True, blank=True)
     snok_rel = models.CharField('second next of kin', max_length=300, null=True, blank=True)
     snok_photo = models.ImageField(null=True)
-    timestamp = models.DateTimeField('date added', auto_now_add=True)
     created = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
