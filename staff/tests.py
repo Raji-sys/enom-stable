@@ -21,9 +21,40 @@ class ProfileModelTest(TestCase):
         profile = Profile.objects.create(
             user=self.user,
             email='rajisunusi@gmail.com',
-            dob='1991-05-05',  # Set a valid date of birth for testing
-            # Add other required fields here for a valid Profile instance
+            dob='05-05-1991',  # Set a valid date of birth for testing
+            file_no= 6016,
+            title= 'mr',
+            gender= 'MALE',
+            phone= 9061267856 ,
+            marital_status= 'SINGLE',
+            place_of_birth= 'Abuja' ,
+            nationality= 'NIGERIAN' ,
+            zone= 'NORTH-EAST',
+            state= 'Kano',
+            lga= 'Kano-Municipal',
+            sen_dist= 'Kano-central',
+            res_add= 'no 8 Panama Street Maitama Abuja',
+            per_res_addr= 'no 8 Panama Street Maitama Abuja',
+            spouse= 'unknowm' ,
+            hobbies= 'reading, football, chess, travelling',
+            religion='ISLAM' ,
+            qual= 'Degree' ,
+            nofc= '3' ,
+            nameoc= 'Muhammad, Ismail, Fatima' ,
+            doboc= '12-31-2024, 07-07-2027, 05-05-2031',
+            fnok_name= 'MS' ,
+            fnok_phone= 8079399390 ,
+            fnok_email= 'ms@yahoo.com' ,
+            fnok_addr= 'zawaciki kano' ,
+            fnok_rel= 'Brother' ,
+            snok_name= 'SMS' ,
+            snok_phone= 8079399390 ,
+            snok_email= 'sms@gmail.com' ,
+            snok_addr= 'east bye pass kano' ,
+            snok_rel= 'Brother',
         )
+            # Add other required fields here for a valid Profile instance
+        
 
         # Check that the Profile instance is created successfully
         self.assertEqual(Profile.objects.count(), 1)
@@ -32,7 +63,7 @@ class ProfileModelTest(TestCase):
         self.assertEqual(profile.file_no, 6016)
         self.assertEqual(profile.title, 'mr')
         self.assertEqual(profile.gender, 'MALE')
-        self.assertEqual(profile.dob, '1991-05-05')
+        self.assertEqual(profile.dob, '05-05-1991')
         self.assertEqual(profile.phone, 9061267856 )
         self.assertEqual(profile.marital_status, 'SINGLE')
         self.assertEqual(profile.place_of_birth, 'Abuja' )
@@ -42,21 +73,21 @@ class ProfileModelTest(TestCase):
         self.assertEqual(profile.lga, 'Kano-Municipal')
         self.assertEqual(profile.sen_dist, 'Kano-central')
         self.assertEqual(profile.res_add, 'no 8 Panama Street Maitama Abuja')
-        self.assertEqual(profile.per_res_addr, 'no 8 Panama Street Maitama Abuja' )
+        self.assertEqual(profile.per_res_addr, 'no 8 Panama Street Maitama Abuja')
         self.assertEqual(profile.spouse, 'unknowm' )
         self.assertEqual(profile.hobbies, 'reading, football, chess, travelling')
         self.assertEqual(profile.religion,'ISLAM' )
         self.assertEqual(profile.qual, 'Degree' )
         self.assertEqual(profile.nofc, '3' )
         self.assertEqual(profile.nameoc, 'Muhammad, Ismail, Fatima' )
-        self.assertEqual(profile.doboc, '2024-12-31', '2027-07-07', '2031-05-05' )
+        self.assertEqual(profile.doboc, '12-31-2024', '07-07-2027', '05-05-2031')
         self.assertEqual(profile.fnok_name, 'MS' )
-        self.assertEqual(profile.fnok_no, 8079399390 )
+        self.assertEqual(profile.fnok_phone, 8079399390 )
         self.assertEqual(profile.fnok_email, 'ms@yahoo.com' )
         self.assertEqual(profile.fnok_addr, 'zawaciki kano' )
         self.assertEqual(profile.fnok_rel, 'Brother' )
         self.assertEqual(profile.snok_name, 'SMS' )
-        self.assertEqual(profile.snok_no, 8079399390 )
+        self.assertEqual(profile.snok_phone, 8079399390 )
         self.assertEqual(profile.snok_email, 'sms@gmail.com' )
         self.assertEqual(profile.snok_addr, 'east bye pass kano' )
         self.assertEqual(profile.snok_rel, 'Brother' )
@@ -65,7 +96,39 @@ class ProfileModelTest(TestCase):
         # Ensure that the age() method returns the correct age
         profile = Profile.objects.create(
             user=self.user,
-            dob='1991-05-05',  # Set a valid date of birth for testing
+            email='rajisunusi@gmail.com',
+            dob='05-05-1991',  # Set a valid date of birth for testing
+            file_no= 6016,
+            title= 'mr',
+            gender= 'MALE',
+            phone= 9061267856 ,
+            marital_status= 'SINGLE',
+            place_of_birth= 'Abuja' ,
+            nationality= 'NIGERIAN' ,
+            zone= 'NORTH-EAST',
+            state= 'Kano',
+            lga= 'Kano-Municipal',
+            sen_dist= 'Kano-central',
+            res_add= 'no 8 Panama Street Maitama Abuja',
+            per_res_addr= 'no 8 Panama Street Maitama Abuja',
+            spouse= 'unknowm' ,
+            hobbies= 'reading, football, chess, travelling',
+            religion='ISLAM' ,
+            qual= 'Degree' ,
+            nofc= '3' ,
+            nameoc= 'Muhammad, Ismail, Fatima' ,
+            doboc= '12-31-2024, 07-07-2027, 05-05-2031',
+            fnok_name= 'MS' ,
+            fnok_phone= 8079399390 ,
+            fnok_email= 'ms@yahoo.com' ,
+            fnok_addr= 'zawaciki kano' ,
+            fnok_rel= 'Brother' ,
+            snok_name= 'SMS' ,
+            snok_phone= 8079399390 ,
+            snok_email= 'sms@gmail.com' ,
+            snok_addr= 'east bye pass kano' ,
+            snok_rel= 'Brother',
+             # Set a valid date of birth for testing
             # Add other required fields here for a valid Profile instance
         )
 
@@ -77,11 +140,40 @@ class ProfileModelTest(TestCase):
         # Ensure that the is_birthday() method returns True on the user's birthday
         profile = Profile.objects.create(
             user=self.user,
-            dob='1991-05-05',  # Set a valid date of birth for testing
+            email='rajisunusi@gmail.com',
+            dob='05-05-1991',  # Set a valid date of birth for testing
+            file_no= 6016,
+            title= 'mr',
+            gender= 'MALE',
+            phone= 9061267856 ,
+            marital_status= 'SINGLE',
+            place_of_birth= 'Abuja' ,
+            nationality= 'NIGERIAN' ,
+            zone= 'NORTH-EAST',
+            state= 'Kano',
+            lga= 'Kano-Municipal',
+            sen_dist= 'Kano-central',
+            res_add= 'no 8 Panama Street Maitama Abuja',
+            per_res_addr= 'no 8 Panama Street Maitama Abuja',
+            spouse= 'unknowm' ,
+            hobbies= 'reading, football, chess, travelling',
+            religion='ISLAM' ,
+            qual= 'Degree' ,
+            nofc= '3' ,
+            nameoc= 'Muhammad, Ismail, Fatima' ,
+            doboc= '12-31-2024, 07-07-2027, 05-05-2031',
+            fnok_name= 'MS' ,
+            fnok_phone= 8079399390 ,
+            fnok_email= 'ms@yahoo.com' ,
+            fnok_addr= 'zawaciki kano' ,
+            fnok_rel= 'Brother' ,
+            snok_name= 'SMS' ,
+            snok_phone= 8079399390 ,
+            snok_email= 'sms@gmail.com' ,
+            snok_addr= 'east bye pass kano' ,
+            snok_rel= 'Brother',
             # Add other required fields here for a valid Profile instance
         )
 
         # Check that the is_birthday() method returns True on the user's birthday
         self.assertTrue(profile.is_birthday())
-
-    # Add more test methods as needed for other functionalities in your Profile model

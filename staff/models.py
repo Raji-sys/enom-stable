@@ -40,7 +40,7 @@ class Profile(models.Model):
     nameoc = models.TextField('name of children',max_length=400, null=True, blank=True)
     doboc = models.TextField('date of birth of children',max_length=300, null=True, blank=True)
     fnok_name = models.CharField('first next of kin name',max_length=300, null=True, blank=True)
-    fnok_no = models.PositiveIntegerField('first next of kin phone',null=True, blank=True)
+    fnok_phone = models.PositiveIntegerField('first next of kin phone',null=True, blank=True)
     fnok_email = models.EmailField('first next of kin email',max_length=300, null=True, blank=True)
     fnok_addr = models.CharField('first next of kin address',max_length=300, null=True, blank=True)
     fnok_rel = models.CharField('relationship with first next of kin', max_length=300, null=True, blank=True)
