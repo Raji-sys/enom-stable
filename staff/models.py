@@ -1,11 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.validators import  MaxValueValidator
 from django.core.exceptions import ValidationError
 from datetime import timedelta, date
 from django.db import models 
 from django.urls import reverse
 from django.contrib import messages
+from django.utils.translation import gettext as _
+
 
     
 class Profile(models.Model):
@@ -112,7 +113,6 @@ class ProfessionalQualification(models.Model):
             return f"{self.user.first_name} {self.user.last_name} - {self.qual_obtained}"
 
 
-
 class GovernmentAppointment(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     dep=(
@@ -172,10 +172,9 @@ class GovernmentAppointment(models.Model):
         if self.user:
             return f"{self.user.first_name} {self.user.last_name}"
 
-    #step calculation
     def step_inc(self):
-       today = date.today()
-       if self.step is not None:
+        today = date.today()
+        if self.step is not None:
             if today.month == 1 and today.day == 1:
                 self.step += 1
                 self.save()
@@ -210,7 +209,7 @@ class Promotion(models.Model):
             return f"{self.user.last_name} {self.user.first_name}"
 
         # Promotion calculation
-    def calculate_promotion(self, request):
+    def calculate_promotion(self):
         today = date.today()
 
         if self.govapp.date_capt:
@@ -219,7 +218,7 @@ class Promotion(models.Model):
             gl = self.govapp.grade_level
             tc = self.govapp.type_of_cadre
 
-        # Performing checks
+    # Performing checks
         if (
             (today.year - cal == 3 and int(gl) >= 6 and ex == 'pass' and tc == 'SENIOR') or
             (today.year - cal == 2 and int(gl) <= 5 and ex == 'pass' and tc == 'JUNIOR') or
@@ -227,9 +226,9 @@ class Promotion(models.Model):
             ):
             self.due = True
             self.save()
-            return messages.success(request, 'DUE FOR PROMOTION')
+            return 'DUE FOR PROMOTION'
 
-        # If not due, no need to send a message
+    # If not due, no need to send a message
         self.due = False
         self.save()
         return None
