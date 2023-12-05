@@ -4,37 +4,73 @@ from django.views.generic.edit import CreateView
 from .forms import CustomUserCreationForm
 from django.contrib import messages
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
 from django.contrib.auth.views import LoginView
 from .models import *
+from django.contrib.auth import get_user_model
+User = get_user_model()  # Get the User model
+
+def log_anonymous_required(view_function, redirect_to=None):
+    """
+    Decorator for views that checks if the user is not logged in.
+    """
+    if redirect_to is None:
+        redirect_to = '/'
+
+    return user_passes_test(
+        lambda u: not u.is_authenticated,
+        login_url=redirect_to
+    )(view_function)
 
 
 @login_required
 def index(request):
     return render(request, 'index.html')
 
-def user_is_in(user):
-    return not user.is_authenticated
-
-
-# @method_decorator(user_passes_test(user_is_in, login_url='/'), name='dispatch')
+@method_decorator(log_anonymous_required, name='dispatch')
 class CustomLoginView(LoginView):
     template_name='login.html'
     success_url=reverse_lazy('/')
 
 
+def reg_anonymous_required(view_function, redirect_to=None):
+    """
+    Decorator for views that checks if the user is not registered or is a superuser.
+    """
+    if redirect_to is None:
+        redirect_to = '/'
+
+    return user_passes_test(
+        lambda u: not u.is_authenticated or u.is_superuser,
+        login_url=redirect_to
+    )(view_function)
+
+
+@method_decorator(reg_anonymous_required, name='dispatch')
 class UserRegistrationView(CreateView):
     form_class = CustomUserCreationForm
     template_name = 'registration/register.html'
-    success_url = reverse_lazy('login')  # Redirect to login page upon successful registration
+    success_url = reverse_lazy('login')
 
     def form_valid(self, form):
-        response=super().form_valid(form)
-        profile_instance=Profile(user=self.object)
-        profile_instance.save()
-        govapp_instance=GovernmentAppointment(user=self.object)
-        govapp_instance.save()
+        if form.is_valid():
+            response = super().form_valid(form)
+            
+            # Ensure the user is created
+            user = User.objects.get(username=form.cleaned_data['username'])
 
-        return response 
+            # Create the profile
+            profile_instance = Profile(user=user)
+            profile_instance.save()
+
+            # Create the government appointment
+            govapp_instance = GovernmentAppointment(user=user)
+            govapp_instance.save()
+
+            return response
+        else:
+            print("Form errors:", form.errors)
+            return self.form_invalid(form)

@@ -23,6 +23,7 @@ class ProfileModelTest(TestCase):
         # Create a Profile instance associated with the user
         profile = Profile.objects.create(
             user=self.user,
+            middle_name='amir',
             email='rajisunusi@gmail.com',
             dob='1991-05-05',  # Set a valid date of birth for testing
             file_no= 6016,
@@ -62,6 +63,7 @@ class ProfileModelTest(TestCase):
         # Check that the Profile instance is created successfully
         self.assertEqual(Profile.objects.count(), 1)
         self.assertEqual(profile.user, self.user)
+        self.assertEqual(profile.middle_name, 'amir')
         self.assertEqual(profile.email, 'rajisunusi@gmail.com')
         self.assertEqual(profile.file_no, 6016)
         self.assertEqual(profile.title, 'mr')
@@ -146,7 +148,8 @@ class ProfileModelTest(TestCase):
         # Ensure that the is_birthday() method returns True on the user's birthday
         profile = Profile.objects.create(
             user=self.user,
-            email='rajisunusi@gmail.com',
+            middle_name='amir',
+            email='rajisunusi@gmail.com',  
             dob=dob,  # Set a valid date of birth for testing
             file_no= 6016,
             title= 'mr',

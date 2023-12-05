@@ -12,6 +12,7 @@ from datetime import datetime
     
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    middle_name=models.CharField(max_length=300, blank=True, null=True)
     email=models.EmailField(blank=True, null=True, max_length=100, unique=True)
     photo = models.ImageField(null=True)
     file_no = models.DecimalField('file number', max_digits=6, decimal_places=0, null=True, unique=True, blank=False)
