@@ -6,7 +6,8 @@ from django.db import models
 from django.urls import reverse
 from django.contrib import messages
 from django.utils.translation import gettext as _
-
+from django.utils import timezone
+from datetime import datetime
 
     
 class Profile(models.Model):
@@ -254,58 +255,56 @@ class Discipline(models.Model):
             return f"{self.user.last_name} {self.user.first_name}"
 
 
-
 class Leave(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='leave')
-    nature = models.CharField('nature of leave', null=True,max_length=300,blank=True)
-    year = models.PositiveIntegerField(null=True,blank=True)
-    start_date = models.DateField(null=True,blank=False)
-    total_days=models.PositiveIntegerField(null=True, blank=True)
-    balance=models.PositiveIntegerField(null=True,blank=True)
-    granted = models.PositiveIntegerField('number of days granted',null=True, blank=False)
-    status = models.CharField(null=True,max_length=300,blank=True)
-    is_leave_over=models.BooleanField(default=False)
-    comments = models.TextField('comments if any', null=True,blank=True)
+    nature = models.CharField('nature of leave', null=True, max_length=300, blank=True)
+    year = models.PositiveIntegerField(null=True, blank=True)
+    start_date = models.DateField(null=True, blank=False)
+    total_days = models.PositiveIntegerField(null=True, blank=True)
+    balance = models.PositiveIntegerField(null=True, blank=True)
+    granted = models.PositiveIntegerField('number of days granted', null=True, blank=False)
+    status = models.CharField(null=True, max_length=300, blank=True)
+    is_leave_over = models.BooleanField(default=False)
+    comments = models.TextField('comments if any', null=True, blank=True)
     created = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
         return reverse('lv_details', args=[self.user])
- 
+
     def __str__(self):
         if self.user:
             return f"{self.user.last_name} {self.user.first_name}"
 
-    def save(self, *args, **kwargs):
-        self.clean()
-        super().save(*args, **kwargs)
-    
     def remain(self):
         if self.total_days is not None and self.granted is not None:
             return max(0, self.total_days - self.granted)
 
-    def clean(self):
-        super().clean()
-
+    def validate_leave(self):
         r = self.remain()
-        if r < 0 or self.granted == 0:
-            raise ValidationError('Your leave is over or no days granted.')
+        if r is not None:
+            if r < 0:
+                raise ValidationError('Your leave is over.')
+            elif self.granted == 0:
+                raise ValidationError('No days are granted.')
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        self.validate_leave()
+        super().save(*args, **kwargs)
+
 
     def return_on(self):
         if self.granted is not None and self.granted > 0:
-            return self.start_date + timedelta(days=self.total_days - self.remain())
+            if isinstance(self.start_date, datetime):
+                return (self.start_date + timedelta(days=self.granted)).date()
+            else:
+                return self.start_date + timedelta(days=self.granted)
         return None
 
-    def over(self, request):
-        today = date.today()
-        if self.return_on is not None and today > self.return_on:
-            self.is_leave_over = True
-            self.save()
-            messages.warning(request, 'Your leave period has ended.')
-        else:
-            self.is_leave_over = False
-            self.save()
-
+    def over(self):
+        return self.return_on() is not None and self.return_on() < timezone.now().date()
+   
 
 class ExecutiveAppointment(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='execapp')

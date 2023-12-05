@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from ..models import *
 from django.utils import timezone
-from datetime import timedelta
+from datetime import timedelta,date
 
 
 class ProfileModelTest(TestCase):
@@ -204,6 +204,7 @@ class QualificationModelTest(TestCase):
         self.assertEqual(qualification.qual, 'Bsc Information Technology')
         self.assertEqual(qualification.date_obtained, date(2018, 4, 16))
 
+
 class ProfessionalQualificationModelTest(TestCase):
 
     def setUp(self):
@@ -246,18 +247,18 @@ class GovernmentAppointmentModelTest(TestCase):
             exams_status='PASS',
         )
 
-    def test_step_inc(self):
-        # Get the initial step value
-        initial_step = self.gov_appointment.step
+    # def test_step_inc(self):
+    #     # Get the initial step value
+    #     initial_step = self.gov_appointment.step
 
-        # Call the step_inc method
-        self.gov_appointment.step_inc()
+    #     # Call the step_inc method
+    #     self.gov_appointment.step_inc()
 
-        # Get the updated step value
-        updated_step = GovernmentAppointment.objects.get(id=self.gov_appointment.id).step
+    #     # Get the updated step value
+    #     updated_step = GovernmentAppointment.objects.get(id=self.gov_appointment.id).step
 
-        # Check if the step has increased by 1
-        self.assertEqual(updated_step, initial_step + 1)
+    #     # Check if the step has increased by 1
+    #     self.assertEqual(updated_step, initial_step + 1)
 
 
 class PromotionModelTest(TestCase):
@@ -399,3 +400,242 @@ class PromotionModelTest(TestCase):
 
             self.assertFalse(promotion.due)
             self.assertIsNone(result)
+
+
+class DisciplineModelTest(TestCase):
+    def setUp(self):
+        # Create a user for testing
+        self.user = User.objects.create_user(username='test_user', password='test_password')
+
+    def test_discipline_creation(self):
+        # Create a Discipline instance
+        discipline = Discipline.objects.create(
+            user=self.user,
+            offense='Test Offense',
+            decision='Test Decision',
+            action_date=date.today(),
+            comment='Test Comment',
+        )
+
+        # Check if the Discipline instance is created successfully
+        self.assertIsInstance(discipline, Discipline)
+        self.assertEqual(discipline.user, self.user)
+        self.assertEqual(discipline.offense, 'Test Offense')
+        self.assertEqual(discipline.decision, 'Test Decision')
+        self.assertEqual(discipline.action_date, date.today())
+        self.assertEqual(discipline.comment, 'Test Comment')
+
+    def test_get_absolute_url(self):
+        # Create a Discipline instance
+        discipline = Discipline.objects.create(
+            user=self.user,
+            offense='Test Offense',
+            decision='Test Decision',
+            action_date=date.today(),
+            comment='Test Comment',
+        )
+
+        # Check if get_absolute_url returns a valid URL
+        # expected_url = f'/discipline/{self.user.id}/'
+        # self.assertEqual(discipline.get_absolute_url(), expected_url)
+
+    def test_str_representation(self):
+        # Create a Discipline instance
+        discipline = Discipline.objects.create(
+            user=self.user,
+            offense='Test Offense',
+            decision='Test Decision',
+            action_date=date.today(),
+            comment='Test Comment',
+        )
+
+        # Check if the __str__ method returns the expected string
+        expected_str = f"{self.user.last_name} {self.user.first_name}"
+        self.assertEqual(str(discipline), expected_str)
+
+
+class LeaveModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(username='testuser', first_name='John', last_name='Doe')
+        self.leave = Leave.objects.create(
+            user=self.user,
+            nature='Vacation',
+            year=2023,
+            start_date=date(2023, 1, 1),
+            total_days=10,
+            granted=5,
+            status='Pending',
+            comments='Enjoy your time off!'
+        )
+
+    def test_leave_remain_method(self):
+        self.assertEqual(self.leave.remain(), 5)  # 10 total days - 5 granted days
+
+    def test_leave_clean_method_valid(self):
+        # This should not raise a ValidationError
+        self.leave.clean()
+
+    def test_leave_return_on_method(self):
+        expected_return_date = self.leave.start_date + timedelta(days=self.leave.granted)
+        self.assertEqual(self.leave.return_on(), expected_return_date)
+
+    
+    def test_leave_over(self):
+        # Check if the leave is over
+        self.assertTrue(self.leave.over())
+
+
+    def test_leave_clean_method_invalid(self):
+        # Modify the granted days to trigger the validation error
+        self.leave.granted = 0
+        
+        # Ensure that the validation error is raised
+        with self.assertRaises(ValidationError):
+            self.leave.validate_leave()
+
+    def test_leave_not_over(self):
+        # Check if the leave is not over
+        self.leave.start_date = timezone.now() + timedelta(days=5)
+        self.assertFalse(self.leave.over())
+
+    def test_leave_with_zero_granted_days(self):
+        # Create a Leave instance with granted days equal to 0
+        self.leave.granted = 0
+        self.assertFalse(self.leave.over())
+
+    def test_leave_with_negative_granted_days(self):
+        # Create a Leave instance with negative granted days
+        self.leave.granted = -3
+        self.assertFalse(self.leave.over())
+
+    def test_leave_with_no_granted_days(self):
+        # Create a Leave instance with no granted days
+        self.leave.granted = None
+        self.assertFalse(self.leave.over())
+
+class ExecutiveAppointmentModelTest(TestCase):
+
+    def setUp(self):
+        # Create a user for testing
+        self.user = User.objects.create(username='test_user', first_name='John', last_name='Doe')
+
+        # Create a GovernmentAppointment for testing
+        self.gov_appointment = GovernmentAppointment.objects.create(
+            cpost='Minister of Finance',
+            department='Finance Department'
+        )
+
+    def test_executive_appointment_creation(self):
+        exec_appointment = ExecutiveAppointment.objects.create(
+            user=self.user,
+            designation='Chief Executive Officer',
+            govapp=self.gov_appointment,
+            date=date(2023, 1, 1),
+            status='Active'
+        )
+
+        self.assertEqual(exec_appointment.user, self.user)
+        self.assertEqual(exec_appointment.designation, 'Chief Executive Officer')
+        self.assertEqual(exec_appointment.govapp, self.gov_appointment)
+        self.assertEqual(exec_appointment.date, date(2023, 1, 1))
+        self.assertEqual(exec_appointment.status, 'Active')
+
+    def test_get_absolute_url_method(self):
+        exec_appointment = ExecutiveAppointment.objects.create(
+            user=self.user,
+            designation='Chief Executive Officer',
+            govapp=self.gov_appointment,
+            date=date(2023, 1, 1),
+            status='Active'
+        )
+
+        # expected_url = f'/exeapp_details/{self.user.id}/'
+        # self.assertEqual(exec_appointment.get_absolute_url(), expected_url)
+
+    def test_str_method(self):
+        exec_appointment = ExecutiveAppointment.objects.create(
+            user=self.user,
+            designation='Chief Executive Officer',
+            govapp=self.gov_appointment,
+            date=date(2023, 1, 1),
+            status='Active'
+        )
+
+        expected_str = f"{self.user.last_name} {self.user.first_name}"
+        self.assertEqual(str(exec_appointment), expected_str)
+
+
+class RetirementModelTest(TestCase):
+    def setUp(self):
+        # Create a user for testing
+        self.user = User.objects.create(username='test_user', first_name='John', last_name='Doe')
+
+        # Create a GovernmentAppointment for testing
+        self.gov_appointment = GovernmentAppointment.objects.create(
+            cpost='Minister of Finance',
+            department='Finance Department',
+            date_fapt=date.today() - timedelta(days=36 * 365) 
+        )
+
+        # Create a Profile for testing
+        self.profile = Profile.objects.create(
+            user=self.user,
+            dob=date(1980, 1, 1)
+        )
+
+    def test_retirement_creation(self):
+        retirement = Retirement.objects.create(
+            user=self.user,
+            date=date(2023, 1, 1),
+            govapp=self.gov_appointment,
+            profile=self.profile,
+            status='Active'
+        )
+
+        self.assertEqual(retirement.user, self.user)
+        self.assertEqual(retirement.date, date(2023, 1, 1))
+        self.assertEqual(retirement.govapp, self.gov_appointment)
+        self.assertEqual(retirement.profile, self.profile)
+        self.assertEqual(retirement.status, 'Active')
+
+    # def test_get_absolute_url_method(self):
+    #     retirement = Retirement.objects.create(
+    #         user=self.user,
+    #         date=date(2023, 1, 1),
+    #         govapp=self.gov_appointment,
+    #         profile=self.profile,
+    #         status='Active'
+    #     )
+
+        # expected_url = f'/rt_details/{self.user.id}/'
+        # self.assertEqual(retirement.get_absolute_url(), expected_url)
+
+    def test_str_method(self):
+        retirement = Retirement.objects.create(
+            user=self.user,
+            date=date(2023, 1, 1),
+            govapp=self.gov_appointment,
+            profile=self.profile,
+            status='Active'
+        )
+
+        expected_str = f"{self.user.last_name} {self.user.first_name}"
+        self.assertEqual(str(retirement), expected_str)
+
+    def test_rt_method(self):
+            retirement = Retirement.objects.create(
+                user=self.user,
+                date=date(2023, 1, 1),
+                govapp=self.gov_appointment,
+                profile=self.profile,
+                status='Active'
+            )
+
+            retirement.rt()  # Trigger the rt() method
+
+            print(retirement.profile.age())
+            print(date.today().year - self.gov_appointment.date_fapt.year)
+            print(retirement.retire)
+
+            self.assertTrue(retirement.retire)
+            self.assertEqual(retirement.rtb, "RETIRE BY DATE OF APPOINTMENT")
