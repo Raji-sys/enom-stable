@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
 from django.contrib.auth.views import LoginView
-
+from .models import *
 
 
 @login_required
@@ -29,3 +29,12 @@ class UserRegistrationView(CreateView):
     form_class = CustomUserCreationForm
     template_name = 'registration/register.html'
     success_url = reverse_lazy('login')  # Redirect to login page upon successful registration
+
+    def form_valid(self, form):
+        response=super().form_valid(form)
+        profile_instance=Profile(user=self.object)
+        profile_instance.save()
+        govapp_instance=GovernmentAppointment(user=self.object)
+        govapp_instance.save()
+
+        return response 
