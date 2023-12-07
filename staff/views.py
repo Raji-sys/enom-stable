@@ -1,9 +1,7 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.shortcuts import render,get_object_or_404
 from django.views.generic.edit import CreateView
 from .forms import CustomUserCreationForm
 from django.contrib import messages
-from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -12,7 +10,9 @@ from django.contrib.auth.views import LoginView
 from .models import *
 from .forms import *
 from django.contrib.auth import get_user_model
-User = get_user_model()  # Get the User model
+from django.views import View
+User = get_user_model()
+
 
 def log_anonymous_required(view_function, redirect_to=None):
     """
@@ -36,6 +36,12 @@ class CustomLoginView(LoginView):
     template_name='login.html'
     success_url=reverse_lazy('/')
 
+    def get_success_url(self):
+        return reverse_lazy('profile_details',args=[self.request.user.username])
+
+    def form_valid(self,form):
+        response=super().form_valid(form)
+        messages.success(self.request, f"welcome back, {self.request.user.get_full_name()}!")
 
 def reg_anonymous_required(view_function, redirect_to=None):
     """
@@ -70,7 +76,7 @@ class UserRegistrationView(CreateView):
             # Create the government appointment
             govapp_instance = GovernmentAppointment(user=user)
             govapp_instance.save()
-
+            messages.success(self.request, f"Registration for {user.get_full_name()} was successful")
             return response
         else:
             print("Form errors:", form.errors)
@@ -81,13 +87,14 @@ class DocumentationView(CreateView):
     model = Profile
     form_class = ProfileForm
     template_name = 'doc.html'
-    success_url = reverse('user')
+    success_url=reverse_lazy('profile_details')
 
     def get(self, request, *args, **kwargs):
         user_profile = self.request.user.profile
 
-        # Check if staff_no is empty
-        if user_profile.staff_no is None:
+            # Check if staff_no is empty
+        if user_profile.file_no is None:
+            userform = userForm(request.POST, instance=request.user)
             govtappform = GovtAppForm(instance=self.request.user.governmentappointment)
             profileform = ProfileForm(instance=user_profile)
 
@@ -95,17 +102,42 @@ class DocumentationView(CreateView):
 
             return render(request, self.template_name, context)
         else:
-            return HttpResponseRedirect(self.success_url)
+            return self.success_url
 
     def post(self, request, *args, **kwargs):
+        userform = userForm(request.POST, instance=request.user)
         profileform = ProfileForm(request.POST, instance=request.user.profile)
         govtappform = GovtAppForm(request.POST, instance=request.user.governmentappointment)
 
-        if profileform.is_valid() and govtappform.is_valid():
+        if userform.is_valid() and profileform.is_valid() and govtappform.is_valid():
+            userform.save()
             profileform.save()
             govtappform.save()
             messages.success(request, 'Documentation was successful {}'.format(request.user.get_full_name()))
-            return HttpResponseRedirect(self.success_url)
+            return self.success_url
         else:
             messages.error(request, 'Please correct the errors')
             return self.form_invalid(profileform)
+            
+            
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class ProfileDetailView(View):
+    def get(self, request, *args, **kwargs):
+        if request.user.is_superuser:
+            # If the user is a superuser, retrieve the profile based on the username in the URL
+            username_from_url = kwargs.get('username')  # Assuming you pass the username in the URL
+            profile = get_object_or_404(Profile, user__username=username_from_url)
+            govapp = get_object_or_404(GovernmentAppointment, user__username=username_from_url)
+            promotion = get_object_or_404(Promotion, user__username=username_from_url)
+        else:
+            # If the user is not a superuser, display the profile of the logged-in user
+            profile = request.user.profile
+            govapp = get_object_or_404(GovernmentAppointment, user=request.user)
+            promotion = get_object_or_404(Promotion, user=request.user)
+
+        context = {
+            'profile': profile,
+            'govapp': govapp,
+            'promotion': promotion,
+        }
+        return render(request, 'staff/profile_details.html', context)

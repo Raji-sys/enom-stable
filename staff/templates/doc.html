@@ -16,8 +16,8 @@
       
     <form action="" method="POST" id="personal-detail-form" class="flex flex-col justify-center max-sm:text-sm uppercase  text-green-900">
         {% csrf_token %}
-      {%load widget_tweaks %}
-          <div class="p-4 mr-4">
+              {%load widget_tweaks %}
+            <div class="p-4 mr-4">
             {% for field in userform %}
             <div class="mb-4">
               <div class="flex flex-col">
@@ -53,47 +53,7 @@
             {%endfor%}
     
             </div>
-
-            <div class="border-t-2  border-green-700"></div>
-            <p class="text-bold text-lg">EDUCATIONAL BACKGROUND SECTION</p>
-            <div class="border-t-2  border-green-700"></div>
-
-          <div class="p-4 mr-4">
-            {% for field in qualform%}
-            <div class="mb-4">
-              <div class="flex flex-col">
-                <label class="" for="{{field.id_for_label}}">{{field.label}}</label>
-              <div>
-                {{field|add_class:' focus:outline-none border-b-4 border-gray-300 inBtn text-white   rounded shadow-lg hover:shadow-xl'}}
-              </div>
-              <div class="text-red-600">
-                {{field.errors}}
-              </div>
-            </div>
-          </div>
-            {%endfor%} 
-            </div>
-
-            <div class="border-t-2  border-green-700"></div>
-            <p class="text-bold text-lg">PROFESSIONAL QUALIFICATION SECTION</p>
-            <div class="border-t-2  border-green-700"></div>
-
-          <div class="p-4 mr-4">
-            {% for field in proqualform%}
-            <div class="mb-4">
-              <div class="flex flex-col">
-                <label class="" for="{{field.id_for_label}}">{{field.label}}</label>
-              <div>
-                {{field|add_class:' focus:outline-none border-b-4 border-gray-300 inBtn text-white   rounded shadow-lg hover:shadow-xl'}}
-              </div>
-              <div class="text-red-600">
-                {{field.errors}}
-              </div>
-            </div>
-          </div>
-            {%endfor%} 
-            </div>
-
+            
             <div class="border-t-2 border-green-700"></div>
             <p class="text-bold text-lg">GOVERNMENT APPOINTMENT SECTION</p>
             <div class="border-t-2  border-green-700"></div>

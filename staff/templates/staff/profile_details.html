@@ -9,19 +9,22 @@
 <section class="flex text-center border-t-2 border-green-800"></section>
 <div x-data="{ tab: window.location.hash ? window.location.hash.substring(1) : '1' }" id="tab_wrapper">
   <!-- The tabs navigation -->
-<p class=" text-xl text-blue-500 uppercase">
-  {% for m in messages%}
-      {{m}}
-    {%endfor%}  
-</p>  {%if request.path != '/staffhome' %}
+     <div class="flex justify-center text-md text-blue-500">
+          {% if messages %}
+          {%for m in messages%}
+         <p{% if m.tags%} class="{{m.tags}}"{%endif%}>{{m}}</p>
+         {%endfor%}
+          {% endif %}
+        </div>
+  {%if request.path != '/staffhome' %}
   <div class="flex justify-center text-center ml-4 mt-2">
     <a href="{% url 'staff:staffhome' %}" class=" mb-2 focus:opacity-10 border-b-2 border-gray-500 focus:border-green-600 bg-gradient-to-l from-orange-900 via-orange-600 to-orange-900 text-white px-2 py-2 rounded shadow-sm hover:shadow-xl text-center"><i class="fa-solid fa-arrow-left fa-xl"></i></a>
     {%endif%}
-  <h1 class="text-xl text-green-900 text-center p-2 shadow-sm rounded-xl">{{users.last_name|default_if_none:''|upper}} {{users.personaldetail.middlename|default_if_none:''|upper}} {{users.first_name|default_if_none:''|upper}}</h1>
+  <h1 class="text-xl text-green-900 text-center p-2 shadow-sm rounded-xl">{{request.user.get_full_name()|default_if_none:''|upper}} </h1>
     </div>
 
 <section class="flex text-center border-t-2 border-green-800"></section>
-  {%if users.personaldetail.staff_no == None %}
+  {%if user.profile.file_no == None %}
   <div class="mt-2 mb-2 p-2 text-sm">
     <a href="{% url 'staff:updatedocform' users.id %}" class="shadow-xl justify-center bg-green-600 text-gray-100 rounded-xl p-2 uppercase">Start documentation Here</a>
   </div>

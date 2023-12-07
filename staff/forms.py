@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 from django import forms
 from .models import *
-
+from django.contrib.auth.models import User
 
 class CustomUserCreationForm(UserCreationForm):
     middle_name = forms.CharField(max_length=30, required=False)
@@ -10,6 +10,11 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = get_user_model()
         fields = ['username', 'first_name', 'last_name', 'password1', 'password2']
+
+class userForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['user','first_name','last_name']
 
 
 class ProfileForm(forms.ModelForm):    
@@ -22,11 +27,11 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
-        # widgets = {
-        #     'zone':forms.Select(attrs={'id':'id_zone'}),
-        #     'state':forms.Select(attrs={'id':'id_state'}),
-        #     'lga':forms.Select(attrs={'id':'id_lga'}),
-        # }        
+        widgets = {
+            'zone':forms.Select(attrs={'id':'id_zone'}),
+            'state':forms.Select(attrs={'id':'id_state'}),
+            'lga':forms.Select(attrs={'id':'id_lga'}),
+        }        
         # exclude = ['user']
 
 class GovtAppForm(forms.ModelForm):
@@ -39,17 +44,17 @@ class GovtAppForm(forms.ModelForm):
     class Meta:
         model = GovernmentAppointment
         fields = '__all__'
-        # widgets = {
-        #     'department':forms.Select(attrs={'id':'id_department'}),
-        #     'current_post':forms.Select(attrs={'id':'id_current_post'}),
-        # }
+        widgets = {
+            'department':forms.Select(attrs={'id':'id_department'}),
+            'current_post':forms.Select(attrs={'id':'id_current_post'}),
+        }
         # exclude = ['user']
 
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # # self.fields.pop('exams_status')
-        # self.fields.pop('retire')
-        # self.fields.pop('rt_by')
-        # self.fields.pop('due')
-        # self.fields.pop('lv')
+        # self.fields.pop('exams_status')
+        self.fields.pop('retire')
+        self.fields.pop('rt_by')
+        self.fields.pop('due')
+        self.fields.pop('lv')

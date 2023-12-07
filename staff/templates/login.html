@@ -15,6 +15,13 @@
           {{form.errors}}
           {% endif %}
         </div>
+     <div class="flex justify-center text-md text-blue-500">
+          {% if messages %}
+          {%for m in messages%}
+         <p{% if m.tags%} class="{{m.tags}}"{%endif%}>{{m}}</p>
+         {%endfor%}
+          {% endif %}
+        </div>
       </section>
         <form action="" method="POST" class="text-center">
               {% csrf_token %}
@@ -37,6 +44,18 @@
             </div>
           </div>
         </form>
+      <section class="text-center border-t-2 border-green-800 mt-4">
+      <div class="mt-2 flex items-center">
+        <p class="mt-4 text-green-800 text-xs">
+          <a
+            class="border-b-2 border-blue-600 text-sm text-bold text-blue-800 ml-1"
+            href="{%url 'register' %}"
+            >register</a
+          >
+          instead
+        </p>
+      </div>
+    </section>
       </div>
   </div>
 {% endblock %}
