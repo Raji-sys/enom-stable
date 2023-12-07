@@ -1,0 +1,41 @@
+{%extends "base.html" %}
+
+{% block title %}profile{% endblock%}
+
+{% block main %}
+
+{% if user.personaldetail.staff_no is None %} <hr>
+<p><a href="{% url 'ems:doc' %}">documentation</a></p>
+{% endif %}
+<!-- <hr> -->
+	<!-- <body class="bg-white leading-normal poppins tracking-normal">
+		<div class="container mx-auto p-2">
+			<section class="items-center justify-center h-screen">
+				<header>
+					<nav class="flex flex-row max-xs:flex-wrap max-sm:flex-col justify-between m-4 max-sm:gap-4 gap-10 p-0">
+						{% if request.user.is_authenticated %}
+						<div class="max-sm:p-4 p-4">
+						<a href="{% url 'ems:user' %}"><i class="text-green-800 fa-solid fa-circle-user fa-xl"></i>
+						<span class="border-b-2 border-cyan-800 text-green-800 text-lg font-bold uppercase"> {{request.user}}</span></span></a>
+						</div>				
+						<div class="max-xs:flex max-xs:flex-col max-sm:flex max-sm:flex-col max-sm:gap-6">									
+						<span class=" text-cyan-800 text-xl uppercase max-sm:px-4 max-sm:py-1">
+						<a class="focus:opacity-10 p-2 px-4 border-b-4 border-gray-500 focus:border-green-600 bg-gradient-to-l from-red-900 via-red-700 to-red-900 text-white rounded shadow-lg hover:shadow-xl text-center text-xs max-sm:w-1/2 w-full" href="{% url 'ems:logout' %}">
+						<i class="fa-solid fa-arrow-right-from-bracket fa-2xl"></i></a>
+						</div>
+						{% endif %}
+					</nav>
+				</header>
+			</section>
+		</div>
+		 -->
+<!-- <style>
+.errorlist{
+    color:red;
+    font-size: larger;
+}
+</style>
+	</body>
+</html> -->
+
+{% endblock %}

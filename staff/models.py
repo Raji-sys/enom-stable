@@ -98,6 +98,7 @@ class Qualification(models.Model):
         if self.user:
             return f"{self.user.first_name} {self.user.last_name} - {self.qual}"
 
+
 class ProfessionalQualification(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='pro_qual')
     institute = models.CharField(max_length=300, null=True, blank=True)
@@ -190,6 +191,8 @@ class GovernmentAppointment(models.Model):
             return f"{self.user.last_name} {self.user.first_name}"
 
     #promotion calculation
+
+
 class Promotion(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='promotion')
     cpost = models.CharField('current post', null=True, max_length=300, blank=True)

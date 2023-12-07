@@ -74,3 +74,28 @@ class UserRegistrationView(CreateView):
         else:
             print("Form errors:", form.errors)
             return self.form_invalid(form)
+        
+
+class DocumentationView(CreateView):
+        if request.method == 'POST':
+        profileform = ProfileForm(request.POST, instance=request.user.profile)
+        govtappform = GovtAppForm(request.POST, instance=request.user.governmentappointment)
+        
+
+        if  profileform.is_valid() and govtappform.is_valid():
+            profileform.save()
+            govtappform.save()
+            messages.success(request, 'documentation was successful {}'.format(request.user.get_fullname))
+            # return HttpResponseRedirect(reverse('ems:user'))
+        else:
+            # messages.error(request, ('please correct the error'))
+    else:
+        profileform = ProfileForm(request.POST, instance=request.user.profile)
+        govtappform = GovtAppForm(request.POST, instance=request.user.governmentappointment)
+
+    context = {'profileform': profileform, 'govtappform':govtappform,}
+
+    if request.user.profile.staff_no == None:
+        return render(request, 'doc.html', context)
+    else:
+        return HttpResponseRedirect(reverse('user'))

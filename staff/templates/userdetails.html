@@ -1,0 +1,343 @@
+{%extends "base.html" %}
+
+{% block title %}staff details{% endblock%}
+
+{% block main %}
+
+<h1>staff details</h1>
+<div>
+<table class="p-20">
+    <tbody>
+        <tr>
+            <th>one</th>
+        <th>two</th>
+        <th>three</th>
+        <th></th>
+    </tr>
+        <tr>
+            <td>
+                <p class="mr-14">{{users.first_name}} </p>
+                
+            </td>
+                <td>
+                <p class="mr-14">{{users.email}} </p>
+                </td>
+                <td>
+                <p class="mr-14">{{users.last_name}}</p>
+                </td>
+                <td>
+                    <a href="{% url 'staff:updateuserform' users.id %}">update</a>
+                </td>
+                <td>
+                </td>
+        </tr>
+    </tbody>
+</table>
+<hr>
+<table class="p-20">
+    <tbody>
+        <tr>
+            <th>one</th>
+        <th>two</th>
+        <th>three</th>
+        <th>four</th>
+        <th></th>
+    </tr>
+        <tr>
+            <td>
+                <p class="mr-14">{{users.personaldetail.title}} </p>
+                
+            </td>
+                <td>
+                <p class="mr-14">{{users.personaldetail.middlename}} </p>
+                </td>
+                <td>
+                <p class="mr-14">{{users.personaldetail.state_of_origin}} </p>
+                </td>
+                <td>
+                <p class="mr-14">{{users.personaldetail.date_of_birth}} </p>
+                </td>
+                <td>
+                    <a href="{% url 'staff:updateprofileform' users.id %}">update</a>
+                </td>
+                <td>
+                </td>
+        </tr>
+    </tbody>
+</table>
+<hr>
+<table class="p-20">
+    <tbody>
+        <tr>
+            <th>one</th>
+        <th>two</th>
+        <th>three</th>
+        <th></th>
+    </tr>
+        <tr>
+            <td>
+                <p class="mr-14">{{users.qualification.primary_school}} </p>
+                
+            </td>
+                <td>
+                    <p class="mr-14">{{users.qualification.primary_qual_type}} </p>
+                </td>
+                <td>
+                    <p class="mr-14">{{users.qualification.primary_date_obtained}} </p>
+                </td>
+
+                <td>
+                    <a href="{% url 'staff:updatequalform' users.id %}">update</a>
+                </td>
+                <td>
+                </td>
+        </tr>
+    </tbody>
+</table>
+<hr>
+<table class="p-20">
+    <tbody>
+        <tr>
+            <th>one</th>
+        <th>two</th>
+        <th>three</th>
+        <th>four</th>
+        <th></th>
+    </tr>
+        <tr>
+            <td>
+                <p class="mr-14">{{users.professionalqualification.pro_awarding_ins_1_name}} </p>
+                
+            </td>
+                <td>
+                    <p class="mr-14">{{users.professionalqualification.pro_awarding_ins_1_address}} </p>
+                </td>
+                <td>
+                    <p class="mr-14">{{users.professionalqualification.pro_qual_1_date_obtained}} </p>
+                </td>
+                <td>
+                    <p>{{users.professionalqualification.pro_qual_1_obtained}}</p>
+                </td>
+                <td>
+                    <a href="{% url 'staff:updateproqualform' users.id %}">update</a>
+                </td>
+                <td>
+                </td>
+        </tr>
+    </tbody>
+</table>
+<hr>
+<table class="p-20">
+    <tbody>
+        <tr>
+            <th>one</th>
+        <th>two</th>
+        <th>three</th>
+        <th>four</th>
+        <th></th>
+        <th></th>
+    </tr>
+        <tr>
+            <td>
+                <p class="mr-14">{{users.governmentappointment.step}} </p>    
+            </td>
+                <td>
+                    <p class="mr-14"> {{users.governmentappointment.salary_scale}}</p>
+                </td>
+                <td>
+                    <p class="mr-14"> {{users.governmentappointment.date_of_first_appointment}}</p>
+                </td>
+                <td>
+                    <p>{{users.governmentappointment.current_post}}</p>
+                </td>
+                <td>
+                    <a href="{%url 'staff:updategovtappform' users.id %}">update</a>
+                </td>
+                <td>
+                </td>
+        </tr>
+    </tbody>
+</table>
+<hr>
+<hr>
+<table class="p-20">
+    <tbody>
+        <tr>
+            <th>one</th> 
+            <th>two</th> 
+            <th>three</th>
+            <th>four</th>
+            <th></th>
+            <th></th>
+        </tr>
+        <a href="{% url 'staff:promotionform' users.id %}">promote</a>
+        <tr>
+            {%for i in emp %}
+        <td>
+            <p class="mr-14">{{i.current_post}} </p>  
+        </td>
+            <td>
+                <p class="mr-14"> {{i.grade_level}}</p>
+            </td>
+            <td>
+                <p class="mr-14"> {{i.promotion_date}}</p>
+            </td>
+            <td>
+                <p>{{i.confirmation_date}}</p>
+            </td>
+            <td>
+            <a href="{%url 'staff:updatepromotionform' i.id %}">update</a>
+            </td>
+            <td>
+                <a href="{% url 'staff:removepromotion' i.id %}">remove</a>
+            </td>
+            </tr>
+            {%endfor%}
+        </tbody>
+</table>
+<hr>
+<table class="p-20">
+    <tbody>
+        <tr>
+            <th>one</th> 
+            <th>two</th> 
+            <th>three</th>
+            <th>four</th>
+            <th></th>
+            <th></th>
+        </tr>
+        <a href="{% url 'staff:disciplineform' users.id %}">discipline form</a>
+        <tr>
+            {% for i in dis %}
+        <td>
+            <p class="mr-14">{{i.offense}} </p>  
+        </td>
+            <td>
+                <p class="mr-14"> {{i.decision}}</p>
+            </td>
+            <td>
+                <p class="mr-14"> {{i.date}}</p>
+            </td>
+            <td>
+                <p>{{i.comment}}</p>
+            </td>
+            <td>
+            <a href="{%url 'staff:updatedisciplineform' i.id %}">update</a>
+            </td>
+            <td>
+                <a href="{% url 'staff:removediscipline' i.id %}">remove</a>
+            </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+</table>
+<hr>
+<hr>
+<hr>
+<hr>
+<table class="p-20">
+    <tbody>
+        <tr>
+            <th>one</th> 
+            <th>two</th> 
+            <th>three</th>
+            <th>four</th>
+            <th></th>
+            <th></th>
+        </tr>
+        <a href="{% url 'staff:leaveform' users.id %}">leave form</a>
+        <tr>
+            {% for i in leave %}
+        <td>
+            <p class="mr-14">{{i.status}} </p>  
+        </td>
+            <td>
+                <p class="mr-14"> {{i.nature_of_leave}}</p>
+            </td>
+            <td>
+                <p class="mr-14"> {{i.year}}</p>
+            </td>
+            <td>
+                <p>{{i.number_of_days_granted}}</p>
+            </td>
+            <td>
+            <a href="{%url 'staff:updateleaveform' i.id %}">update</a>
+            </td>
+            <td>
+                <a href="{% url 'staff:removeleave' i.id %}">remove</a>
+            </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+</table>
+<hr>
+<table class="p-20">
+    <tbody>
+        <tr>
+            <th>one</th> 
+            <th>two</th> 
+            <th>three</th>
+            <th>four</th>
+            <th></th>
+            <th></th>
+        </tr>
+        <a href="{% url 'staff:execappform' users.id %}">execapp form</a>
+        <tr>
+            {% for i in execapp %}
+        <td>
+            <p class="mr-14">{{i.designation_post}} </p>  
+        </td>
+            <td>
+                <p class="mr-14"> {{i.status_current_out_of_office}}</p>
+            </td>
+            <td>
+                <p class="mr-14"> {{i.date_of_appointment}}</p>
+            </td>
+            <td>
+                <p>{{i.timestamp}}</p>
+            </td>
+            <td>
+            <a href="{%url 'staff:updateexecappform' i.id %}">update</a>
+            </td>
+            <td>
+                <a href="{% url 'staff:removeexecapp' i.id %}">remove</a>
+            </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+</table>
+<hr>
+<table class="p-20">
+    <tbody>
+        <tr>
+            <th>one</th> 
+            <th>two</th> 
+            <th>three</th>
+            <th></th>
+            <th></th>
+        </tr>
+        <a href="{% url 'staff:retireform' users.id %}">retirement form</a>
+        <tr>
+            {% for i in retire %}
+        <td>
+            <p class="mr-14">{{i.status}} </p>  
+        </td>
+            <td>
+                <p class="mr-14"> {{i.date_retired}}</p>
+            </td>
+            <td>
+                <p class="mr-14"> {{i.timestamp}}</p>
+            </td>
+            <td>
+            <a href="{%url 'staff:updateretirementform' i.id %}">update</a>
+            </td>
+            <td>
+                <a href="{% url 'staff:removeretire' i.id %}">remove</a>
+            </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+</table>
+
+</div>
+{% endblock %}
