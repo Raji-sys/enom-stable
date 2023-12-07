@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
 from django.contrib.auth.views import LoginView
 from .models import *
+from .forms import *
 from django.contrib.auth import get_user_model
 User = get_user_model()  # Get the User model
 
@@ -77,25 +78,34 @@ class UserRegistrationView(CreateView):
         
 
 class DocumentationView(CreateView):
-        if request.method == 'POST':
+    model = Profile
+    form_class = ProfileForm
+    template_name = 'doc.html'
+    success_url = reverse('user')
+
+    def get(self, request, *args, **kwargs):
+        user_profile = self.request.user.profile
+
+        # Check if staff_no is empty
+        if user_profile.staff_no is None:
+            govtappform = GovtAppForm(instance=self.request.user.governmentappointment)
+            profileform = ProfileForm(instance=user_profile)
+
+            context = {'profileform': profileform, 'govtappform': govtappform}
+
+            return render(request, self.template_name, context)
+        else:
+            return HttpResponseRedirect(self.success_url)
+
+    def post(self, request, *args, **kwargs):
         profileform = ProfileForm(request.POST, instance=request.user.profile)
         govtappform = GovtAppForm(request.POST, instance=request.user.governmentappointment)
-        
 
-        if  profileform.is_valid() and govtappform.is_valid():
+        if profileform.is_valid() and govtappform.is_valid():
             profileform.save()
             govtappform.save()
-            messages.success(request, 'documentation was successful {}'.format(request.user.get_fullname))
-            # return HttpResponseRedirect(reverse('ems:user'))
+            messages.success(request, 'Documentation was successful {}'.format(request.user.get_full_name()))
+            return HttpResponseRedirect(self.success_url)
         else:
-            # messages.error(request, ('please correct the error'))
-    else:
-        profileform = ProfileForm(request.POST, instance=request.user.profile)
-        govtappform = GovtAppForm(request.POST, instance=request.user.governmentappointment)
-
-    context = {'profileform': profileform, 'govtappform':govtappform,}
-
-    if request.user.profile.staff_no == None:
-        return render(request, 'doc.html', context)
-    else:
-        return HttpResponseRedirect(reverse('user'))
+            messages.error(request, 'Please correct the errors')
+            return self.form_invalid(profileform)
