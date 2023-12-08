@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'staff.apps.StaffConfig',
     'tailwind',
     'theme',
+    'django_fastdev',
     'django_browser_reload',
     'fontawesomefree',
     'django_filters',

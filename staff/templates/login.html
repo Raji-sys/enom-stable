@@ -15,13 +15,13 @@
           {{form.errors}}
           {% endif %}
         </div>
-     <div class="flex justify-center text-md text-blue-500">
+     <!-- <div class="flex justify-center text-md text-blue-500">
           {% if messages %}
           {%for m in messages%}
          <p{% if m.tags%} class="{{m.tags}}"{%endif%}>{{m}}</p>
          {%endfor%}
           {% endif %}
-        </div>
+        </div> -->
       </section>
         <form action="" method="POST" class="text-center">
               {% csrf_token %}

@@ -11,18 +11,18 @@ admin.site.index_title="ENOM"
 admin.site.site_title="ENOM"
 
 
-class ProfileForm(forms.ModelForm):
-    pass
+# class ProfileForm(forms.ModelForm):
+#     pass
     # class Meta:
     #     model = Profile
     #     fields = []  
 
 @admin.register(Profile)
 class ProfileAdmin(ImportMixin,admin.ModelAdmin):
-    form=ProfileForm
+    # form=ProfileForm
     readonly_fields=()
     exclude=()
-    list_display = []
+    list_display = ['user','full_name']
     list_filter = []
     search_fields = []
     list_per_page = 10
@@ -45,7 +45,7 @@ class GovappAdmin(ImportMixin,admin.ModelAdmin):
     form=GovappForm
     readonly_fields=()
     exclude=()
-    list_display = []
+    list_display = ['user','full_name']
     list_filter = []
     search_fields = []
     list_per_page = 10

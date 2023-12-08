@@ -2,7 +2,7 @@
 {% block title %}documentation form{% endblock%}
 {% block main %}
 <section class="  text-center border-t-2 border-green-800"></section>
-<div class="border-2 border-green-800 max-sm:w-full w-1/2 text-sm mx-auto mt-10 md:p-10 bg-white shadow-2xl overflow-hidden rounded-lg backdrop-blur-sm">
+<div class="flex flex-row border-2 border-green-800 max-sm:w-full w-1/2 text-sm mx-auto mt-10 md:p-10 bg-white shadow-2xl overflow-hidden rounded-lg backdrop-blur-sm">
     <section class=" text-center border-b-2 border-green-700 text-sm">
         <p class="text-green-800 uppercase max-sm:text-lg text-xl">documentation form</p> 
         {%for message in messages%}
@@ -16,7 +16,6 @@
       
     <form action="" method="POST" id="personal-detail-form" class="flex flex-col justify-center max-sm:text-sm uppercase  text-green-900">
         {% csrf_token %}
-              {%load widget_tweaks %}
             <div class="p-4 mr-4">
             {% for field in userform %}
             <div class="mb-4">

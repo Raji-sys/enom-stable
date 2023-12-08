@@ -27,21 +27,24 @@ def log_anonymous_required(view_function, redirect_to=None):
     )(view_function)
 
 
-@login_required
+# @login_required
 def index(request):
-    return render(request, 'index.html')
+    # p=get_object_or_404(Profile,user__username=username)
+    p=get_object_or_404(Profile)
+    context={'p':p}
+    return render(request, 'index.html',context)
 
 @method_decorator(log_anonymous_required, name='dispatch')
 class CustomLoginView(LoginView):
     template_name='login.html'
-    success_url=reverse_lazy('/')
+    # success_url=reverse_lazy('/')
 
     def get_success_url(self):
         return reverse_lazy('profile_details',args=[self.request.user.username])
 
-    def form_valid(self,form):
-        response=super().form_valid(form)
-        messages.success(self.request, f"welcome back, {self.request.user.get_full_name()}!")
+    # def form_valid(self,form):
+    #     response=super().form_valid(form)
+    #     messages.success(self.request, f"welcome back, {self.request.user.get_full_name()}!")
 
 def reg_anonymous_required(view_function, redirect_to=None):
     """
@@ -128,16 +131,16 @@ class ProfileDetailView(View):
             username_from_url = kwargs.get('username')  # Assuming you pass the username in the URL
             profile = get_object_or_404(Profile, user__username=username_from_url)
             govapp = get_object_or_404(GovernmentAppointment, user__username=username_from_url)
-            promotion = get_object_or_404(Promotion, user__username=username_from_url)
+            # promotion = get_object_or_404(Promotion, user__username=username_from_url)
         else:
             # If the user is not a superuser, display the profile of the logged-in user
             profile = request.user.profile
             govapp = get_object_or_404(GovernmentAppointment, user=request.user)
-            promotion = get_object_or_404(Promotion, user=request.user)
+            # promotion = get_object_or_404(Promotion, user=request.user)
 
         context = {
             'profile': profile,
             'govapp': govapp,
-            'promotion': promotion,
+            # 'promotion': promotion,
         }
         return render(request, 'staff/profile_details.html', context)

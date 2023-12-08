@@ -60,9 +60,11 @@ class Profile(models.Model):
     def get_absolute_url(self):
         return reverse('profile_details', args=[self.user])
 
+    def full_name(self):
+        return f"{self.user.get_full_name()}, {self.file_no}"
+    
     def __str__(self):
-        if self.user:
-            return f"{self.user.first_name} {self.user.last_name}"
+        return self.user.username
 
     def age(self):
         today = date.today()
@@ -150,7 +152,7 @@ class GovernmentAppointment(models.Model):
          )
     department=models.CharField(choices=dep, blank=True,max_length=300, null=True)
     cpost=models.CharField('current post',blank=True,max_length=300, null=True)
-    ippis_no = models.DecimalField('IPPIS number', max_digits=6, decimal_places=0, null=True, unique=True, blank=False)
+    ippis_no = models.DecimalField('IPPIS number', max_digits=6, decimal_places=0, null=True, unique=True, blank=True)
     date_fapt = models.DateField('date of first appointment', null=True,blank=True)
     date_capt = models.DateField('date of current appointment', null=True,blank=True)
     tp=(('CASUAL','CASUAL'),('LOCUM','LOCUM'),('PERMANENT','PERMANENT'),('PROBATION', 'PROBATION'))
@@ -171,9 +173,12 @@ class GovernmentAppointment(models.Model):
     def get_absolute_url(self):
         return reverse('govapp_details', args=[self.user])
 
+    def full_name(self):
+        return f"{self.user.get_full_name()}, {self.cpost}"
+    
     def __str__(self):
-        if self.user:
-            return f"{self.user.first_name} {self.user.last_name}"
+        return self.user.username
+
 
     def step_inc(self):
         today = date.today()
