@@ -90,37 +90,36 @@ class DocumentationView(CreateView):
     model = Profile
     form_class = ProfileForm
     template_name = 'doc.html'
-    success_url=reverse_lazy('profile_details')
+    success_url = reverse_lazy('personal_details')
 
-    def get(self, request, *args, **kwargs):
-        user_profile = self.request.user.profile
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['userform'] = userForm(instance=self.request.user)
+        context['govtappform'] = GovtAppForm(instance=self.request.user.governmentappointment)
+        return context
 
-            # Check if staff_no is empty
-        if user_profile.file_no is None:
-            userform = userForm(request.POST, instance=request.user)
-            govtappform = GovtAppForm(instance=self.request.user.governmentappointment)
-            profileform = ProfileForm(instance=user_profile)
+    def form_valid(self, form):
+        # Assign the current user to the form instance
+        form.instance.user = self.request.user
 
-            context = {'profileform': profileform, 'govtappform': govtappform}
+        # Additional logic for form validation and saving
+        govtappform = GovtAppForm(self.request.POST, instance=self.request.user.governmentappointment)
 
-            return render(request, self.template_name, context)
-        else:
-            return self.success_url
-
-    def post(self, request, *args, **kwargs):
-        userform = userForm(request.POST, instance=request.user)
-        profileform = ProfileForm(request.POST, instance=request.user.profile)
-        govtappform = GovtAppForm(request.POST, instance=request.user.governmentappointment)
-
-        if userform.is_valid() and profileform.is_valid() and govtappform.is_valid():
-            userform.save()
-            profileform.save()
+        if form.is_valid() and govtappform.is_valid():
+            profile=get_object_or_404(Profile,user=self.request.user)
+            form.instance.pk=profile.pk
+            form.save()
             govtappform.save()
-            messages.success(request, 'Documentation was successful {}'.format(request.user.get_full_name()))
-            return self.success_url
+            messages.success(self.request, f'Documentation was successful {self.request.user.last_name}')
+            return super().form_valid(form)
         else:
-            messages.error(request, 'Please correct the errors')
-            return self.form_invalid(profileform)
+            messages.error(self.request, 'Please correct the errors')
+            return self.form_invalid(form)
+
+    def form_invalid(self, form):
+        # Custom logic for handling invalid form
+        # You can add additional logic here if needed
+        return super().form_invalid(form)
             
             
 @method_decorator(login_required(login_url='login'), name='dispatch')

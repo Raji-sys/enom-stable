@@ -32,7 +32,7 @@ class ProfileForm(forms.ModelForm):
             'state':forms.Select(attrs={'id':'id_state'}),
             'lga':forms.Select(attrs={'id':'id_lga'}),
         }        
-        # exclude = ['user']
+        exclude = ['user','created','updated']
 
 class GovtAppForm(forms.ModelForm):
     def clean_date_fapt(self):
@@ -48,13 +48,8 @@ class GovtAppForm(forms.ModelForm):
             'department':forms.Select(attrs={'id':'id_department'}),
             'current_post':forms.Select(attrs={'id':'id_current_post'}),
         }
-        # exclude = ['user']
+        exclude = ['user','created','updated']
 
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # self.fields.pop('exams_status')
-        self.fields.pop('retire')
-        self.fields.pop('rt_by')
-        self.fields.pop('due')
-        self.fields.pop('lv')

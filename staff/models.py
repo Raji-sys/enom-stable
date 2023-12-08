@@ -14,7 +14,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     middle_name=models.CharField(max_length=300, blank=True, null=True)
     email=models.EmailField(blank=True, null=True, max_length=100, unique=True)
-    photo = models.ImageField(null=True)
+    photo = models.ImageField(null=True,blank=True)
     file_no = models.DecimalField('file number', max_digits=6, decimal_places=0, null=True, unique=True, blank=False)
     title = models.CharField(max_length=300, null=True, blank=True)
     sex=(('MALE','MALE'),('FEMALE','FEMALE'))
@@ -47,13 +47,13 @@ class Profile(models.Model):
     fnok_email = models.EmailField('first next of kin email',max_length=300, null=True, blank=True)
     fnok_addr = models.CharField('first next of kin address',max_length=300, null=True, blank=True)
     fnok_rel = models.CharField('relationship with first next of kin', max_length=300, null=True, blank=True)
-    fnok_photo = models.ImageField(null=True)
+    fnok_photo = models.ImageField(null=True,blank=True)
     snok_name = models.CharField('second next of kin name', max_length=300, null=True, blank=True)
     snok_phone = models.PositiveIntegerField('second next of kin phone', null=True, blank=True)
     snok_email = models.EmailField('second next of kin email', max_length=300, null=True, blank=True)
     snok_addr = models.CharField('second next of address', max_length=300, null=True, blank=True)
     snok_rel = models.CharField('second next of kin', max_length=300, null=True, blank=True)
-    snok_photo = models.ImageField(null=True)
+    snok_photo = models.ImageField(null=True,blank=True)
     created = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -61,7 +61,7 @@ class Profile(models.Model):
         return reverse('profile_details', args=[self.user])
 
     def full_name(self):
-        return f"{self.user.get_full_name()}, {self.file_no}"
+        return f"{self.user.get_full_name()}, {self.file_no}, {self.user.id}"
     
     def __str__(self):
         return self.user.username
