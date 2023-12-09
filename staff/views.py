@@ -36,14 +36,12 @@ def index(request):
 @method_decorator(log_anonymous_required, name='dispatch')
 class CustomLoginView(LoginView):
     template_name='login.html'
-    # success_url=reverse_lazy('/')
 
     def get_success_url(self):
-        return reverse_lazy('profile_details',args=[self.request.user.username])
-
-    # def form_valid(self,form):
-    #     response=super().form_valid(form)
-    #     messages.success(self.request, f"welcome back, {self.request.user.get_full_name()}!")
+        if self.request.user != self.request.user.is_superuser:
+            return reverse_lazy('profile_details',args=[self.request.user.username])
+        else:
+            return reverse_lazy('index')
 
 def reg_anonymous_required(view_function, redirect_to=None):
     """
