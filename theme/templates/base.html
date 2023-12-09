@@ -14,7 +14,7 @@
 		<header class="">
 		<nav class="mx-auto p-1 flex justify-between uppercase text-white text-xs fixed top-0 z-10  border-b-2 border-teal-800 w-full bg-gradient-to-r from-teal-700 via-teal-500 to-teal-700">
 			{%if request.user.is_authenticated %}
-		<span class="p-2"> <a href="{%url "index" %}">home</a>
+		<span class="p-2"> <a href="{%url 'index' %}">home</a>
 	</span>
 	{%if request.path != '/' %}
 	<span class="p-2">
