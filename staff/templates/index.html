@@ -4,6 +4,8 @@
 
 {%block content %}
 <p class="mt-20">Landing page to be decorating with gradient background graphics</p>
+{%for i in p%}
+<a href={{i.get_absolute_url}}>{{i}}</a>
+{%endfor%}
 
-<a href={{p.get_absolute_url}}>profile</a>
 {%endblock%}

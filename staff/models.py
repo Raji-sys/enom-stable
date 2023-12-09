@@ -15,7 +15,7 @@ class Profile(models.Model):
     middle_name=models.CharField(max_length=300, blank=True, null=True)
     email=models.EmailField(blank=True, null=True, max_length=100, unique=True)
     photo = models.ImageField(null=True,blank=True)
-    file_no = models.DecimalField('file number', max_digits=6, decimal_places=0, null=True, unique=True, blank=False)
+    file_no = models.DecimalField('file number', max_digits=6, decimal_places=0, null=True, unique=True, blank=True)
     title = models.CharField(max_length=300, null=True, blank=True)
     sex=(('MALE','MALE'),('FEMALE','FEMALE'))
     gender = models.CharField(choices=sex, max_length=10, null=True, blank=True)
@@ -56,6 +56,11 @@ class Profile(models.Model):
     snok_photo = models.ImageField(null=True,blank=True)
     created = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.created:
+            self.created = timezone.now()
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('profile_details', args=[self.user])

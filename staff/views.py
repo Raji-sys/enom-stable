@@ -29,8 +29,7 @@ def log_anonymous_required(view_function, redirect_to=None):
 
 # @login_required
 def index(request):
-    # p=get_object_or_404(Profile,user__username=username)
-    p=get_object_or_404(Profile)
+    p=Profile.objects.all()
     context={'p':p}
     return render(request, 'index.html',context)
 
@@ -90,24 +89,29 @@ class DocumentationView(CreateView):
     model = Profile
     form_class = ProfileForm
     template_name = 'doc.html'
-    success_url = reverse_lazy('personal_details')
+    success_url = reverse_lazy('index')
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['userform'] = userForm(instance=self.request.user)
-        context['govtappform'] = GovtAppForm(instance=self.request.user.governmentappointment)
+        try:
+            context = super().get_context_data(**kwargs)
+            context['userform'] = userForm(instance=self.request.user)
+            context['govtappform'] = GovtAppForm(instance=self.request.user.governmentappointment)
+        except:
+            self.request.user.is_superuser
         return context
 
     def form_valid(self, form):
+        # if self.request.user.is_superuser:
         # Assign the current user to the form instance
         form.instance.user = self.request.user
-
         # Additional logic for form validation and saving
+        userform=userForm(self.request.POST, instance=self.request.user)
         govtappform = GovtAppForm(self.request.POST, instance=self.request.user.governmentappointment)
 
-        if form.is_valid() and govtappform.is_valid():
+        if userform and form.is_valid() and govtappform.is_valid():
             profile=get_object_or_404(Profile,user=self.request.user)
             form.instance.pk=profile.pk
+            userform.save()
             form.save()
             govtappform.save()
             messages.success(self.request, f'Documentation was successful {self.request.user.last_name}')

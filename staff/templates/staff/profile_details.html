@@ -5,7 +5,7 @@
 {% block content %}
   <h1 class="text-xl text-black text-center p-2 shadow-sm rounded-xl mt-20 ">{{request.user.get_full_name|default_if_none:''|upper}} </h1>
 <h1>
-  {%if profile.staff_no == None %}
+  {%if profile.file_no == None %}
   <a href="{%url 'doc' %}">start documentation</a>
   {%endif%}
 </h1>
