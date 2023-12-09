@@ -1,5 +1,5 @@
-from django.shortcuts import render,get_object_or_404
-from django.views.generic.edit import CreateView
+from django.shortcuts import render,get_object_or_404,HttpResponseRedirect
+from django.views.generic.edit import UpdateView, CreateView
 from .forms import CustomUserCreationForm
 from django.contrib import messages
 from django.utils.decorators import method_decorator
@@ -85,45 +85,32 @@ class UserRegistrationView(CreateView):
             return self.form_invalid(form)
         
 
-class DocumentationView(CreateView):
-    model = Profile
-    form_class = ProfileForm
+class DocumentationView(UpdateView):
+    model = User
     template_name = 'doc.html'
+    form_class = UserForm
     success_url = reverse_lazy('index')
 
     def get_context_data(self, **kwargs):
-        try:
-            context = super().get_context_data(**kwargs)
-            context['userform'] = userForm(instance=self.request.user)
-            context['govtappform'] = GovtAppForm(instance=self.request.user.governmentappointment)
-        except:
-            self.request.user.is_superuser
+        context = super().get_context_data(**kwargs)
+        context['profileform'] = ProfileForm(instance=self.object.profile)
+        context['govtappform'] = GovtAppForm(instance=self.object.governmentappointment)
         return context
 
     def form_valid(self, form):
-        # if self.request.user.is_superuser:
-        # Assign the current user to the form instance
-        form.instance.user = self.request.user
-        # Additional logic for form validation and saving
-        userform=userForm(self.request.POST, instance=self.request.user)
-        govtappform = GovtAppForm(self.request.POST, instance=self.request.user.governmentappointment)
+        userform=UserForm(self.request.POST, instance=self.object)
+        profileform = ProfileForm(self.request.POST, instance=self.object.profile)
+        govtappform = GovtAppForm(self.request.POST, instance=self.object.governmentappointment)
 
-        if userform and form.is_valid() and govtappform.is_valid():
-            profile=get_object_or_404(Profile,user=self.request.user)
-            form.instance.pk=profile.pk
+        if userform.is_valid() and profileform.is_valid() and govtappform.is_valid():
             userform.save()
-            form.save()
+            profileform.save()
             govtappform.save()
             messages.success(self.request, f'Documentation was successful {self.request.user.last_name}')
-            return super().form_valid(form)
+            return HttpResponseRedirect(self.get_success_url())
         else:
             messages.error(self.request, 'Please correct the errors')
             return self.form_invalid(form)
-
-    def form_invalid(self, form):
-        # Custom logic for handling invalid form
-        # You can add additional logic here if needed
-        return super().form_invalid(form)
             
             
 @method_decorator(login_required(login_url='login'), name='dispatch')

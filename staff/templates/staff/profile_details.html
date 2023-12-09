@@ -3,14 +3,17 @@
 {% block title %}profile{% endblock%}
 
 {% block content %}
-  <h1 class="text-xl text-black text-center p-2 shadow-sm rounded-xl mt-20 ">{{request.user.get_full_name|default_if_none:''|upper}} </h1>
+  <h1 class="text-xl text-black text-center p-2 shadow-sm rounded-xl mt-20 ">{{profile.user.get_full_name|default_if_none:''|upper}} </h1>
 <h1>
   {%if profile.file_no == None %}
-  <a href="{%url 'doc' %}">start documentation</a>
+  <a href="{%url 'doc' profile.pk %}">start documentation</a>
   {%endif%}
 </h1>
   <p>
   dob:{{profile.dob|default_if_none:''}}
+</p>
+  <p>
+  file number:{{profile.file_no|default_if_none:''}}
 </p>
 
 <p>post:{{govapp.cpost}}</p>
