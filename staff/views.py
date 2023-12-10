@@ -105,6 +105,10 @@ class UpdateProfileView(UpdateView):
     form_class = ProfileForm
     success_url = reverse_lazy('index')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+     
     def get_object(self, queryset=None):
         return get_object_or_404(Profile,pk=self.kwargs['pk'])
 
@@ -120,7 +124,7 @@ class UpdateGovappView(UpdateView):
     model = Profile
     template_name = 'staff/update-govapp.html'
     form_class = GovtAppForm
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('profile_details')
 
     def get_object(self, queryset=None):
         return get_object_or_404(Profile,pk=self.kwargs['pk'])
@@ -137,7 +141,7 @@ class UpdateUserView(UpdateView):
     model = Profile
     template_name = 'staff/update-user.html'
     form_class = UserForm
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('profile_details')
 
     def get_object(self, queryset=None):
         return get_object_or_404(Profile,pk=self.kwargs['pk'])
@@ -148,6 +152,9 @@ class UpdateUserView(UpdateView):
     def form_invalid(self,form):
         messages.error(self.request,'please corect the errors in the form')
         return super().form_invalid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('profile_details', kwargs={'pk':self.object.pk})
 
             
 @method_decorator(login_required(login_url='login'), name='dispatch')
