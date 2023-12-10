@@ -10,6 +10,7 @@ from .models import *
 from .forms import *
 from django.contrib.auth import get_user_model
 from django.views import View
+from django.http import Http404
 User = get_user_model()
 
 
@@ -89,22 +90,80 @@ class DocumentationView(UpdateView):
             profileform.save()
             govtappform.save()
             messages.success(self.request, f'Documentation was successful {self.request.user.last_name}')
-            return HttpResponseRedirect(self.get_success_url())
+            return super().form_valid(form)
         else:
-            messages.error(self.request, 'Please correct the errors')
             return self.form_invalid(form)
-            
+
+    def form_invalid(self,form):
+        messages.error(self.request,'please corect the errors in the form')
+        return super().form_invalid(form)
+
+
+class UpdateProfileView(UpdateView):
+    model = Profile
+    template_name = 'staff/update-profile.html'
+    form_class = ProfileForm
+    success_url = reverse_lazy('index')
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Profile,pk=self.kwargs['pk'])
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+    def form_invalid(self,form):
+        messages.error(self.request,'please corect the errors in the form')
+        return super().form_invalid(form)
+    
+
+class UpdateGovappView(UpdateView):
+    model = Profile
+    template_name = 'staff/update-govapp.html'
+    form_class = GovtAppForm
+    success_url = reverse_lazy('index')
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Profile,pk=self.kwargs['pk'])
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+    def form_invalid(self,form):
+        messages.error(self.request,'please corect the errors in the form')
+        return super().form_invalid(form)
+
+
+class UpdateUserView(UpdateView):
+    model = Profile
+    template_name = 'staff/update-user.html'
+    form_class = UserForm
+    success_url = reverse_lazy('index')
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Profile,pk=self.kwargs['pk'])
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+    def form_invalid(self,form):
+        messages.error(self.request,'please corect the errors in the form')
+        return super().form_invalid(form)
+
             
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class ProfileDetailView(View):
     def get(self, request, *args, **kwargs):
-        if request.user.is_superuser:
-            username_from_url = kwargs.get('username')
-            profile = get_object_or_404(Profile, user__username=username_from_url)
-            govapp = get_object_or_404(GovernmentAppointment, user__username=username_from_url)
-        else:
-            profile = request.user.profile
-            govapp = get_object_or_404(GovernmentAppointment, user=request.user)
-
+        try:
+            if request.user.is_superuser:
+                username_from_url = kwargs.get('username')
+                profile = get_object_or_404(Profile, user__username=username_from_url)
+                govapp = get_object_or_404(GovernmentAppointment, user__username=username_from_url)
+            else:
+                profile = request.user.profile
+                govapp = get_object_or_404(GovernmentAppointment, user=request.user)
+        
+        except Http404:
+            profile=None
+            govapp=None
         context = {'profile': profile,'govapp': govapp,}
         return render(request, 'staff/profile_details.html', context)

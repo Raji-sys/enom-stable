@@ -5,14 +5,13 @@
 <div class=" border-2 border-green-800 text-sm mx-auto mt-10">
     <section class=" text-center border-b-2 border-green-700 text-sm">
         <p class="text-green-800 uppercase max-sm:text-lg text-xl">documentation form</p> 
-        {%for message in messages%}
-        <div class=" mt-4">
-            <hr>
-               <p class="text-green-700 uppercase">{{ message }}</p>
-            <hr>
-        </div>
-        {% endfor %}
-      </section>
+<div class="flex justify-center text-md text-blue-500">
+          {% if messages %}
+          {%for m in messages%}
+         <p>{% if m.tags%} class="{{m.tags}}"{%endif%}>{{m}}</p>
+         {%endfor%}
+          {% endif %}
+    </div>      </section>
       
 <form method="post" enctype="multipart/form-data" class="flex flex-col">
   {% csrf_token %}

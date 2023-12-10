@@ -24,4 +24,8 @@
 </p>
 
 <p>post:{{govapp.cpost}}</p>
+
+<a href="{%url 'update_user' profile.user.pk%}">update user</a>
+<a href="{%url 'update_profile' profile.user.pk%}">update profile</a>
+<a href="{%url 'update_govapp' profile.user.pk%}">update govapp</a>
 {% endblock %}
