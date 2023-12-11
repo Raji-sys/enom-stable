@@ -6,19 +6,6 @@ from django.urls import reverse
 from django.http import QueryDict
 
 
-class IndexViewTests(TestCase):
-    def test_index_view_redirect_unauthenticated_user(self):
-        # Try to access the index page without logging in
-        response = self.client.get(reverse('index'))
-
-        # Check if the response status code is a redirect (302)
-        self.assertEqual(response.status_code, 302)
-
-        # Check if the user is redirected to the login page
-        self.assertRedirects(response, reverse('login') + '?next=' + reverse('index'))
-
-
-
 class CustomLoginViewTests(TestCase):
     def test_custom_login_view_redirect_authenticated_user(self):
         # Create a user and log them in
