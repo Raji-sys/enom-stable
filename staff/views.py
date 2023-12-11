@@ -90,73 +90,82 @@ class DocumentationView(UpdateView):
             profileform.save()
             govtappform.save()
             messages.success(self.request, f'Documentation was successful {self.request.user.last_name}')
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            messages.error(self.request, 'Please correct the errors')
+            return self.form_invalid(form)
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class UpdateUserView(UpdateView):
+    model=User
+    template_name= 'staff/update-user.html'
+    form_class=UserForm
+    success_url=reverse_lazy('profile_details')
+
+    def get_success_url(self):
+        return reverse_lazy('profile_details', kwargs={'username': self.object.username})
+
+    def form_valid(self,form):
+        if form.is_valid():
+            form.save()
+            messages.success(self.request, 'User Information Updated Successfully')
             return super().form_valid(form)
         else:
             return self.form_invalid(form)
 
     def form_invalid(self,form):
-        messages.error(self.request,'please corect the errors in the form')
-        return super().form_invalid(form)
+        messages.error(self.request,'Please Correct the error')
+        return self.render_to_response(self.get_context_data(form=form))
 
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class UpdateProfileView(UpdateView):
-    model = Profile
+    model=Profile
     template_name = 'staff/update-profile.html'
-    form_class = ProfileForm
-    success_url = reverse_lazy('index')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-     
-    def get_object(self, queryset=None):
-        return get_object_or_404(Profile,pk=self.kwargs['pk'])
-
-    def form_valid(self, form):
-        return super().form_valid(form)
-
-    def form_invalid(self,form):
-        messages.error(self.request,'please corect the errors in the form')
-        return super().form_invalid(form)
-    
-
-class UpdateGovappView(UpdateView):
-    model = Profile
-    template_name = 'staff/update-govapp.html'
-    form_class = GovtAppForm
-    success_url = reverse_lazy('profile_details')
-
-    def get_object(self, queryset=None):
-        return get_object_or_404(Profile,pk=self.kwargs['pk'])
-
-    def form_valid(self, form):
-        return super().form_valid(form)
-
-    def form_invalid(self,form):
-        messages.error(self.request,'please corect the errors in the form')
-        return super().form_invalid(form)
-
-
-class UpdateUserView(UpdateView):
-    model = Profile
-    template_name = 'staff/update-user.html'
-    form_class = UserForm
-    success_url = reverse_lazy('profile_details')
-
-    def get_object(self, queryset=None):
-        return get_object_or_404(Profile,pk=self.kwargs['pk'])
-
-    def form_valid(self, form):
-        return super().form_valid(form)
-
-    def form_invalid(self,form):
-        messages.error(self.request,'please corect the errors in the form')
-        return super().form_invalid(form)
+    form_class=ProfileForm
+    success_url=reverse_lazy('profile_details')
 
     def get_success_url(self):
-        return reverse_lazy('profile_details', kwargs={'pk':self.object.pk})
+        return reverse_lazy('profile_details', kwargs={'username': self.object.user})
 
-            
+    def form_valid(self,form):
+        if form.is_valid():
+            form.save()
+            messages.success(self.request, 'User Information Updated Successfully')
+            return super().form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_invalid(self,form):
+        messages.error(self.request,'Please Correct the error')
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class UpdateGovappView(UpdateView):
+    model=GovernmentAppointment
+    template_name = 'staff/update-govapp.html'
+    form_class=GovtAppForm
+    success_url=reverse_lazy('profile_details')
+
+    def get_success_url(self):
+        return reverse_lazy('profile_details', kwargs={'username': self.object.user})
+
+    def form_valid(self,form):
+        if form.is_valid():
+            form.save()
+            messages.success(self.request, 'User Information Updated Successfully')
+            return super().form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_invalid(self,form):
+        messages.error(self.request,'Please Correct the error')
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class ProfileDetailView(View):
     def get(self, request, *args, **kwargs):

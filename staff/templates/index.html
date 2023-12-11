@@ -3,11 +3,11 @@
 {%block title%}index{%endblock%}
 
 {%block content %}
-     <div class="flex justify-center text-md text-blue-500">
+   <div class="flex justify-center text-md text-blue-500">
           {% if messages %}
           {%for m in messages%}
-         <p>{% if m.tags%} class="{{m.tags}}"{%endif%}>{{m}}</p>
-         {%endfor%}
+         <p {% if m.tags%} class="{{m.tags}}"{%endif%}>{{m}}</p>
+           {%endfor%}
           {% endif %}
         </div>
 <p class="mt-20">Landing page to be decorating with gradient background graphics</p>
