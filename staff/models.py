@@ -185,21 +185,20 @@ class GovernmentAppointment(models.Model):
     
     def __str__(self):
         return self.user.username
-
-    @receiver(post_save, sender=GovernmentAppointment)
-    def increment_step(sender, instance, **kwargs):
-        today = date.today()
-        if today.month == 1 and today.day == 1 and instance.step is None:
-            instance.step = instance.step + 1 if instance.step is not None else 1
-            instance.save()
          
-
     def get_absolute_url(self):
         return reverse('prom_details', args=[self.user])
 
     def __str__(self):
         if self.user:
             return f"{self.user.last_name} {self.user.first_name}"
+
+@receiver(post_save, sender=GovernmentAppointment)
+def increment_step(sender, instance, **kwargs):
+    today = date.today()
+    if today.month == 1 and today.day == 1 and instance.step is None:
+        instance.step = instance.step + 1 if instance.step is not None else 1
+        instance.save()
 
     #promotion calculation
 

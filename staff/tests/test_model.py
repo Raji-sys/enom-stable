@@ -250,18 +250,47 @@ class GovernmentAppointmentModelTest(TestCase):
             exams_status='PASS',
         )
 
-    # def test_step_inc(self):
-    #     # Get the initial step value
-    #     initial_step = self.gov_appointment.step
+    def test_step_increment_on_new_year(self):
+        # Create a GovernmentAppointment instance with a specific step
+        gov_app = GovernmentAppointment.objects.create(step=3)
 
-    #     # Call the step_inc method
-    #     self.gov_appointment.step_inc()
+        # Simulate the passage of one year
+        new_year_date = timezone.now() + timezone.timedelta(days=365)
 
-    #     # Get the updated step value
-    #     updated_step = GovernmentAppointment.objects.get(id=self.gov_appointment.id).step
+        # Set the date to January 1st of the next year
+        new_year_date = new_year_date.replace(month=1, day=1)
 
-    #     # Check if the step has increased by 1
-    #     self.assertEqual(updated_step, initial_step + 1)
+        # Update the instance's modified timestamp to simulate a save
+        gov_app.save()
+
+        # Reload the instance from the database
+        gov_app.refresh_from_db()
+
+        # Assert that the step has been incremented
+        self.assertEqual(gov_app.step, 4)
+
+    def test_step_manual_update(self):
+        # Create a GovernmentAppointment instance with a specific step
+        gov_app = GovernmentAppointment.objects.create(step=3)
+
+        # Manually update the step to 5
+        gov_app.step = 5
+        gov_app.save()
+
+        # Simulate the passage of one year
+        new_year_date = timezone.now() + timezone.timedelta(days=365)
+
+        # Set the date to January 1st of the next year
+        new_year_date = new_year_date.replace(month=1, day=1)
+
+        # Update the instance's modified timestamp to simulate a save
+        gov_app.save()
+
+        # Reload the instance from the database
+        gov_app.refresh_from_db()
+
+        # Assert that the step remains 5 after manual update
+        self.assertEqual(gov_app.step, 5)
 
 
 class PromotionModelTest(TestCase):
