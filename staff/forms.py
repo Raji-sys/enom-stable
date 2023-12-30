@@ -4,6 +4,7 @@ from django import forms
 from .models import *
 from django.contrib.auth.models import User
 
+
 class CustomUserCreationForm(UserCreationForm):
     middle_name = forms.CharField(max_length=30, required=False)
 

@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.utils.translation import gettext as _
 from django.utils import timezone
 from datetime import datetime
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
     
 class Profile(models.Model):
@@ -66,7 +68,7 @@ class Profile(models.Model):
         return reverse('profile_details', args=[self.user])
 
     def full_name(self):
-        return f"{self.user.get_full_name()}, {self.file_no}, {self.user.id}"
+        return f"{self.user.get_full_name()} {self.middle_name} {self.file_no}, {self.user.id}"
     
     def __str__(self):
         return self.user.username
@@ -184,13 +186,12 @@ class GovernmentAppointment(models.Model):
     def __str__(self):
         return self.user.username
 
-
-    def step_inc(self):
+    @receiver(post_save, sender=GovernmentAppointment)
+    def increment_step(sender, instance, **kwargs):
         today = date.today()
-        if self.step is not None:
-            if today.month == 1 and today.day == 1:
-                self.step += 1
-                self.save()
+        if today.month == 1 and today.day == 1 and instance.step is None:
+            instance.step = instance.step + 1 if instance.step is not None else 1
+            instance.save()
          
 
     def get_absolute_url(self):

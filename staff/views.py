@@ -1,5 +1,6 @@
 from django.shortcuts import render,get_object_or_404,HttpResponseRedirect
 from django.views.generic.edit import UpdateView, CreateView
+from django.views.generic import DetailView
 from .forms import CustomUserCreationForm
 from django.contrib import messages
 from django.utils.decorators import method_decorator
@@ -167,7 +168,7 @@ class UpdateGovappView(UpdateView):
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class ProfileDetailView(View):
+class ProfileDetailView(DetailView):
     def get(self, request, *args, **kwargs):
         try:
             if request.user.is_superuser:
