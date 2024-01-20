@@ -170,7 +170,7 @@ class GovernmentAppointment(models.Model):
     gl=(('03','03'),('04','04'),('05','05'),('06','06'),('07','07'),('08','08'),('09','09'),
         ('11','11'),('12','12'),('13','13'),('14','14'),('15','15'))
     grade_level = models.CharField(choices=gl, null=True,max_length=300,blank=True)
-    step = models.PositiveIntegerField(null=True, blank=True)
+    step = models.IntegerField(null=True, blank=True)
     tc=(('JUNIOR','JUNIOR'), ('SENIOR','SENIOR'),('EXECUTIVE','EXECUTIVE'))
     type_of_cadre=models.CharField(choices=tc, null=True, blank=True, max_length=100)
     exams_status = models.CharField(null=True, blank=True, max_length=100)
