@@ -54,3 +54,9 @@ class GovtAppForm(forms.ModelForm):
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
 
+
+class QualForm(forms.ModelForm):
+    class Meta:
+        model=Qualification
+        fields='__all__'
+        exclude=['user','date_obtained']

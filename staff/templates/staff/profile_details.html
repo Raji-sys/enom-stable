@@ -19,12 +19,19 @@
 <p>
   dob:{{profile.dob|default_if_none:''}}
 </p>
+<br><hr>
 <p>
   file number:{{profile.file_no|default_if_none:''}}
 </p>
-
+<br><hr>
 <p>post:{{govapp.cpost}}</p>
-<a href="{%url 'update_user' profile.user.pk %}">update user</a>
-<a href="{%url 'update_profile' profile.pk %}">update profile</a>
-<a href="{%url 'update_govapp' profile.pk %}">update govt appt</a>
+<br><hr>
+<h1>qualification</h1>
+{%for q in qualification %}
+<p>{{q.school}}</p>
+{%endfor%}
+<a href="{%url 'update_user' profile.user.pk %}">update user</a><br>
+<a href="{%url 'update_profile' profile.pk %}">update profile</a><br>
+<a href="{%url 'update_govapp' profile.pk %}">update govt appt</a><br>
+<a href="{%url 'qual' username=profile.user.username %}">qualification<br>
 {% endblock %}

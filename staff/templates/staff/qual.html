@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+ {% block title %}qualification form{% endblock%} 
+ {% block content %}
+<br />
+    <div class="">
+      qualification form
+      <form action="" method="POST">
+        {% csrf_token %} 
+        <hr>
+        {{form}}
+        <input type="submit" name="submit" value="submit "/>
+      </form>
+    </div>
+{% endblock %}
+

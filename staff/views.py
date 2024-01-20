@@ -169,18 +169,51 @@ class UpdateGovappView(UpdateView):
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class ProfileDetailView(DetailView):
-    def get(self, request, *args, **kwargs):
-        try:
-            if request.user.is_superuser:
-                username_from_url = kwargs.get('username')
-                profile = get_object_or_404(Profile, user__username=username_from_url)
-                govapp = get_object_or_404(GovernmentAppointment, user__username=username_from_url)
-            else:
-                profile = request.user.profile
-                govapp = get_object_or_404(GovernmentAppointment, user=request.user)
+    template_name='staff/profile_details.html'
+    model=Profile
+    def get_object(self, queryset=None):
+        if self.request.user.is_superuser:
+            username_from_url = self.kwargs.get('username')
+            user = get_object_or_404(User, username=username_from_url)
+        else:
+            user=self.request.user
+        return get_object_or_404(Profile,user=user)
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        context['govapp']=get_object_or_404(GovernmentAppointment,user=context['object'].user)
+        context['qualfication']=Qualification.objects.filter(user=context['object'].user)
+        context['Promotion']=Promotion.objects.filter(user=context['object'].user)
+           
+        context['Qualform']=QualForm()
+        # context['Promtionform']=PromotionForm()
         
-        except Http404:
-            profile=None
-            govapp=None
-        context = {'profile': profile,'govapp': govapp,}
-        return render(request, 'staff/profile_details.html', context)
+        return context
+    
+
+class QualCreateView(CreateView):
+    model = Qualification
+    form_class = QualForm
+    template_name = 'staff/qual.html'
+
+    def form_valid(self, form):
+        if self.request.user.is_superuser:
+            # If the current user is a superuser, use the username from the URL
+            username_from_url = self.kwargs.get('username')
+            user = get_object_or_404(User, username=username_from_url)
+            form.instance.user = user
+        else:
+            # If the current user is not a superuser, use the current user
+            form.instance.user = self.request.user
+
+        # Exclude user and date_obtained fields from saving
+        # form.instance.date_obtained = None  # You can set this to an appropriate value if needed
+        form.instance.user = None  # This field is already set above, setting it to None here to avoid duplication
+
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('profile_details', kwargs={'username': self.kwargs['username']})
+
+
+    

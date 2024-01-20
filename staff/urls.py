@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import CustomLoginView, ProfileDetailView, DocumentationView, UserRegistrationView, CustomLogoutView, UpdateUserView,UpdateProfileView, UpdateGovappView
+from .views import CustomLoginView, ProfileDetailView, DocumentationView, UserRegistrationView, CustomLogoutView, UpdateUserView,UpdateProfileView, UpdateGovappView, QualCreateView
 from . import views
 
 urlpatterns = [
@@ -11,6 +11,7 @@ urlpatterns = [
     path('update-user/<int:pk>/', UpdateUserView.as_view(), name='update_user'),
     path('update-profile/<int:pk>/', UpdateProfileView.as_view(), name='update_profile'),
     path('update-govapp/<int:pk>/', UpdateGovappView.as_view(), name='update_govapp'),
+    path('qualification/<str:username>/', QualCreateView.as_view(), name='qual'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
     path('',include('django.contrib.auth.urls')),
 ]
