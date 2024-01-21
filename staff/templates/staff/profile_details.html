@@ -3,14 +3,15 @@
 {% block title %}profile{% endblock%}
 
 {% block content %}
-   <div class="flex justify-center text-md text-blue-500">
+
+  <h1 class="text-xl text-black text-center p-2 shadow-sm rounded-xl mt-20 ">{{profile.user.get_full_name|default_if_none:''|upper}} </h1>
+     <div class="flex justify-center text-md text-blue-500">
           {% if messages %}
           {%for m in messages%}
          <p {% if m.tags%} class="{{m.tags}}"{%endif%}>{{m}}</p>
            {%endfor%}
           {% endif %}
         </div>
-  <h1 class="text-xl text-black text-center p-2 shadow-sm rounded-xl mt-20 ">{{profile.user.get_full_name|default_if_none:''|upper}} </h1>
 <h1>
   {%if not profile.file_no %}
   <a href="{%url 'doc' profile.user.pk %}">start documentation</a>
@@ -25,13 +26,18 @@
 </p>
 <br><hr>
 <p>post:{{govapp.cpost}}</p>
-<br><hr>
-<h1>qualification</h1>
-{%for q in qualification %}
-<p>{{q.school}}</p>
-{%endfor%}
 <a href="{%url 'update_user' profile.user.pk %}">update user</a><br>
 <a href="{%url 'update_profile' profile.pk %}">update profile</a><br>
 <a href="{%url 'update_govapp' profile.pk %}">update govt appt</a><br>
 <a href="{%url 'qual' username=profile.user.username %}">qualification<br>
+  <br><hr>
+<h1>qualification</h1>
+hello:{{Qualification}}
+{% for q in qualifications %}
+    <p>{{ q.school }}</p>
+    <p>{{ q.qual }}</p>
+    <hr>
+<a href="{%url 'qual_update' q.pk %}">update qualification</a><br>
+<a href="{%url 'qual_delete' q.pk %}">delete qualification</a><br>
+{% endfor %}
 {% endblock %}

@@ -1,15 +1,16 @@
 {% extends "base.html" %}
- {% block title %}qualification form{% endblock%} 
+ {% block title %}qualification update form{% endblock%} 
  {% block content %}
 <br />
     <div class="">
-      <h1>qualification form</h1>
+      <h1>qualification update form</h1>
       <form action="" method="POST">
         {% csrf_token %} 
         <hr>
         {{form}}
         <input type="submit" name="submit" value="submit "/>
       </form>
+      <a href="{%url 'profile_details' username=object.user.username %}">cancel</a>
     </div>
 {% endblock %}
 

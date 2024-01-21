@@ -105,7 +105,10 @@ class Qualification(models.Model):
 
     def __str__(self):
         if self.user:
-            return f"{self.user.first_name} {self.user.last_name} - {self.qual}"
+            return f"{self.user.get_full_name()} - {self.qual}"
+        else:
+            return f"Unknown User - {self.qual}"
+
 
 
 class ProfessionalQualification(models.Model):

@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404,HttpResponseRedirect
-from django.views.generic.edit import UpdateView, CreateView
+from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import DetailView
 from .forms import CustomUserCreationForm
 from django.contrib import messages
@@ -166,31 +166,33 @@ class UpdateGovappView(UpdateView):
         return self.render_to_response(self.get_context_data(form=form))
 
 
-
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class ProfileDetailView(DetailView):
-    template_name='staff/profile_details.html'
-    model=Profile
+    template_name = 'staff/profile_details.html'
+    model = Profile
+
     def get_object(self, queryset=None):
         if self.request.user.is_superuser:
             username_from_url = self.kwargs.get('username')
             user = get_object_or_404(User, username=username_from_url)
         else:
-            user=self.request.user
-        return get_object_or_404(Profile,user=user)
+            user = self.request.user
+        return get_object_or_404(Profile, user=user)
 
     def get_context_data(self, **kwargs):
-        context=super().get_context_data(**kwargs)
-        context['govapp']=get_object_or_404(GovernmentAppointment,user=context['object'].user)
-        context['qualfication']=Qualification.objects.filter(user=context['object'].user)
-        context['Promotion']=Promotion.objects.filter(user=context['object'].user)
-           
-        context['Qualform']=QualForm()
-        # context['Promtionform']=PromotionForm()
-        
-        return context
-    
+        context = super().get_context_data(**kwargs)
+        profile = context['object']
 
+        # Retrieve qualifications associated with the user
+        qualifications = Qualification.objects.filter(user=profile.user)
+
+        context['govapp'] = get_object_or_404(GovernmentAppointment, user=profile.user)
+        context['qualifications'] = qualifications
+        context['Qualform'] = QualForm()
+        return context
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class QualCreateView(CreateView):
     model = Qualification
     form_class = QualForm
@@ -206,14 +208,32 @@ class QualCreateView(CreateView):
             # If the current user is not a superuser, use the current user
             form.instance.user = self.request.user
 
-        # Exclude user and date_obtained fields from saving
-        # form.instance.date_obtained = None  # You can set this to an appropriate value if needed
-        form.instance.user = None  # This field is already set above, setting it to None here to avoid duplication
-
         return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy('profile_details', kwargs={'username': self.kwargs['username']})
 
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class QualUpdateView(UpdateView):
+    model=Qualification
+    form_class=QualForm
+    template_name='staff/qual-update.html'
+
+    def get_success_url(self):
+        messages.success(self.request, 'Qualification Updated Successfully')
+        return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
     
+    def form_invalid(self,form):
+        messages.error(self.request,'Error Updating Qualification')
+        return super().form_invalid(form)
+    
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class QualDeleteView(DeleteView):
+    model=Qualification
+    template_name='staff/qual-delete-confirm.html'
+
+    def get_success_url(self):
+        messages.success(self.request, 'Qualification Deleted Successfully')
+        return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
