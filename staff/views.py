@@ -143,27 +143,27 @@ class UpdateProfileView(UpdateView):
         return self.render_to_response(self.get_context_data(form=form))
 
 
-@method_decorator(login_required(login_url='login'), name='dispatch')
-class UpdateGovappView(UpdateView):
-    model=GovernmentAppointment
-    template_name = 'staff/update-govapp.html'
-    form_class=GovtAppForm
-    success_url=reverse_lazy('profile_details')
+# @method_decorator(login_required(login_url='login'), name='dispatch')
+# class UpdateGovappView(UpdateView):
+#     model=GovernmentAppointment
+#     template_name = 'staff/update-govapp.html'
+#     form_class=GovtAppForm
+#     success_url=reverse_lazy('profile_details')
 
-    def get_success_url(self):
-        return reverse_lazy('profile_details', kwargs={'username': self.object.user})
+#     def get_success_url(self):
+#         return reverse_lazy('profile_details', kwargs={'username': self.object.user})
 
-    def form_valid(self,form):
-        if form.is_valid():
-            form.save()
-            messages.success(self.request, 'User Information Updated Successfully')
-            return super().form_valid(form)
-        else:
-            return self.form_invalid(form)
+#     def form_valid(self,form):
+#         if form.is_valid():
+#             form.save()
+#             messages.success(self.request, 'User Information Updated Successfully')
+#             return super().form_valid(form)
+#         else:
+#             return self.form_invalid(form)
 
-    def form_invalid(self,form):
-        messages.error(self.request,'Please Correct the error')
-        return self.render_to_response(self.get_context_data(form=form))
+#     def form_invalid(self,form):
+#         messages.error(self.request,'Please Correct the error')
+#         return self.render_to_response(self.get_context_data(form=form))
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
@@ -214,26 +214,69 @@ class QualCreateView(CreateView):
         return reverse_lazy('profile_details', kwargs={'username': self.kwargs['username']})
 
 
-@method_decorator(login_required(login_url='login'), name='dispatch')
-class QualUpdateView(UpdateView):
-    model=Qualification
-    form_class=QualForm
-    template_name='staff/qual-update.html'
+# @method_decorator(login_required(login_url='login'), name='dispatch')
+# class QualUpdateView(UpdateView):
+#     model=Qualification
+#     form_class=QualForm
+#     template_name='staff/qual-update.html'
 
-    def get_success_url(self):
-        messages.success(self.request, 'Qualification Updated Successfully')
-        return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
+#     def get_success_url(self):
+#         messages.success(self.request, 'Qualification Updated Successfully')
+#         return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
     
-    def form_invalid(self,form):
-        messages.error(self.request,'Error Updating Qualification')
-        return super().form_invalid(form)
+#     def form_invalid(self,form):
+#         messages.error(self.request,'Error Updating Qualification')
+#         return super().form_invalid(form)
     
 
-@method_decorator(login_required(login_url='login'), name='dispatch')
+# @method_decorator(login_required(login_url='login'), name='dispatch')
+# class QualDeleteView(DeleteView):
+#     model=Qualification
+#     template_name='staff/qual-delete-confirm.html'
+
+#     def get_success_url(self):
+#         messages.success(self.request, 'Qualification Deleted Successfully')
+#         return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
+
+
+
+class UpdateProfileMixin:
+    success_message = ''
+
+    def form_valid(self, form):
+        messages.success(self.request, self.success_message)
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Please correct the error.')
+        return self.render_to_response(self.get_context_data(form=form))
+
+class UpdateGovappView(UpdateProfileMixin, UpdateView):
+    model = GovernmentAppointment
+    template_name = 'staff/update-govapp.html'
+    form_class = GovtAppForm
+    success_url = reverse_lazy('profile_details')
+    success_message = 'User Information Updated Successfully'
+
+class QualUpdateView(UpdateProfileMixin, UpdateView):
+    model = Qualification
+    template_name = 'staff/qual-update.html'
+    form_class = QualForm
+    success_url = reverse_lazy('profile_details')
+    success_message = 'Qualification updated successfully.'
+
 class QualDeleteView(DeleteView):
-    model=Qualification
-    template_name='staff/qual-delete-confirm.html'
+    model = Qualification
+    template_name = 'staff/qual-delete-confirm.html'
 
     def get_success_url(self):
-        messages.success(self.request, 'Qualification Deleted Successfully')
+        messages.success(self.request, 'Qualification deleted successfully.')
         return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
+
+    def delete(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)
+        if response.status_code == 302:
+            messages.success(self.request, 'Qualification deleted successfully.')
+        else:
+            messages.error(self.request, 'Error deleting qualification.')
+        return response
