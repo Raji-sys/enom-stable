@@ -60,3 +60,10 @@ class QualForm(forms.ModelForm):
         model=Qualification
         fields='__all__'
         exclude=['user','date_obtained']
+
+
+class ProQualForm(forms.ModelForm):
+    class Meta:
+        model=ProfessionalQualification
+        fields='__all__'
+        exclude=['user','qual_obtained','date_obtained']
