@@ -176,12 +176,14 @@ class ProfileDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         profile = context['object']
 
-        # Retrieve qualifications associated with the user
         qualifications = Qualification.objects.filter(user=profile.user)
+        pro_qualifications = ProfessionalQualification.objects.filter(user=profile.user)
 
         context['govapp'] = get_object_or_404(GovernmentAppointment, user=profile.user)
         context['qualifications'] = qualifications
+        context['pro_qualifications'] = pro_qualifications
         context['Qualform'] = QualForm()
+        context['ProQualform'] = ProQualForm()
         return context
 
 
@@ -238,13 +240,13 @@ class QualDeleteView(DeleteView):
         else:
             messages.error(self.request, 'Error deleting qualification.')
         return response
+    
+
 @method_decorator(login_required(login_url='login'), name='dispatch')
-
-
 class ProQualCreateView(CreateView):
     model = ProfessionalQualification
     form_class = ProQualForm
-    template_name = 'staff/qual.html'
+    template_name = 'staff/pro-qual.html'
 
     def form_valid(self, form):
         if self.request.user.is_superuser:
@@ -263,10 +265,10 @@ class ProQualCreateView(CreateView):
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class QualUpdateView(UpdateView):
+class ProQualUpdateView(UpdateView):
     model=ProfessionalQualification
     form_class=ProQualForm
-    template_name='staff/qual-update.html'
+    template_name='staff/pro-qual-update.html'
 
     def get_success_url(self):
         messages.success(self.request, 'Professional Qualification Updated Successfully')
@@ -278,9 +280,9 @@ class QualUpdateView(UpdateView):
     
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class QualDeleteView(DeleteView):
-    model = Qualification
-    template_name = 'staff/qual-delete-confirm.html'
+class ProQualDeleteView(DeleteView):
+    model = ProfessionalQualification
+    template_name = 'staff/pro-qual-delete-confirm.html'
 
     def get_success_url(self):
         messages.success(self.request, 'Professional Qualification deleted successfully.')

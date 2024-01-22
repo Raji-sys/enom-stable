@@ -29,15 +29,25 @@
 <a href="{%url 'update_user' profile.user.pk %}">update user</a><br>
 <a href="{%url 'update_profile' profile.pk %}">update profile</a><br>
 <a href="{%url 'update_govapp' profile.pk %}">update govt appt</a><br>
-<a href="{%url 'qual' username=profile.user.username %}">qualification<br>
-  <br><hr>
+<br><hr>
 <h1>qualification</h1>
-hello:{{Qualification}}
+<a href="{%url 'qual' username=profile.user.username %}">add qualification<br>
 {% for q in qualifications %}
     <p>{{ q.school }}</p>
     <p>{{ q.qual }}</p>
     <hr>
 <a href="{%url 'qual_update' q.pk %}">update qualification</a><br>
 <a href="{%url 'qual_delete' q.pk %}">delete qualification</a><br>
+{% endfor %}
+<br><hr>
+<br><hr>
+<h1>professional qualification</h1>
+<a href="{%url 'pro_qual' username=profile.user.username %}">add professional qualification<br>
+{% for p in pro_qualifications %}
+    <p>{{ p.institute }}</p>
+    <p>{{ p.inst_address }}</p>
+    <hr>
+<a href="{%url 'pro_qual_update' p.pk %}">update professional qualification</a><br>
+<a href="{%url 'pro_qual_delete' p.pk %}">delete professional qualification</a><br>
 {% endfor %}
 {% endblock %}

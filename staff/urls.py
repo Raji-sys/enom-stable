@@ -14,6 +14,9 @@ urlpatterns = [
     path('qualification/<str:username>/', QualCreateView.as_view(), name='qual'),
     path('qualification/update/<int:pk>/', QualUpdateView.as_view(), name='qual_update'),
     path('qualification/delete/<int:pk>/', QualDeleteView.as_view(), name='qual_delete'),
+    path('pro-qualification/<str:username>/', ProQualCreateView.as_view(), name='pro_qual'),
+    path('pro-qualification/update/<int:pk>/', ProQualUpdateView.as_view(), name='pro_qual_update'),
+    path('pro-qualification/delete/<int:pk>/', ProQualDeleteView.as_view(), name='pro_qual_delete'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
     path('',include('django.contrib.auth.urls')),
 ]
