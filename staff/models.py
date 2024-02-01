@@ -208,7 +208,7 @@ def increment_step(sender, instance, **kwargs):
 
 class Promotion(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='promotion')
-    cpost = models.CharField('current post', null=True, max_length=300, blank=True)
+    # cpost = models.CharField('current post', null=True, max_length=300, blank=True)
     govapp = models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='progovapp')
     prom_date = models.DateField('promotion date', null=True, blank=True)
     gl = models.PositiveIntegerField('grade level', null=True, blank=True)
@@ -229,19 +229,13 @@ class Promotion(models.Model):
         # Promotion calculation
     def calculate_promotion(self):
         today = date.today()
-
         if self.govapp.date_capt:
             cal = self.govapp.date_capt.year
             ex = self.govapp.exams_status
             gl = self.govapp.grade_level
             tc = self.govapp.type_of_cadre
-
     # Performing checks
-        if (
-            (today.year - cal == 3 and int(gl) >= 6 and ex == 'pass' and tc == 'SENIOR') or
-            (today.year - cal == 2 and int(gl) <= 5 and ex == 'pass' and tc == 'JUNIOR') or
-            (today.year - cal == 4 and int(gl) >= 13 and ex == 'pass' and tc == 'EXECUTIVE')
-            ):
+        if ((today.year - cal == 3 and int(gl) >= 6 and ex == 'pass' and tc == 'SENIOR') or(today.year - cal == 2 and int(gl) <= 5 and ex == 'pass' and tc == 'JUNIOR') or(today.year - cal == 4 and int(gl) >= 13 and ex == 'pass' and tc == 'EXECUTIVE')):
             self.due = True
             self.save()
             return 'DUE FOR PROMOTION'

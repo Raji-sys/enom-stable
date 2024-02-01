@@ -50,4 +50,16 @@
 <a href="{%url 'pro_qual_update' p.pk %}">update professional qualification</a><br>
 <a href="{%url 'pro_qual_delete' p.pk %}">delete professional qualification</a><br>
 {% endfor %}
+<br><hr>
+<br><hr>
+<h1>promotion</h1>
+<a href="{%url 'promotion' username=profile.user.username %}">promote<br>
+{% for p in promotion %}
+    <p>{{ p.govapp.cpost }}</p>
+    <p>{{ p.gl }}</p>
+    <p>{{ p.step }}</p>
+    <hr>
+<a href="{%url 'promotion_update' p.pk %}">update promotion</a><br>
+<a href="{%url 'promotion_delete' p.pk %}">delete promotion</a><br>
+{% endfor %}
 {% endblock %}

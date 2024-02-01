@@ -10,8 +10,6 @@ from django.contrib.auth.views import LoginView, LogoutView
 from .models import *
 from .forms import *
 from django.contrib.auth import get_user_model
-from django.views import View
-from django.http import Http404
 User = get_user_model()
 
 
@@ -62,7 +60,7 @@ class UserRegistrationView(CreateView):
             profile_instance.save()
             govapp_instance = GovernmentAppointment(user=user)
             govapp_instance.save()
-            messages.success(self.request, f"Registration for {user.get_full_name()} was successful")
+            messages.success(self.request, f"Registration for: {user.get_full_name()} was successful")
             return response
         else:
             print("Form errors:", form.errors)
@@ -90,7 +88,7 @@ class DocumentationView(UpdateView):
             userform.save()
             profileform.save()
             govtappform.save()
-            messages.success(self.request, f'Documentation was successful {self.request.user.last_name}')
+            messages.success(self.request, f'Documentation successful for:{self.request.user.last_name}')
             return HttpResponseRedirect(self.get_success_url())
         else:
             messages.error(self.request, 'Please correct the errors')
@@ -105,12 +103,12 @@ class UpdateUserView(UpdateView):
     success_url=reverse_lazy('profile_details')
 
     def get_success_url(self):
+        messages.success(self.request, 'User Information Updated Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.username})
 
     def form_valid(self,form):
         if form.is_valid():
             form.save()
-            messages.success(self.request, 'User Information Updated Successfully')
             return super().form_valid(form)
         else:
             return self.form_invalid(form)
@@ -128,12 +126,12 @@ class UpdateProfileView(UpdateView):
     success_url=reverse_lazy('profile_details')
 
     def get_success_url(self):
+        messages.success(self.request, 'User Information Updated Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.user})
 
     def form_valid(self,form):
         if form.is_valid():
             form.save()
-            messages.success(self.request, 'User Information Updated Successfully')
             return super().form_valid(form)
         else:
             return self.form_invalid(form)
@@ -178,12 +176,15 @@ class ProfileDetailView(DetailView):
 
         qualifications = Qualification.objects.filter(user=profile.user)
         pro_qualifications = ProfessionalQualification.objects.filter(user=profile.user)
+        promotion = Promotion.objects.filter(user=profile.user)
 
         context['govapp'] = get_object_or_404(GovernmentAppointment, user=profile.user)
         context['qualifications'] = qualifications
         context['pro_qualifications'] = pro_qualifications
+        context['promotion'] = promotion
         context['Qualform'] = QualForm()
         context['ProQualform'] = ProQualForm()
+        context['Promotionform'] = PromotionForm()
         return context
 
 
@@ -206,6 +207,7 @@ class QualCreateView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
+        messages.success(self.request, 'Qualification Added Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.kwargs['username']})
 
 
@@ -257,10 +259,10 @@ class ProQualCreateView(CreateView):
         else:
             # If the current user is not a superuser, use the current user
             form.instance.user = self.request.user
-
         return super().form_valid(form)
 
     def get_success_url(self):
+        messages.success(self.request, 'Professional Qualification Added Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.kwargs['username']})
 
 
@@ -294,4 +296,59 @@ class ProQualDeleteView(DeleteView):
             messages.success(self.request, 'Professional Qualification deleted successfully.')
         else:
             messages.error(self.request, 'Error deleting professional qualification.')
+        return response
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class PromotionCreateView(CreateView):
+    model = Promotion
+    form_class = PromotionForm
+    template_name = 'staff/promotion.html'
+
+    def form_valid(self, form):
+        if self.request.user.is_superuser:
+            # If the current user is a superuser, use the username from the URL
+            username_from_url = self.kwargs.get('username')
+            user = get_object_or_404(User, username=username_from_url)
+            form.instance.user = user
+        else:
+            # If the current user is not a superuser, use the current user
+            form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        messages.success(self.request, 'Promotion Added Successfully')
+        return reverse_lazy('profile_details', kwargs={'username': self.kwargs['username']})
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class PromotionUpdateView(UpdateView):
+    model=Promotion
+    form_class=PromotionForm
+    template_name='staff/promotion-update.html'
+
+    def get_success_url(self):
+        messages.success(self.request, 'Promotion Updated Successfully')
+        return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
+    
+    def form_invalid(self,form):
+        messages.error(self.request,'Error Updating Promotion')
+        return super().form_invalid(form)
+    
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class PromotionDeleteView(DeleteView):
+    model = Promotion
+    template_name = 'staff/promotion-delete-confirm.html'
+
+    def get_success_url(self):
+        messages.success(self.request, 'Promotion deleted successfully.')
+        return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
+
+    def delete(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)
+        if response.status_code == 302:
+            messages.success(self.request, 'Promotion deleted successfully.')
+        else:
+            messages.error(self.request, 'Error deleting promotion.')
         return response

@@ -67,3 +67,10 @@ class ProQualForm(forms.ModelForm):
         model=ProfessionalQualification
         fields='__all__'
         exclude=['user','qual_obtained','date_obtained']
+
+
+class PromotionForm(forms.ModelForm):
+    class Meta:
+        model = Promotion
+        fields = '__all__'
+        exclude = ['user']
