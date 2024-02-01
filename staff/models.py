@@ -204,6 +204,12 @@ def increment_step(sender, instance, **kwargs):
         instance.save()
 
 
+PROMOTION_CONDITIONS = [
+    (3, 'SENIOR', 6),
+    (2, 'JUNIOR', 5),
+    (4, 'EXECUTIVE', 13),
+    ]
+  
 class Promotion(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='promotion')
     cpost = models.CharField('current post', null=True, max_length=300, blank=True)
@@ -223,8 +229,7 @@ class Promotion(models.Model):
     def __str__(self):
         if self.user:
             return f"{self.user.last_name} {self.user.first_name}"
-
-        # Promotion calculation
+    
     def calculate_promotion(self):
         today = date.today()
         if self.govapp.date_capt:
@@ -232,15 +237,38 @@ class Promotion(models.Model):
             ex = self.govapp.exams_status
             gl = self.govapp.grade_level
             tc = self.govapp.type_of_cadre
-    # Performing checks
-        if ((today.year - cal == 3 and int(gl) >= 6 and ex == 'pass' and tc == 'SENIOR') or(today.year - cal == 2 and int(gl) <= 5 and ex == 'pass' and tc == 'JUNIOR') or(today.year - cal == 4 and int(gl) >= 13 and ex == 'pass' and tc == 'EXECUTIVE')):
-            self.due = True
-            self.save()
-            return 'DUE FOR PROMOTION'
-    # If not due, no need to send a message
+       
+            # Performing checks using constants
+            for years, cadre, level in PROMOTION_CONDITIONS:
+                if today.year - cal == years and int(gl) >= level and ex == 'pass' and tc == cadre:
+                    # Make changes
+                    self.due = True
+                    # Save changes
+                    self.save()
+                    return 'DUE FOR PROMOTION'
+       
+        # If not due, no need to send a message
         self.due = False
+        # Save changes
         self.save()
         return None
+    #     # Promotion calculation
+    # def calculate_promotion(self):
+    #     today = date.today()
+    #     if self.govapp.date_capt:
+    #         cal = self.govapp.date_capt.year
+    #         ex = self.govapp.exams_status
+    #         gl = self.govapp.grade_level
+    #         tc = self.govapp.type_of_cadre
+    # # Performing checks
+    #     if ((today.year - cal == 3 and int(gl) >= 6 and ex == 'pass' and tc == 'SENIOR') or(today.year - cal == 2 and int(gl) <= 5 and ex == 'pass' and tc == 'JUNIOR') or(today.year - cal == 4 and int(gl) >= 13 and ex == 'pass' and tc == 'EXECUTIVE')):
+    #         self.due = True
+    #         self.save()
+    #         return 'DUE FOR PROMOTION'
+    # # If not due, no need to send a message
+    #     self.due = False
+    #     self.save()
+    #     return None
 
 @receiver(post_save, sender=Promotion)
 def update_govapp(sender, instance, **kwargs):
