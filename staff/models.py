@@ -244,7 +244,10 @@ class Promotion(models.Model):
 
 @receiver(post_save, sender=Promotion)
 def update_govapp(sender, instance, **kwargs):
-    GovernmentAppointment.objects.update_or_create(defaults={'cpost':instance.cpost})
+    gov_appointment = instance.user.governmentappointment
+    gov_appointment.cpost = instance.cpost
+    gov_appointment.save()
+
 
 class Discipline(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='discipline')
