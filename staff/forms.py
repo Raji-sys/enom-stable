@@ -73,4 +73,4 @@ class PromotionForm(forms.ModelForm):
     class Meta:
         model = Promotion
         fields = '__all__'
-        exclude = ['user']
+        exclude = ['user','govapp','due','inc_date','conf_date','prom_date']

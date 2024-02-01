@@ -203,13 +203,11 @@ def increment_step(sender, instance, **kwargs):
         instance.step = instance.step + 1 if instance.step is not None else 1
         instance.save()
 
-    #promotion calculation
-
 
 class Promotion(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='promotion')
-    # cpost = models.CharField('current post', null=True, max_length=300, blank=True)
-    govapp = models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='progovapp')
+    cpost = models.CharField('current post', null=True, max_length=300, blank=True)
+    govapp = models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='progovapp',null=True)
     prom_date = models.DateField('promotion date', null=True, blank=True)
     gl = models.PositiveIntegerField('grade level', null=True, blank=True)
     step = models.PositiveIntegerField(null=True, blank=True)
@@ -239,12 +237,14 @@ class Promotion(models.Model):
             self.due = True
             self.save()
             return 'DUE FOR PROMOTION'
-
     # If not due, no need to send a message
         self.due = False
         self.save()
         return None
 
+@receiver(post_save, sender=Promotion)
+def update_govapp(sender, instance, **kwargs):
+    GovernmentAppointment.objects.update_or_create(defaults={'cpost':instance.cpost})
 
 class Discipline(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='discipline')
