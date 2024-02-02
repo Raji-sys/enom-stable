@@ -20,6 +20,9 @@ urlpatterns = [
     path('promotion/<str:username>/', PromotionCreateView.as_view(), name='promotion'),
     path('promotion/update/<int:pk>/', PromotionUpdateView.as_view(), name='promotion_update'),
     path('promotion/delete/<int:pk>/', PromotionDeleteView.as_view(), name='promotion_delete'),
+    path('discipline/<str:username>/', DisciplineCreateView.as_view(), name='discipline'),
+    path('discipline/update/<int:pk>/', DisciplineUpdateView.as_view(), name='discipline_update'),
+    path('discipline/delete/<int:pk>/', DisciplineDeleteView.as_view(), name='discipline_delete'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
     path('',include('django.contrib.auth.urls')),
 ]

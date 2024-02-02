@@ -42,7 +42,6 @@
     <hr>
 {% endfor %}
 <br><hr>
-<br><hr>
 
 <h1>professional qualification</h1>
 <a href="{%url 'pro_qual' username=profile.user.username %}">add professional qualification<br>
@@ -54,7 +53,6 @@
 <a href="{%url 'pro_qual_delete' p.pk %}">delete professional qualification</a><br>
     <hr>
 {% endfor %}
-<br><hr>
 <br><hr>
 
 <h1>promotion</h1>
@@ -69,5 +67,16 @@
     <hr>
 {% endfor %}
 <br><hr>
+
+<h1>discipline</h1>
+<a href="{%url 'discipline' username=profile.user.username %}">discipline<br>
+  <hr>
+{% for d in discipline%}
+    <p>{{ d.offense }}</p>
+    <p>{{ d.decision }}</p>
+    <a href="{%url 'discipline_update' p.pk %}">update discipline</a><br>
+    <a href="{%url 'discipline_delete' p.pk %}">delete discipline</a><br>
+    <hr>
+{% endfor %}
 <br><hr>
 {% endblock %}

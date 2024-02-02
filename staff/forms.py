@@ -74,3 +74,9 @@ class PromotionForm(forms.ModelForm):
         model = Promotion
         fields = '__all__'
         exclude = ['user','govapp','due','inc_date','conf_date','prom_date']
+
+
+class DisciplineForm(forms.ModelForm):
+    class Meta:
+        model = Discipline
+        fields = ['offense','decision']

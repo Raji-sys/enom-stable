@@ -177,11 +177,13 @@ class ProfileDetailView(DetailView):
         qualifications = Qualification.objects.filter(user=profile.user)
         pro_qualifications = ProfessionalQualification.objects.filter(user=profile.user)
         promotion = Promotion.objects.filter(user=profile.user)
+        discipline = Discipline.objects.filter(user=profile.user)
 
         context['govapp'] = get_object_or_404(GovernmentAppointment, user=profile.user)
         context['qualifications'] = qualifications
         context['pro_qualifications'] = pro_qualifications
         context['promotion'] = promotion
+        context['discipline'] = discipline
         context['Qualform'] = QualForm()
         context['ProQualform'] = ProQualForm()
         context['Promotionform'] = PromotionForm()
@@ -351,4 +353,59 @@ class PromotionDeleteView(DeleteView):
             messages.success(self.request, 'Promotion deleted successfully.')
         else:
             messages.error(self.request, 'Error deleting promotion.')
+        return response
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class DisciplineCreateView(CreateView):
+    model = Discipline
+    form_class = DisciplineForm
+    template_name = 'staff/discipline.html'
+
+    def form_valid(self, form):
+        if self.request.user.is_superuser:
+            # If the current user is a superuser, use the username from the URL
+            username_from_url = self.kwargs.get('username')
+            user = get_object_or_404(User, username=username_from_url)
+            form.instance.user = user
+        else:
+            # If the current user is not a superuser, use the current user
+            form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        messages.success(self.request, 'Discipline Added Successfully')
+        return reverse_lazy('profile_details', kwargs={'username': self.kwargs['username']})
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class DisciplineUpdateView(UpdateView):
+    model=Discipline
+    form_class=DisciplineForm
+    template_name='staff/discipline-update.html'
+
+    def get_success_url(self):
+        messages.success(self.request, 'Discipline Updated Successfully')
+        return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
+    
+    def form_invalid(self,form):
+        messages.error(self.request,'Error Updating Discipline')
+        return super().form_invalid(form)
+    
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class DisciplineDeleteView(DeleteView):
+    model = Discipline
+    template_name = 'staff/discipline-delete-confirm.html'
+
+    def get_success_url(self):
+        messages.success(self.request, 'Discipline deleted successfully.')
+        return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
+
+    def delete(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)
+        if response.status_code == 302:
+            messages.success(self.request, 'Discipline deleted successfully.')
+        else:
+            messages.error(self.request, 'Error deleting discipline.')
         return response
