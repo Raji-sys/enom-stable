@@ -80,6 +80,18 @@
 {% endfor %}
 <br><hr>
 
+<h1>leave</h1>
+<a href="{%url 'leave' username=profile.user.username %}">add<br>
+  <hr>
+{% for l in leave %}
+    <p>{{ l.nature }}</p>
+    <p>{{ l.year }}</p>
+    <a href="{%url 'leave_update' l.pk %}">update</a><br>
+    <a href="{%url 'leave_delete' l.pk %}">delete</a><br>
+    <hr>
+{% endfor %}
+<br><hr>
+
 <h1>executive appointment</h1>
 <a href="{%url 'execapp' username=profile.user.username %}">add<br>
   <hr>
