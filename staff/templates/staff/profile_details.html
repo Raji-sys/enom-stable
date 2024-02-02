@@ -74,8 +74,8 @@
 {% for d in discipline%}
     <p>{{ d.offense }}</p>
     <p>{{ d.decision }}</p>
-    <a href="{%url 'discipline_update' p.pk %}">update discipline</a><br>
-    <a href="{%url 'discipline_delete' p.pk %}">delete discipline</a><br>
+    <a href="{%url 'discipline_update' d.pk %}">update discipline</a><br>
+    <a href="{%url 'discipline_delete' d.pk %}">delete discipline</a><br>
     <hr>
 {% endfor %}
 <br><hr>
