@@ -365,6 +365,13 @@ class ExecutiveAppointment(models.Model):
             return f"{self.user.last_name} {self.user.first_name}"
 
 
+@receiver(post_save, sender=ExecutiveAppointment)
+def update_govapp(sender, instance, **kwargs):
+    gov_app = instance.user.governmentappointment
+    gov_app.cpost = instance.designation
+    gov_app.save()
+
+
 class Retirement(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     date = models.DateField(null=True,blank=True)

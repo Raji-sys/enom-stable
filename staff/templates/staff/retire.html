@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+ {% block title %}retirement form{% endblock %} 
+ {% block content %}
+<br />
+    <div class="">
+      <h1>retirement form</h1>
+      <form action="" method="POST">
+        {% csrf_token %} 
+        <hr>
+        {{form}}
+        <input type="submit" name="submit" value="submit "/>
+      </form>
+    </div>
+{% endblock %}
+

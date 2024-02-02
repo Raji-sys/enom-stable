@@ -91,7 +91,7 @@ class DocumentationView(UpdateView):
             messages.success(self.request, f'Documentation successful for:{self.request.user.last_name}')
             return HttpResponseRedirect(self.get_success_url())
         else:
-            messages.error(self.request, 'Please correct the errors')
+            messages.error(self.request, 'Please correct the errors to proceed')
             return self.form_invalid(form)
 
 
@@ -103,7 +103,7 @@ class UpdateUserView(UpdateView):
     success_url=reverse_lazy('profile_details')
 
     def get_success_url(self):
-        messages.success(self.request, 'User Information Updated Successfully')
+        messages.success(self.request, 'Staff Information Updated Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.username})
 
     def form_valid(self,form):
@@ -114,7 +114,7 @@ class UpdateUserView(UpdateView):
             return self.form_invalid(form)
 
     def form_invalid(self,form):
-        messages.error(self.request,'Please Correct the error')
+        messages.error(self.request,'error updating staff information')
         return self.render_to_response(self.get_context_data(form=form))
 
 
@@ -126,7 +126,7 @@ class UpdateProfileView(UpdateView):
     success_url=reverse_lazy('profile_details')
 
     def get_success_url(self):
-        messages.success(self.request, 'User Information Updated Successfully')
+        messages.success(self.request, 'Staff Information Updated Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.user})
 
     def form_valid(self,form):
@@ -137,7 +137,7 @@ class UpdateProfileView(UpdateView):
             return self.form_invalid(form)
 
     def form_invalid(self,form):
-        messages.error(self.request,'Please Correct the error')
+        messages.error(self.request,'error updating staff information')
         return self.render_to_response(self.get_context_data(form=form))
 
 
@@ -149,11 +149,11 @@ class UpdateGovappView(UpdateView):
     success_url=reverse_lazy('profile_details')
 
     def get_success_url(self):
-        messages.success(self.request, 'User Information Updated Successfully')
+        messages.success(self.request, 'Staff Information Updated Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.user})
 
     def form_invalid(self,form):
-        messages.error(self.request,'Please Correct the error')
+        messages.error(self.request,'error updating staff information')
         return self.render_to_response(self.get_context_data(form=form))
 
 
@@ -178,15 +178,25 @@ class ProfileDetailView(DetailView):
         pro_qualifications = ProfessionalQualification.objects.filter(user=profile.user)
         promotion = Promotion.objects.filter(user=profile.user)
         discipline = Discipline.objects.filter(user=profile.user)
+        leave = Leave.objects.filter(user=profile.user)
+        execapp = ExecutiveAppointment.objects.filter(user=profile.user)
+        retire = Retirement.objects.filter(user=profile.user)
 
         context['govapp'] = get_object_or_404(GovernmentAppointment, user=profile.user)
         context['qualifications'] = qualifications
         context['pro_qualifications'] = pro_qualifications
         context['promotion'] = promotion
         context['discipline'] = discipline
+        context['leave'] = leave
+        context['execapp'] = execapp
+        context['retire'] = retire
         context['Qualform'] = QualForm()
         context['ProQualform'] = ProQualForm()
         context['Promotionform'] = PromotionForm()
+        context['Leaveform'] = LeaveForm()
+        context['Disciplineform'] = DisciplineForm()
+        context['Execappform'] = ExecappForm()
+        context['Retireform'] = RetireForm()
         return context
 
 
@@ -234,15 +244,15 @@ class QualDeleteView(DeleteView):
     template_name = 'staff/qual-delete-confirm.html'
 
     def get_success_url(self):
-        messages.success(self.request, 'Qualification deleted successfully.')
+        messages.success(self.request, 'Qualification deleted successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
         if response.status_code == 302:
-            messages.success(self.request, 'Qualification deleted successfully.')
+            messages.success(self.request, 'Qualification deleted successfully')
         else:
-            messages.error(self.request, 'Error deleting qualification.')
+            messages.error(self.request, 'Error deleting qualification')
         return response
     
 
@@ -289,15 +299,15 @@ class ProQualDeleteView(DeleteView):
     template_name = 'staff/pro-qual-delete-confirm.html'
 
     def get_success_url(self):
-        messages.success(self.request, 'Professional Qualification deleted successfully.')
+        messages.success(self.request, 'Professional Qualification deleted successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
         if response.status_code == 302:
-            messages.success(self.request, 'Professional Qualification deleted successfully.')
+            messages.success(self.request, 'Professional Qualification deleted successfully')
         else:
-            messages.error(self.request, 'Error deleting professional qualification.')
+            messages.error(self.request, 'Error deleting professional qualification')
         return response
 
 
@@ -344,15 +354,15 @@ class PromotionDeleteView(DeleteView):
     template_name = 'staff/promotion-delete-confirm.html'
 
     def get_success_url(self):
-        messages.success(self.request, 'Promotion deleted successfully.')
+        messages.success(self.request, 'Promotion deleted successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
         if response.status_code == 302:
-            messages.success(self.request, 'Promotion deleted successfully.')
+            messages.success(self.request, 'Promotion deleted successfully')
         else:
-            messages.error(self.request, 'Error deleting promotion.')
+            messages.error(self.request, 'Error deleting promotion')
         return response
 
 
@@ -399,13 +409,178 @@ class DisciplineDeleteView(DeleteView):
     template_name = 'staff/discipline-delete-confirm.html'
 
     def get_success_url(self):
-        messages.success(self.request, 'Discipline deleted successfully.')
+        messages.success(self.request, 'Discipline deleted successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
         if response.status_code == 302:
-            messages.success(self.request, 'Discipline deleted successfully.')
+            messages.success(self.request, 'Discipline deleted successfully')
         else:
-            messages.error(self.request, 'Error deleting discipline.')
+            messages.error(self.request, 'Error deleting discipline')
+        return response
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class LeaveCreateView(CreateView):
+    model = Leave
+    form_class = LeaveForm
+    template_name = 'staff/leave.html'
+
+    def form_valid(self, form):
+        if self.request.user.is_superuser:
+            # If the current user is a superuser, use the username from the URL
+            username_from_url = self.kwargs.get('username')
+            user = get_object_or_404(User, username=username_from_url)
+            form.instance.user = user
+        else:
+            # If the current user is not a superuser, use the current user
+            form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        messages.success(self.request, 'Leave Added Successfully')
+        return reverse_lazy('profile_details', kwargs={'username': self.kwargs['username']})
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class LeaveUpdateView(UpdateView):
+    model=Leave
+    form_class=LeaveForm
+    template_name='staff/leave-update.html'
+
+    def get_success_url(self):
+        messages.success(self.request, 'Leave Updated Successfully')
+        return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
+    
+    def form_invalid(self,form):
+        messages.error(self.request,'Error Updating Leave')
+        return super().form_invalid(form)
+    
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class LeaveDeleteView(DeleteView):
+    model = Leave
+    template_name = 'staff/leave-delete-confirm.html'
+
+    def get_success_url(self):
+        messages.success(self.request, 'Leave deleted successfully')
+        return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
+
+    def delete(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)
+        if response.status_code == 302:
+            messages.success(self.request, 'Leave deleted successfully')
+        else:
+            messages.error(self.request, 'Error deleting leave')
+        return response
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class ExecappCreateView(CreateView):
+    model = ExecutiveAppointment
+    form_class = ExecappForm
+    template_name = 'staff/execapp.html'
+
+    def form_valid(self, form):
+        if self.request.user.is_superuser:
+            # If the current user is a superuser, use the username from the URL
+            username_from_url = self.kwargs.get('username')
+            user = get_object_or_404(User, username=username_from_url)
+            form.instance.user = user
+        else:
+            # If the current user is not a superuser, use the current user
+            form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        messages.success(self.request, 'Executive Appointment Added Successfully')
+        return reverse_lazy('profile_details', kwargs={'username': self.kwargs['username']})
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class ExecappUpdateView(UpdateView):
+    model=ExecutiveAppointment
+    form_class=ExecappForm
+    template_name='staff/execapp-update.html'
+
+    def get_success_url(self):
+        messages.success(self.request, 'Executive Appointment Updated Successfully')
+        return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
+    
+    def form_invalid(self,form):
+        messages.error(self.request,'Error Updating Executive Appointment')
+        return super().form_invalid(form)
+    
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class ExecappDeleteView(DeleteView):
+    model = ExecutiveAppointment
+    template_name = 'staff/execapp-delete-confirm.html'
+
+    def get_success_url(self):
+        messages.success(self.request, 'Executive Appointment deleted successfully')
+        return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
+
+    def delete(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)
+        if response.status_code == 302:
+            messages.success(self.request, 'Executive Appointment deleted successfully')
+        else:
+            messages.error(self.request, 'Error deleting executive appointment')
+        return response
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class RetireCreateView(CreateView):
+    model = Retirement
+    form_class = RetireForm
+    template_name = 'staff/retire.html'
+
+    def form_valid(self, form):
+        if self.request.user.is_superuser:
+            # If the current user is a superuser, use the username from the URL
+            username_from_url = self.kwargs.get('username')
+            user = get_object_or_404(User, username=username_from_url)
+            form.instance.user = user
+        else:
+            # If the current user is not a superuser, use the current user
+            form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        messages.success(self.request, 'Retirement Added Successfully')
+        return reverse_lazy('profile_details', kwargs={'username': self.kwargs['username']})
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class RetireUpdateView(UpdateView):
+    model=Retirement
+    form_class=RetireForm
+    template_name='staff/retire-update.html'
+
+    def get_success_url(self):
+        messages.success(self.request, 'Retirement Updated Successfully')
+        return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
+    
+    def form_invalid(self,form):
+        messages.error(self.request,'Error Updating Retirement')
+        return super().form_invalid(form)
+    
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class RetireDeleteView(DeleteView):
+    model = Retirement
+    template_name = 'staff/retire-delete-confirm.html'
+
+    def get_success_url(self):
+        messages.success(self.request, 'Retire deleted successfully')
+        return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
+
+    def delete(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)
+        if response.status_code == 302:
+            messages.success(self.request, 'Retire deleted successfully')
+        else:
+            messages.error(self.request, 'Error deleting retirement')
         return response

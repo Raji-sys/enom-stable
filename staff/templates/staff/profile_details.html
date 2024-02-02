@@ -32,50 +32,74 @@
 <a href="{%url 'update_govapp' profile.pk %}">update govt appt</a><br>
 <br><hr>
 <h1>qualification</h1>
-<a href="{%url 'qual' username=profile.user.username %}">add qualification<br>
+<a href="{%url 'qual' username=profile.user.username %}">add<br>
   <hr>
 {% for q in qualifications %}
     <p>{{ q.school }}</p>
     <p>{{ q.qual }}</p>
-    <a href="{%url 'qual_update' q.pk %}">update qualification</a><br>
-<a href="{%url 'qual_delete' q.pk %}">delete qualification</a><br>
+    <a href="{%url 'qual_update' q.pk %}">update</a><br>
+<a href="{%url 'qual_delete' q.pk %}">delete</a><br>
     <hr>
 {% endfor %}
 <br><hr>
 
 <h1>professional qualification</h1>
-<a href="{%url 'pro_qual' username=profile.user.username %}">add professional qualification<br>
+<a href="{%url 'pro_qual' username=profile.user.username %}">add<br>
   <hr>
 {% for p in pro_qualifications %}
     <p>{{ p.institute }}</p>
     <p>{{ p.inst_address }}</p>
-    <a href="{%url 'pro_qual_update' p.pk %}">update professional qualification</a><br>
-<a href="{%url 'pro_qual_delete' p.pk %}">delete professional qualification</a><br>
+    <a href="{%url 'pro_qual_update' p.pk %}">update</a><br>
+<a href="{%url 'pro_qual_delete' p.pk %}">delete</a><br>
     <hr>
 {% endfor %}
 <br><hr>
 
 <h1>promotion</h1>
-<a href="{%url 'promotion' username=profile.user.username %}">promote<br>
+<a href="{%url 'promotion' username=profile.user.username %}">add<br>
   <hr>
 {% for p in promotion %}
     <p>{{ p.cpost }}</p>
     <p>{{ p.gl }}</p>
     <p>{{ p.step }}</p>
-    <a href="{%url 'promotion_update' p.pk %}">update promotion</a><br>
-    <a href="{%url 'promotion_delete' p.pk %}">delete promotion</a><br>
+    <a href="{%url 'promotion_update' p.pk %}">update</a><br>
+    <a href="{%url 'promotion_delete' p.pk %}">delete</a><br>
     <hr>
 {% endfor %}
 <br><hr>
 
 <h1>discipline</h1>
-<a href="{%url 'discipline' username=profile.user.username %}">discipline<br>
+<a href="{%url 'discipline' username=profile.user.username %}">add<br>
   <hr>
 {% for d in discipline%}
     <p>{{ d.offense }}</p>
     <p>{{ d.decision }}</p>
-    <a href="{%url 'discipline_update' d.pk %}">update discipline</a><br>
-    <a href="{%url 'discipline_delete' d.pk %}">delete discipline</a><br>
+    <a href="{%url 'discipline_update' d.pk %}">update</a><br>
+    <a href="{%url 'discipline_delete' d.pk %}">delete</a><br>
+    <hr>
+{% endfor %}
+<br><hr>
+
+<h1>executive appointment</h1>
+<a href="{%url 'execapp' username=profile.user.username %}">add<br>
+  <hr>
+{% for e in execapp %}
+    <p>{{ e.designation }}</p>
+    <p>{{ e.status }}</p>
+    <a href="{%url 'execapp_update' e.pk %}">update</a><br>
+    <a href="{%url 'execapp_delete' e.pk %}">delete</a><br>
+    <hr>
+{% endfor %}
+<br><hr>
+
+<h1>retire</h1>
+<a href="{%url 'retire' username=profile.user.username %}">add<br>
+  <hr>
+{% for r in retire %}
+    <p>{{ r.status }}</p>
+    <p>{{ r.retire }}</p>
+    <a href="{%url 'retire_update' r.pk %}">update</a><br>
+    <a href="{%url 'retire_delete' r.pk %}">delete</a><br>
     <hr>
 {% endfor %}
 <br><hr>

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+ {% block title %}confirm executive appointment removal{% endblock%} 
+ {% block content %}
+<br />
+    <div class="">
+      <h1>executive appointment removal</h1>
+      <p>Are you sure you want to delete this executive appointment? this action is not reversible!</p>
+      <form action="" method="POST" style="display: inline;">
+        {% csrf_token %} 
+        <button type="submit">yes, delete it</button>
+      </form>
+      <a href="{%url 'profile_details' username=object.user.username %}">cancel</a>
+    </div>
+{% endblock %}

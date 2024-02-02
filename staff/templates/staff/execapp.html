@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+ {% block title %}executive appointment form{% endblock %} 
+ {% block content %}
+<br />
+    <div class="">
+      <h1>executive appointment form</h1>
+      <form action="" method="POST">
+        {% csrf_token %} 
+        <hr>
+        {{form}}
+        <input type="submit" name="submit" value="submit "/>
+      </form>
+    </div>
+{% endblock %}
+

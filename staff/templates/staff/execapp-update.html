@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+ {% block title %}executive appointment update form{% endblock%} 
+ {% block content %}
+<br />
+    <div class="">
+      <h1>executive appointment update form</h1>
+      <form action="" method="POST">
+        {% csrf_token %} 
+        <hr>
+        {{form}}
+        <input type="submit" name="submit" value="submit "/>
+      </form>
+      <a href="{%url 'profile_details' username=object.user.username %}">cancel</a>
+    </div>
+{% endblock %}
+

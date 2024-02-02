@@ -80,3 +80,21 @@ class DisciplineForm(forms.ModelForm):
     class Meta:
         model = Discipline
         fields = ['offense','decision']
+
+
+class LeaveForm(forms.ModelForm):
+    class Meta:
+        model = Leave
+        fields = ['nature','year']
+
+
+class ExecappForm(forms.ModelForm):
+    class Meta:
+        model = ExecutiveAppointment
+        fields = ['designation','status']
+
+
+class RetireForm(forms.ModelForm):
+    class Meta:
+        model = Retirement
+        fields = ['status','retire']
