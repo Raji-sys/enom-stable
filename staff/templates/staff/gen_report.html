@@ -59,50 +59,50 @@
                 <th scope="col" class="p-3">STEP</th>
                 <th scope="col" class="p-3">GEO-POLITICAL ZONE</th>
             </tr>
-            {% for r in gen_filter.qs %}
+            {% for g in gen_filter.qs %}
         <tr class="text-xs {% cycle 'bg-white hover:bg-blue-200' 'bg-blue-100 hover:bg-blue-200' %} border-b border-blue-700">
             <td class="border-2 border-blue-700 p-4 text-center">
                 {{forloop.counter|default_if_none:''}}
             </td>
             <td class="border-2 border-blue-700 p-4 text-center">
-                {{profile.user.get_full_name|default_if_none:''|upper}}
+                {{g.profile.user.get_full_name|default_if_none:''|upper}}
             </td>
             <td class="border-2 border-blue-700 p-4 text-center">
-                {{u.profile.staff_no|default_if_none:''}}
+                {{g.profile.staff_no|default_if_none:''}}
             </td>
             <td class="border-2 border-blue-700 p-4 text-center">
-                {{u.governmentappointment.ippis_no|default_if_none:''}}
+                {{g.governmentappointment.ippis_no|default_if_none:''}}
             </td>
             <td class="border-2 border-blue-700 p-4 text-center">
-                {{u.profile.date_of_birth|default_if_none:''|date:'d/M/Y'}} 
+                {{g.profile.date_of_birth|default_if_none:''|date:'d/M/Y'}} 
             </td>
             <td class="border-2 border-blue-700 p-4 text-center">
-                {{u.profile.state|default_if_none:''|upper}}
+                {{g.profile.state|default_if_none:''|upper}}
             </td>
             <td class="border-2 border-blue-700 p-4 text-center">
-                {{u.profile.lga|default_if_none:''|upper}}
+                {{g.profile.lga|default_if_none:''|upper}}
             </td>
             <td class="border-2 border-blue-700 p-4 text-center">
-                {{u.profile.qualification|default_if_none:''|upper}}
+                {{g.profile.qualification|default_if_none:''|upper}}
             </td>
             <td class="border-2 border-blue-700 p-4 text-center">
-                {{u.governmentappointment.date_fapt|default_if_none:''|date:'d/M/Y'}}
+                {{g.governmentappointment.date_fapt|default_if_none:''|date:'d/M/Y'}}
             </td>
             <td class="border-2 border-blue-700 p-4 text-center">
-                {{u.governmentappointment.date_of_capt|default_if_none:''|date:'d/M/Y'}}
+                {{g.governmentappointment.date_of_capt|default_if_none:''|date:'d/M/Y'}}
             </td>
             <td class="border-2 border-blue-700 p-4 text-center">
-                {{u.governmentappointment.cpost|default_if_none:''|upper}}
+                {{g.governmentappointment.cpost|default_if_none:''|upper}}
             </td>
             <td class="border-2 border-blue-700 p-4 text-center">
-                {{u.governmentappointment.department|default_if_none:''|upper}}
+                {{g.governmentappointment.department|default_if_none:''|upper}}
             </td>
             <td class="border-2 border-blue-700 p-4 text-center">
-                {{u.governmentappointment.grade_level|default_if_none:''}}
+                {{g.governmentappointment.grade_level|default_if_none:''}}
             </td>
             </td>
             <td class="border-2 border-blue-700 p-4 text-center">
-                {{u.profile.zone|default_if_none:''|upper}}
+                {{g.profile.zone|default_if_none:''|upper}}
             </td>
         </tr> 
         {% empty %}

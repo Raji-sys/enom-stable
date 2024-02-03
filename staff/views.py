@@ -2,7 +2,6 @@ from django.shortcuts import render,get_object_or_404,HttpResponseRedirect
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic import DetailView, ListView
 from django.views import View
-from django.core.paginator import Paginator
 from .forms import CustomUserCreationForm
 from django.contrib import messages
 from django.utils.decorators import method_decorator
@@ -48,26 +47,27 @@ def dirs_details(request):
 def report(request):
     return render(request, 'report.html')
 
+
 class GenReportView(ListView):
-    model=get_user_model()
-    template_name='gen_report.html'
-    paginate_by=10
-    context_object_name='users'
+    model = get_user_model()
+    template_name = 'staff/gen_report.html'
+    paginate_by = 10
+    context_object_name = 'users'
 
     def get_queryset(self):
-        queryset=super().get_queryset()
-        total=users.filter(is_active=True, is_superuser=False).count()
+        queryset = super().get_queryset()
+        total = queryset.filter(is_active=True, is_superuser=False).count()
 
-        gen_filter=GovFilter(self.request.GET, queryset=users)
-        users=gen_filter.qs.order_by('governmentappointment__department')
-        
-        self.total=total
+        gen_filter = GovFilter(self.request.GET, queryset=queryset)
+        users = gen_filter.qs.order_by('governmentappointment__department')
+
+        self.total = total
         return users
 
-    def get_context_data(self,**kwargs):
-        context=super().get_context_data(**kwargs)
-        context['gen_filter']=GovFilter(self.request.GET,queryset=self.get_queryset())
-        context['total']=self.total
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['gen_filter'] = GovFilter(self.request.GET, queryset=self.get_queryset())
+        context['total'] = self.total
         return context
 
 
