@@ -1,6 +1,8 @@
 from django.shortcuts import render,get_object_or_404,HttpResponseRedirect
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
+from django.views import View
+from django.core.paginator import Paginator
 from .forms import CustomUserCreationForm
 from django.contrib import messages
 from django.utils.decorators import method_decorator
@@ -9,6 +11,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.views import LoginView, LogoutView
 from .models import *
 from .forms import *
+from .filters import *
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -45,29 +48,28 @@ def dirs_details(request):
 def report(request):
     return render(request, 'report.html')
 
-def gen_report(request):
-        User=get_user_model()
-    users=User.objects.all()
-   
-    total=users.filter(is_active=True, is_superuser=False).count()
+class GenReportView(ListView):
+    model=get_user_model()
+    template_name='gen_report.html'
+    paginate_by=10
+    context_object_name='users'
 
-    # adding users to government appointment filter  
-    govFilter=GovFilter(request.GET, queryset=users)
+    def get_queryset(self):
+        queryset=super().get_queryset()
+        total=users.filter(is_active=True, is_superuser=False).count()
 
-    # users=govFilter.qs.order_by('last_name')
-    # users=govFilter.qs.order_by('personaldetail__staff_no')
-    users=govFilter.qs.order_by('governmentappointment__department')
-    
-    #pagination functionality
-    paginator = Paginator(users, 100)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    result = request.GET.get('date_of_first_appointment')
+        gen_filter=GovFilter(self.request.GET, queryset=users)
+        users=gen_filter.qs.order_by('governmentappointment__department')
+        
+        self.total=total
+        return users
 
-    # dep=request.GET.get('department')
+    def get_context_data(self,**kwargs):
+        context=super().get_context_data(**kwargs)
+        context['gen_filter']=GovFilter(self.request.GET,queryset=self.get_queryset())
+        context['total']=self.total
+        return context
 
-    context = {'govFilter':govFilter,'users':users,'page_obj':page_obj,'result':result,'total':total}
-    return render(request, 'gen_report.html',context)
 
 def pro_report(request):
     pass

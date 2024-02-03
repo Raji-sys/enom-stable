@@ -377,7 +377,7 @@ class Retirement(models.Model):
     govapp=models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='rtgovapp',null=True)
     profile=models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='profile',null=True)
     status = models.CharField(null=True,max_length=300,blank=True)
-    retire=models.BooleanField(null=True, blank=True)
+    retire=models.BooleanField(default=False)
     rtb=models.CharField('retired by', null=True, blank=True,max_length=50)
     created = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

@@ -98,3 +98,4 @@ class RetireForm(forms.ModelForm):
     class Meta:
         model = Retirement
         fields = ['status','retire']
+
