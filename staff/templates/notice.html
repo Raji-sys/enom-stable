@@ -1,0 +1,93 @@
+{%extends "base.html" %}
+<h1>notice</h1>
+{% block title %}notice{%endblock%}
+{% block main %}
+<section class="mb-2 border-t-2 border-green-800"></section>
+<div class="flex flex-row max-sm:flex-wrap gap-4 mb-2  uppercase">
+<div class="max-sm:w-full w-1/2 mx-auto mt-1 md:p-14 shadow-2xl overflow-hidden rounded-lg backdrop-blur-sm border-2 text-green-700 border-green-700 ">
+        <section class=" text-center ">
+            <p class="uppercase text-xl max-sm:text-md">promotion</p> 
+            <div class="max-sm:text-sm text-green-700 border-green-700 ">
+    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex border-hidden">
+        <div class="rounded-xl">
+            <tbody class="uppercase text-sm rounded-lg  max-sm:p-16 p-4 overflow-x-auto mx-0 ">
+        </div>
+        <tr class=" text-sm">
+            <th scope="col" class="border-2 p-2 ">s/n</th>
+            <th scope="col" class="border-2 p-2 ">name</th>
+        </tr>
+
+{% for pr in prom %}
+        <tr class="p-6 text-md ">
+        <td class="border-2 p-0 text-center ">{{forloop.counter}}</td>            
+        <td class="border-2 p-2 text-center "><a href="{% url 'staff:staffdetail' pr.user.id %}">{{ pr.user.last_name|default_if_none:''|upper }} {{ pr.middlename|default_if_none:''|upper }} {{ pr.user.first_name|default_if_none:''|upper }}</a></td>
+{% empty %}
+    <p>No data available</p>
+{% endfor %}
+    </tr>
+        </tbody>
+    </table>
+</div>
+</section>
+<!-- <p class="text-2xl mt-4">
+    Total:{{due}}
+</p> -->
+</div>
+
+<div class="max-sm:w-full w-1/2 mx-auto mt-1 md:p-14 shadow-2xl overflow-hidden rounded-lg backdrop-blur-sm border-2 border-orange-700 text-orange-700">
+        <section class=" text-center ">
+            <p class="uppercase max-sm:text-md text-xl">retirement</p> 
+            <div class="max-sm:text-sm text-orange-700 border-orange-700 rounded-lg">
+    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex ">
+        <tbody class="uppercase text-sm max-sm:p-16 p-4 overflow-x-auto mx-0 ">         
+            <tr class=" text-sm ">
+            <th scope="col" class="border-2 p-2">s/n</th>
+            <th scope="col" class="border-2 p-2">name</th>
+        </tr>
+
+{% for rti in ret %}
+        <tr class="p-6 text-md ">
+        <td class="border-2 p-0 text-center  ">{{forloop.counter}}</td>            
+        <td class="border-2 p-2 text-center "><a href="{% url 'staff:staffdetail' rti.user.id %}">{{ rti.user.last_name|default_if_none:''|upper }} {{ rti.middlename|default_if_none:''|upper }} {{ rti.user.first_name|default_if_none:''|upper }}</a></td>
+{% empty %}
+    <p>No data available</p>
+{% endfor %}
+    </tr>
+        </tbody>
+    </table>
+</div>
+</section>
+<!-- <p class="text-2xl mt-4">
+    Total:{{rt}}
+</p> -->
+</div>
+<div class="max-sm:w-full w-1/2 mx-auto mt-1 md:p-14  shadow-2xl overflow-hidden rounded-lg backdrop-blur-sm border-2 border-cyan-700 text-cyan-700">
+        <section class=" text-center">
+            <p class="text-cyan-700 border-cyan-700 rounded-lg uppercase max-sm:text-md text-xl">leave</p> 
+            <div class="max-sm:text-sm">
+    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
+        <tbody class="uppercase text-sm max-sm:p-16 p-4 overflow-x-auto mx-0 ">
+        <tr class=" text-sm rounded-xl">
+            <th scope="col" class="border-2 p-2 ">s/n</th>
+            <th scope="col" class="border-2 p-2 ">name</th>
+        </tr>
+
+{% for le in lev %}
+        <tr class="p-6 text-md ">
+        <td class="border-2 p-0 text-center">{{forloop.counter}}</td>            
+        <td class="border-2 p-2 text-center"><a href="{% url 'staff:staffdetail' le.user.id %}">{{ le.user.last_name|default_if_none:''|upper }} {{ le.middlename|default_if_none:''|upper }} {{ le.user.first_name|default_if_none:''|upper }}</a></td>
+{% empty %}
+    <p>No data available</p>
+{% endfor %}
+    </tr>
+        </tbody>
+    </table>
+</div>
+</section>
+<!-- <p class="text-2xl mt-4">
+    Total:{{lv}}
+</p> -->
+</div>
+
+</div>
+{% endblock %}

@@ -110,7 +110,6 @@ class Qualification(models.Model):
             return f"Unknown User - {self.qual}"
 
 
-
 class ProfessionalQualification(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='pro_qual')
     institute = models.CharField(max_length=300, null=True, blank=True)
@@ -351,7 +350,7 @@ class Leave(models.Model):
 class ExecutiveAppointment(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='execapp')
     designation = models.CharField(null=True,max_length=300,blank=True)
-    govapp=models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='execgovapp')
+    govapp=models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='execgovapp',null=True)
     date = models.DateField(null=True,blank=True)
     status = models.CharField(null=True,max_length=300,blank=True)
     created = models.DateTimeField('date added', auto_now_add=True)
@@ -375,8 +374,8 @@ def update_govapp(sender, instance, **kwargs):
 class Retirement(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     date = models.DateField(null=True,blank=True)
-    govapp=models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='rtgovapp')
-    profile=models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='profile')
+    govapp=models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='rtgovapp',null=True)
+    profile=models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='profile',null=True)
     status = models.CharField(null=True,max_length=300,blank=True)
     retire=models.BooleanField(null=True, blank=True)
     rtb=models.CharField('retired by', null=True, blank=True,max_length=50)
@@ -405,3 +404,13 @@ class Retirement(models.Model):
             self.retire = False
 
         self.save()
+
+
+# class Department(models.Model):
+#     name=models.CharField(max_length=200)    
+
+#     def __str__(self):
+#         return self.name
+
+#     def get_absolute_url(self):
+#         return reverse('dept_details', args=[self.name])

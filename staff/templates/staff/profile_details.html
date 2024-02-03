@@ -105,9 +105,11 @@
 <br><hr>
 
 <h1>retire</h1>
+{% if not profile.user.retirement %}
 <a href="{%url 'retire' username=profile.user.username %}">add<br>
+  {%endif%}
   <hr>
-{% for r in retire %}
+{% for r in retirement %}
     <p>{{ r.status }}</p>
     <p>{{ r.retire }}</p>
     <a href="{%url 'retire_update' r.pk %}">update</a><br>

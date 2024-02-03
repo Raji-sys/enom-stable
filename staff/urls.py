@@ -4,6 +4,27 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('manage/', views.manage, name='manage'),
+    path('staff/', views.staff, name='staff'),
+
+    path('dept/', views.dept, name='dept'),
+    path('dept_details/<str:name>/', views.dept_details, name='dept_details'),
+    
+    path('dirs/', views.dirs, name='dirs'),
+    path('dirs_detail/<str:name>/', views.dirs_details, name='dirs_details'),
+    
+    path('report/', views.report, name='report'),
+    path('gen_report/', views.gen_report, name='gen_report'),
+    path('pro_report/', views.pro_report, name='pro_report'),
+    path('lv_report/', views.lv_report, name='lv_report'),
+    path('govapp_report/', views.govapp_report, name='govapp_report'),
+    path('qual_report/', views.qual_report, name='qual_report'),
+    path('pro_qual_report/', views.pro_qual_report, name='pro_qual_report'),
+    path('dis_report/', views.dis_report, name='dis_report'),
+    path('rt_report/', views.rt_report, name='rt_report'),
+
+    path('stats/', views.stats, name='stats'),
+    path('notice/', views.notice, name='notice'),
     
     path('login/', CustomLoginView.as_view(), name='login'),
     path('register/', UserRegistrationView.as_view(), name='register'),

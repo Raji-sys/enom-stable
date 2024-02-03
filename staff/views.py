@@ -20,9 +20,88 @@ def log_anonymous_required(view_function, redirect_to=None):
 
 
 def index(request):
+    return render(request, 'index.html')
+
+def manage(request):
+    return render(request, 'manage.html')
+
+def staff(request):
     p=Profile.objects.all()
     context={'p':p}
-    return render(request, 'index.html',context)
+    return render(request, 'staff/stafflist.html',context)
+
+def dept(request):
+    return render(request, 'dept.html')
+
+def dept_details(request):
+    pass
+
+def dirs(request):
+    return render(request, 'dirs.html')
+
+def dirs_details(request):
+    pass
+
+def report(request):
+    return render(request, 'report.html')
+
+def gen_report(request):
+        User=get_user_model()
+    users=User.objects.all()
+   
+    total=users.filter(is_active=True, is_superuser=False).count()
+
+    # adding users to government appointment filter  
+    govFilter=GovFilter(request.GET, queryset=users)
+
+    # users=govFilter.qs.order_by('last_name')
+    # users=govFilter.qs.order_by('personaldetail__staff_no')
+    users=govFilter.qs.order_by('governmentappointment__department')
+    
+    #pagination functionality
+    paginator = Paginator(users, 100)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    result = request.GET.get('date_of_first_appointment')
+
+    # dep=request.GET.get('department')
+
+    context = {'govFilter':govFilter,'users':users,'page_obj':page_obj,'result':result,'total':total}
+    return render(request, 'gen_report.html',context)
+
+def pro_report(request):
+    pass
+    # return render(request, 'pro_report.html')
+
+def govapp_report(request):
+    pass
+    # return render(request, 'govapp_report.html')
+
+def lv_report(request):
+    pass
+    # return render(request, 'lv_report.html')
+
+def dis_report(request):
+    pass
+    # return render(request, 'dis_report.html')
+
+def qual_report(request):
+    pass
+    # return render(request, 'qual_report.html')
+
+def pro_qual_report(request):
+    pass
+    # return render(request, 'pro_qual_report.html')
+
+def rt_report(request):
+    pass
+    # return render(request, 'rt_report.html')
+
+def stats(request):
+    return render(request, 'stats.html')
+
+def notice(request):
+    return render(request, 'notice.html')
 
 
 @method_decorator(log_anonymous_required, name='dispatch')
@@ -180,7 +259,7 @@ class ProfileDetailView(DetailView):
         discipline = Discipline.objects.filter(user=profile.user)
         leave = Leave.objects.filter(user=profile.user)
         execapp = ExecutiveAppointment.objects.filter(user=profile.user)
-        retire = Retirement.objects.filter(user=profile.user)
+        retirement = Retirement.objects.filter(user=profile.user)
 
         context['govapp'] = get_object_or_404(GovernmentAppointment, user=profile.user)
         context['qualifications'] = qualifications
@@ -189,7 +268,7 @@ class ProfileDetailView(DetailView):
         context['discipline'] = discipline
         context['leave'] = leave
         context['execapp'] = execapp
-        context['retire'] = retire
+        context['retirement'] = retirement
         context['Qualform'] = QualForm()
         context['ProQualform'] = ProQualForm()
         context['Promotionform'] = PromotionForm()
