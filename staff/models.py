@@ -166,7 +166,7 @@ class GovernmentAppointment(models.Model):
     date_capt = models.DateField('date of current appointment', null=True,blank=True)
     tp=(('CASUAL','CASUAL'),('LOCUM','LOCUM'),('PERMANENT','PERMANENT'),('PROBATION', 'PROBATION'))
     type_of_appt=models.CharField('type of appointment', choices=tp, null=True,max_length=300,blank=True)
-    sfapt = models.FloatField('salary_per_annum_at_date_of_first_appointment', null=True,max_length=300,blank=True)    
+    sfapt = models.FloatField('salary per annum at date of first appointment', null=True,max_length=300,blank=True)    
     ss=(('CONHESS','CONHESS'),('CONMESS','CONMESS'), ('GIPMIS','GIPMIS'))
     salary_scale = models.CharField(choices=ss, null=True,max_length=300,blank=True)    
     gl=(('03','03'),('04','04'),('05','05'),('06','06'),('07','07'),('08','08'),('09','09'),
