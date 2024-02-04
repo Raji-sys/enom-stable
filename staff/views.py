@@ -21,33 +21,49 @@ def log_anonymous_required(view_function, redirect_to=None):
     return user_passes_test(lambda u: not u.is_authenticated,login_url=redirect_to)(view_function)
 
 
+@login_required
 def index(request):
     return render(request, 'index.html')
 
+
+@login_required
 def manage(request):
     return render(request, 'manage.html')
 
+
+@login_required
 def staff(request):
     p=Profile.objects.all()
     context={'p':p}
     return render(request, 'staff/stafflist.html',context)
 
+
+@login_required
 def dept(request):
     return render(request, 'dept.html')
 
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
 def dept_details(request):
     pass
 
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
 def dirs(request):
     return render(request, 'dirs.html')
 
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
 def dirs_details(request):
     pass
 
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
 def report(request):
     return render(request, 'report.html')
 
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class GenReportView(ListView):
     model = get_user_model()
     template_name = 'staff/gen_report.html'
@@ -71,37 +87,54 @@ class GenReportView(ListView):
         return context
 
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 def pro_report(request):
     pass
     # return render(request, 'pro_report.html')
 
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
 def govapp_report(request):
     pass
     # return render(request, 'govapp_report.html')
 
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
 def lv_report(request):
     pass
     # return render(request, 'lv_report.html')
 
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
 def dis_report(request):
     pass
     # return render(request, 'dis_report.html')
 
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
 def qual_report(request):
     pass
     # return render(request, 'qual_report.html')
 
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
 def pro_qual_report(request):
     pass
     # return render(request, 'pro_qual_report.html')
 
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
 def rt_report(request):
     pass
     # return render(request, 'rt_report.html')
 
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
 def stats(request):
     return render(request, 'stats.html')
 
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
 def notice(request):
     return render(request, 'notice.html')
 
@@ -116,10 +149,15 @@ class CustomLoginView(LoginView):
             return reverse_lazy('profile_details',args=[self.request.user.username])
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class CustomLogoutView(LogoutView):
-    template_name='logged_out.html'
-
+    template_name='login.html'
+    
+    def dispatch(self,request, *args, **kwargs):
+        response=super().dispatch(request, *args, **kwargs)
+        messages.success(request, 'logout successful')
+        return response
+        
 
 def reg_anonymous_required(view_function, redirect_to=None):
     if redirect_to is None:
@@ -148,6 +186,7 @@ class UserRegistrationView(CreateView):
             return self.form_invalid(form)
         
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class DocumentationView(UpdateView):
     model = User
     template_name = 'doc.html'

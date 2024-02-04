@@ -2,98 +2,114 @@
 {% load static %}
 {% block title %}Create an account{% endblock %}
 {% block content %}
-<div class="flex justify-center">    
-    <div class="font-semibold uppercase text-xs shadow-2xl sm:max-w-lg mx-auto md:p-8 overflow-hidden rounded-2xl bg-white mt-16">
-    <section class="text-center border-b-2 border-green-800 p-2 m-2">
-          <p class="bg-gradient-to-r from-green-700 via-green-500 to-green-700 text-transparent bg-clip-text text-sm font-bold pt-2">fill this form to create your account</p>
-     </section>
-  <form method="POST"> 
+
+<div class="flex justify-center m-10">
+  <div class="font-semibold uppercase text-sm sm:max-w-lg px-16 shadow-2xl overflow-hidden shadow-cyan-900 rounded-xl bg-white">
+    <section class="text-center border-b-2 border-cyan-700 p-4 mb-4">
+      <h2 class="text-cyan-800 uppercase text-lg">fill this form to register</h2>
+           {% for message in messages %}
+      <div class="mt-4">
+        <hr />
+        <p class="text-green-700 uppercase font-bold text-xl">{{ message }}</p>
+        <hr />
+      </div>
+      {% endfor %}
+      <div class="flex justify-center text-md text-red-500">
+          {% if form.errors %}
+          {{form.errors}}
+          {% endif %}
+        </div>
+    </section>
+    <form action="" method="POST">
       {% csrf_token %}
-              <div class="flex justify-center text-md text-red-500">
-          {% if user_form.errors %}
-          {{user_form.errors}}
-          {% endif %}
+      <div class="mb-1 uppercase text-cyan-900">
+        <div class="flex justify-center">
+          <label for="uname">username</label>
         </div>
-     <div class="flex justify-center text-md text-blue-500">
-          {% if messages %}
-          {%for m in messages%}
-         <p{% if m.tags%} class="{{m.tags}}"{%endif%}>{{m}}</p>
-         {%endfor%}
-          {% endif %}
-        </div>
-      <div class="mb-1 mt-2 uppercase text-gray-600">
-          <div class="flex justify-center">
-            <label for="username">username</label>
-          </div>
-          <p class="flex justify-center mb-4">
+        <div class="flex justify-center mb-4">
           <input
-            id="username"
-            class="text-xs focus:outline-none border border-blue-300 p-3 rounded shadow-lg hover:shadow-xl"
+            id="uname"
+            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700"
             type="text"
             name="username"
           />
-        </p>
+        </div>
         <div class="flex justify-center">
           <label for="email">email</label>
         </div>
-        <p class="flex justify-center mb-4">
+        <div class="flex justify-center mb-4">
           <input
             id="email"
-            class="text-xs focus:outline-none border border-blue-300 p-3 rounded shadow-lg hover:shadow-xl"
+            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700"
             type="text"
             name="email"
           />
-        </p>
-        <div class="flex justify-center">
-          <label for="last_name">last name</label>
         </div>
-        <p class="flex justify-center mb-4">
+        <div class="flex justify-center">
+          <label for="lname">surname</label>
+        </div>
+        <div class="flex justify-center mb-4">
           <input
-            class="text-xs focus:outline-none border border-blue-300 p-3 rounded shadow-lg hover:shadow-xl"
+            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700"
             type="text"
             name="last_name"
-            id="last_name"
+            id="lname"
           />
-        </p>
-        <div class="flex justify-center">
-          <label for="first_name">first name</label>
         </div>
-        <p class="flex justify-center mb-4">
+        <div class="flex justify-center">
+          <label for="fname">firstname</label>
+        </div>
+        <div class="flex justify-center mb-4">
           <input
-            class="text-xs focus:outline-none border border-blue-300 p-3 rounded shadow-lg hover:shadow-xl"
+            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700"
             type="text"
             name="first_name"
-            id="first_name"
+            id="fname"
           />
-        </p>
-        <div class="flex justify-center">
-          <label for="password1">password </label>
         </div>
-        <p class="flex justify-center mb-4">
+        <div class="flex justify-center">
+          <label for="password">password </label>
+        </div>
+        <div class="flex justify-center mb-4">
           <input
-            class="text-xs focus:outline-none border border-blue-300 p-3 rounded shadow-lg hover:shadow-xl"
+            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700"
             type="password"
             name="password1"
-            id="password1"
+            id="password"
           />
-        </p>
-   
-        <div class="flex justify-center">
-          <label for="password2">confirm password </label>
         </div>
-        <p class="flex justify-center mb-4">
+        <div class="flex justify-center">
+          <label for="conpassword">confirm password </label>
+        </div>
+        <div class="flex justify-center mb-4">
           <input
-            class="text-xs focus:outline-none border border-blue-300 p-3 rounded shadow-lg hover:shadow-xl"
+            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700"
             type="password"
             name="password2"
-            id="password2"
+            id="conpassword"
           />
-        </p>
-<div class="flex justify-center">	
-    <input class="focus:opacity-10 uppercase focus:border-green-600
-         bg-gradient-to-r from-green-700 via-green-500 to-green-700 text-white p-2 rounded shadow-lg hover:shadow-xl " type="submit" value="register">
+        </div>
+        <div class="flex justify-center mb-4">
+          <input
+            class="text-xs uppercase mt-2 focus:opacity-10 border-b-4 border-gray-500 focus:border-cyan-600 bg-gradient-to-r from-cyan-900 via-cyan-600 to-cyan-900 text-white py-2 rounded shadow-lg hover:shadow-xl text-center w-1/2"
+            type="submit"
+            value="Register"
+          />
+        </div>
+        <div class="mt-4 p-2 flex items-center border-t-2 border-cyan-800">
+          {% if request.user.is_authenticated == False %}
+          <div class="text-cyan-800 text-xs">
+            <a
+              class="border-b-2 border-blue-600 text-sm text-blue-800 text-bold ml-1"
+              href="{%url 'login' %}"
+              >login</a
+            >
+            instead
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
-  </form>
-</div>
-</div>
-  {% endblock %}
+{% endblock %}
