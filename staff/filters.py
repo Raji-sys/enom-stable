@@ -2,6 +2,12 @@ import django_filters
 from django import forms
 from .models import *
 
+class StaffFilter(django_filters.FilterSet):
+    file_no=django_filters.CharFilter(label='FILE NO', field_name='profile__file_no')
+
+    class Meta:
+        model = Profile
+        fields=['file_no']
 
 class GovFilter(django_filters.FilterSet):
     syear_of_fapt=django_filters.DateFilter(label="FIRST START",field_name="governmentappointment__date_fapt__year",lookup_expr='lte',widget=forms.DateInput(attrs={'type':'date'}),input_formats=['%d-%m-%Y', '%Y-%m-%d', '%m/%d/%Y'])

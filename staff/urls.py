@@ -5,7 +5,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('manage/', views.manage, name='manage'),
-    path('staff/', views.staff, name='staff'),
+    path('staff/', StaffListView.as_view(), name='staff'),
 
     path('dept/', views.dept, name='dept'),
     path('dept_details/<str:name>/', views.dept_details, name='dept_details'),

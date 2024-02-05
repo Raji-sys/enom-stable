@@ -31,11 +31,24 @@ def manage(request):
     return render(request, 'manage.html')
 
 
-@login_required
-def staff(request):
-    p=Profile.objects.all()
-    context={'p':p}
-    return render(request, 'staff/stafflist.html',context)
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class StaffListView(ListView):
+    model=Profile
+    template_name="staff/stafflist.html"
+    context_object_name='profiles'
+    paginate_by=10
+
+    def get_queryset(self):
+        profiles=super().get_queryset().filter(profile__file_no=True)
+        staff_filter=StaffFilter(self.request.GET,queryset=profiles)
+        return staff_filter.qs()
+    
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        total_profiles=self.get_queryset.count()
+        context['staffFilter']=staffFilter(self.request.GET,queryset=self.get_queryset())
+        context['total_profiles']=total_profiles
+        return context
 
 
 @login_required
@@ -43,22 +56,22 @@ def dept(request):
     return render(request, 'dept.html')
 
 
-@method_decorator(login_required(login_url='login'), name='dispatch')
+@login_required
 def dept_details(request):
     pass
 
 
-@method_decorator(login_required(login_url='login'), name='dispatch')
+@login_required
 def dirs(request):
     return render(request, 'dirs.html')
 
 
-@method_decorator(login_required(login_url='login'), name='dispatch')
+@login_required
 def dirs_details(request):
     pass
 
 
-@method_decorator(login_required(login_url='login'), name='dispatch')
+@login_required
 def report(request):
     return render(request, 'report.html')
 
@@ -87,54 +100,54 @@ class GenReportView(ListView):
         return context
 
 
-@method_decorator(login_required(login_url='login'), name='dispatch')
+@login_required
 def pro_report(request):
     pass
     # return render(request, 'pro_report.html')
 
 
-@method_decorator(login_required(login_url='login'), name='dispatch')
+@login_required
 def govapp_report(request):
     pass
     # return render(request, 'govapp_report.html')
 
 
-@method_decorator(login_required(login_url='login'), name='dispatch')
+@login_required
 def lv_report(request):
     pass
     # return render(request, 'lv_report.html')
 
 
-@method_decorator(login_required(login_url='login'), name='dispatch')
+@login_required
 def dis_report(request):
     pass
     # return render(request, 'dis_report.html')
 
 
-@method_decorator(login_required(login_url='login'), name='dispatch')
+@login_required
 def qual_report(request):
     pass
     # return render(request, 'qual_report.html')
 
 
-@method_decorator(login_required(login_url='login'), name='dispatch')
+@login_required
 def pro_qual_report(request):
     pass
     # return render(request, 'pro_qual_report.html')
 
 
-@method_decorator(login_required(login_url='login'), name='dispatch')
+@login_required
 def rt_report(request):
     pass
     # return render(request, 'rt_report.html')
 
 
-@method_decorator(login_required(login_url='login'), name='dispatch')
+@login_required
 def stats(request):
     return render(request, 'stats.html')
 
 
-@method_decorator(login_required(login_url='login'), name='dispatch')
+@login_required
 def notice(request):
     return render(request, 'notice.html')
 

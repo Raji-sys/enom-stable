@@ -1,18 +1,126 @@
 {% extends 'base.html'%}
 {% load static %}
 {%block title%}staff list{%endblock%}
-
 {%block content %}
-<p class="mt-10">staff page</p>
-<div class="flex justify-center text-md text-blue-500">
-    {% if messages %}
-          {%for m in messages%}
-         <p {% if m.tags%} class="{{m.tags}}"{%endif%}>{{m}}</p>
-           {%endfor%}
-          {% endif %}
-</div>
-{%for i in p%}
-<a href={{i.get_absolute_url}}>{{i}}</a>
-{%endfor%}
 
-{%endblock%}
+    {% for message in messages %}
+    <div class="mt-4">
+      <hr />
+      <p class="text-cyan-700 uppercase font-bold text-xl">{{ message }}</p>
+      <hr />
+    </div>
+    {% endfor %}
+    <div class="flex justify-center text-md text-red-500">
+          {% if form.errors %}
+          {{form.errors}}
+          {% endif %}
+        </div>
+          <div class=" text-center mb-4">
+                {% if request.GET.urlencode %}
+                <a href="{% url '?' %}" class=" px-4 py-2 focus:opacity-10 border-b-4 border-gray-500 focus:border-cyan-600 bg-gradient-to-r
+                from-orange-700 via-orange-600 to-orange-900  text-white  rounded shadow-lg hover:shadow-xl text-center w-full">
+                <i class="fa-solid fa-rotate fa-2xl"></i></a>
+                {%else%}
+
+                {%endif%}
+              </div>    
+<div class="w-fit mx-auto p-1 mt-1 max-sm:p-2 text-sm rounded-lg text-center m-20">
+        <div class="flex justify-normal gap-4">
+          <h2 class="bg-white text-cyan-900 uppercase max-sm:text-lg text-md border-b-2 border-cyan-900 py-3 px-4 rounded-xl m-2 w-fit font-semibold">stafflist</h2> 
+        <h2 class="bg-cyan-900 text-white uppercase max-sm:text-lg text-md border-b-2 border-cyan-900 py-3 px-4 rounded-xl m-2 w-fit font-semibold">total<span class="text-sm p-2 m-2 rounded-full bg-white text-cyan-900">{{total_profiles}}</span></h2> 
+        <h2 class="bg-cyan-900 text-white uppercase max-sm:text-lg text-md border-b-2 border-cyan-900 py-3 px-4 rounded-xl m-2 w-fit font-semibold"><a href="{% url 'register' %}"><i class="fa-solid fa-plus fa-2xl"></i></a>
+        <h2 class="bg-cyan-900 text-white uppercase max-sm:text-lg text-md border-b-2 border-cyan-900 py-3 px-4 rounded-xl m-2 w-fit font-semibold"><form method="get">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-auto">  
+                        {% for field in staffFilter.form %}
+                        <div class="m-4 text-center">
+                          <label for="{{field.id_for_label}}" class="block">{{ field.label_tag }}</label>
+                          {{ field }}
+                        </div>
+                        {%endfor%}
+                      </div>
+                      <div class="text-center">
+                        <button type="submit" class="w-fit focus:opacity-10 uppercase  border-gray-500 focus:border-cyan-600 bg-cyan-900 text-white py-2 px-2 rounded shadow-lg hover:border-cyan-700 "><i class="fa-solid fa-search fa-xl"></i></button>
+                      </div>
+                    </form>
+</h2> 
+      </div>
+    <table class="table-auto mt-0 max-sm:flex flex shadow-2xl shadow-cyan-900 rounded-xl mb-10 items-center justify-center">
+        <tbody class="text-cyan-800 border-2 shadow-2xl shadow-cyan-900 rounded-xl max-sm:p-4 p-1 overflow-x-auto border-cyan-600 bg-white">            
+            <tr class="text-sm bg-cyan-900 rounded-xl text-white">
+                <th scope="col" class="border-l-2 border-b-2 border-b-white border-cyan-800 border-t-2 border-t-white p-2">S/N</th>
+                <th scope="col" class="border-2 border-cyan p-2">SURNAME</th>
+                <th scope="col" class="border-2 border-cyan p-2">MIDDLE NAME</th>
+                <th scope="col" class="border-2 border-cyan p-2">FIRST NAME</th>
+                <th scope="col" class="border-2 border-cyan p-2">FILE NUMBER</th>
+                <th scope="col" class="border-2 border-cyan p-2">IPPIS NUMBER</th>
+                <th scope="col" class="border-2 border-cyan p-2">SEX</th>
+                <th scope="col" class="border-2 border-cyan p-2" >DEPARTMENT</th>
+                <th scope="col" class="border-2 border-cyan p-2">CURRENT POST</th>
+                <th scope="col" class="border-2 border-cyan p-4">DATE OF FIRST APPOINTMENT</th>
+                <th scope="col" class="border-2 border-cyan-800 text-gray-100 p-2 border-t-2 border-t-white border-b-white">FULL DETAILS</th>
+            </tr>
+        {% for p in profiles %}
+        <tr class="text-xs text-cyan-900 font-semibold">
+           <td class="border-2 border-cyan-800 p-1 text-center">
+            {{forloop.counter}}
+           </td> 
+            <td class="border-2 border-cyan-800 p-4 text-center">
+               {{p.user.last_name|default_if_none:''|upper}}
+            </td>
+            <td class="border-2 border-cyan-800 p-4 text-center">
+                {{p.middlename|default_if_none:''|upper}}
+            </td>
+            <td class="border-2 border-cyan-800 p-4 text-center">
+                {{p.user.first_name|default_if_none:''|upper}}
+            </td>
+            <td class="border-2 border-cyan-800 p-1 text-center">
+                {{p.staff_no|default_if_none:''}}
+            </td>
+            <td class="border-2 border-cyan-800 p-1 text-center">
+                {{p.user.governmentappointment.ippis_no|default_if_none:''}}
+            </td>
+            <td class="border-2 border-cyan-800 p-4 text-center">
+                {{p.gender|default_if_none:''|upper}}
+            </td>
+            <td class="border-2 border-cyan-800 p-2 text-center">                
+                {{p.governmentappointment.department|default_if_none:''|upper}}
+            </td>
+            <td class="border-2 border-cyan-800 p-4 text-center">
+                {{p.user.governmentappointment.cpost|default_if_none:''|upper}}
+            </td>
+            <td class="border-2 border-cyan-800 p-4 text-center">
+                {{p.user.governmentappointment.dofa|date:'d-M-Y'|default_if_none:''|upper}}
+            </td>
+             <td class="p-1 border-2 border-cyan-800"> 
+            <a class="" href="{{p.get_absolute_url}}"><i class="fa-solid fa-folder-open fa-2xl text-orange-800"></i></a>
+                </td> 
+            </tr>
+            {% empty %}
+            <p class="uppercase text-2xl text-blue-500 mt-4 mb-4">NOT FOUND</p>
+            {% endfor %}
+ <tr class="">
+            <td class="p-3 text-center">        
+       <div class="pagination flex justify-between ">
+            <span class="flex items-center">
+                {% if po.has_previous %}
+                <a href="?page=1" class="p-2 px-2 rounded-lg bg-zinc-600 text-white mr-2"><i class="fa-solid fa-angle-double-left fa-lg"></i></a>
+                <a href="?page={{po.previous_page_number}}" class="p-2 px-2 rounded-lg bg-zinc-600 text-white"><i class="fa-solid fa-angle-left fa-lg"></i></a>
+                {% endif %}
+            </span>
+                <span class="text-sm text-gray-700 m-2 font-semibold">
+                    {{po.number}}-{{po.paginator.num_pages}}
+                </span>
+                <span class="flex item-center">
+                    {% if po.has_next %}
+                    <a href="?page={{po.next_page_number}}" class="p-2 px-2 rounded-lg bg-zinc-600 text-white mr-2"><i class="fa-solid fa-angle-right fa-lg"></i></a>
+                    <a href="?page={{po.paginator.num_pages}}" class="p-2 px-2 rounded-lg bg-zinc-600 text-white"><i class="fa-solid fa-angle-double-right fa-lg"></i></a>
+                    {% endif %}
+                </span>
+            </div>
+
+        </td>
+        </tr>
+</tbody>
+</table>
+</div>
+{% endblock %}
