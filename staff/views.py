@@ -39,15 +39,15 @@ class StaffListView(ListView):
     paginate_by=10
 
     def get_queryset(self):
-        profiles=super().get_queryset().filter(profile__file_no=True)
-        staff_filter=StaffFilter(self.request.GET,queryset=profiles)
-        return staff_filter.qs()
-    
+        profiles = super().get_queryset().order_by('file_no')
+        staff_filter = StaffFilter(self.request.GET, queryset=profiles)
+        return staff_filter.qs
+
     def get_context_data(self, **kwargs):
-        context=super().get_context_data(**kwargs)
-        total_profiles=self.get_queryset.count()
-        context['staffFilter']=staffFilter(self.request.GET,queryset=self.get_queryset())
-        context['total_profiles']=total_profiles
+        context = super().get_context_data(**kwargs)
+        total_profiles = self.get_queryset().count()
+        context['staffFilter'] = StaffFilter(self.request.GET, queryset=self.get_queryset())
+        context['total_profiles'] = total_profiles
         return context
 
 

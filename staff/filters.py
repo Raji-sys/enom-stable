@@ -3,7 +3,7 @@ from django import forms
 from .models import *
 
 class StaffFilter(django_filters.FilterSet):
-    file_no=django_filters.CharFilter(label='FILE NO', field_name='profile__file_no')
+    file_no=django_filters.CharFilter(label='FN', field_name='file_no')
 
     class Meta:
         model = Profile
