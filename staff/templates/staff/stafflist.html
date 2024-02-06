@@ -30,18 +30,18 @@
               </span>
             </div>
               
-<div class="w-fit mx-auto p-1 max-sm:p-2 text-sm rounded-lg text-center mt-1">
-  <div class="flex flex-row justify-center text-cyan-900 font-semibold ">
+<div class="w-fit mx-auto p-1 max-sm:p-2 text-sm rounded-lg text-center">
+  <div class="flex flex-row justify-center text-cyan-900 font-semibold m-1">
                 <form method="get" class="text-xs">
-                  <div class="text-center m-2">
+                  <div class="text-center">
                   {% for field in staffFilter.form %}
                     <label for="{{field.id_for_label}}" class="inline">{{ field.label_tag }}</label>
                     <input type="field.field.widget.input_type" name="{{field.name}}"
                     class="text-center text-sm focus:outline-none w-fit text-cyan-950 py-2 
-                    rounded shadow-lg "
+                    rounded shadow-2xl shadow-cyan-900"
                     {%if field.value%} value="{{field.value}}"{%endif%}> 
                     {% endfor %}
-                    <button type="submit" class=" shadow-cyan-900 w-fit p-2 focus:opacity-10 uppercase border-gray-500 focus:border-cyan-600 bg-cyan-900 text-white rounded shadow-lg hover:border-cyan-700 ">
+                    <button type="submit" class="shadow-2xl shadow-cyan-900 w-fit p-2 focus:opacity-10 uppercase border-gray-500 focus:border-cyan-600 bg-cyan-900 text-white rounded hover:border-cyan-700 ">
                       <i class="fa-solid fa-search fa-xl "></i>
                     </button>
                   </div>
