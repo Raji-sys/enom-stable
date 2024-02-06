@@ -3,33 +3,30 @@
 {%block title%}staff list{%endblock%}
 {%block content %}
 
-    {% for message in messages %}
-    <div class="">
-      <hr />
-      <p class="text-cyan-700 uppercase font-bold text-xl">{{ message }}</p>
-      <hr />
+<div class="flex justify center items-center">
+
     </div>
-    {% endfor %}
     <div class="flex justify-center text-md text-red-500">
           {% if form.errors %}
           {{form.errors}}
           {% endif %}
+            {% for message in messages %}
+      <hr />
+      <p class="texte-center text-cyan-700 uppercase font-bold text-xl">{{ message }}</p>
+      <hr />
+      {% endfor %}
         </div>
-          <div class=" text-center m-2">
-                {% if request.GET.urlencode %}
-                <a href="?" class=" px-4 py-2 focus:opacity-10 border-b-4 border-gray-500 focus:border-cyan-600 bg-gradient-to-r
-                from-orange-700 via-orange-600 to-orange-900  text-white  rounded shadow-lg hover:shadow-xl text-center w-full">
-                <i class="fa-solid fa-rotate fa-lg"></i></a>
-                {%else%}
-
-                {%endif%}
-              </div>    
-              <div class="flex justify-between ">
-              <span class="bg-white shadow-2xl shadow-cyan-900 text-cyan-900 uppercase max-sm:text-lg text-sm border-b-2 border-cyan-900 py-3 px-4 rounded-xl mx-2 w-fit font-semibold">stafflist</span>
-              <span class="bg-cyan-900 text-white uppercase max-sm:text-lg text-sm border-b-2 border-cyan-900 py-3 px-4 rounded-xl mx-2 w-fit font-semibold">total
+              <div class="flex justify-end m-1 ">
+              <span class="gap-4 bg-cyan-900 text-white uppercase max-sm:text-lg text-sm border-b-2 border-cyan-900 py-3 px-4 rounded-xl mx-2 w-fit font-semibold">total staff
               <span class=" shadow-white text-sm p-2 rounded-full bg-white text-cyan-900">{{total_profiles}}</span>
               <span>&nbsp;<a class="bg-white  text-cyan-900 uppercase max-sm:text-lg text-md border-b-2 border-cyan-900 py-2 px-2 rounded-xl w-fit font-semibold" 
               href="{% url 'register' %}"><i class="fa-solid fa-plus fa-xl"></i></a></span>
+                <span>
+                {% if request.GET.urlencode %}
+                    <a href="?" class=" p-2 focus:opacity-10  focus:border-cyan-600 bg-orange-500  text-white rounded shadow-lg hover:shadow-xl text-center w-fit">
+                    <i class="fa-solid fa-rotate fa-lg"></i></a>
+                    {%endif%}
+                </span>
               </span>
             </div>
               
@@ -41,14 +38,15 @@
                     <label for="{{field.id_for_label}}" class="inline">{{ field.label_tag }}</label>
                     <input type="field.field.widget.input_type" name="{{field.name}}"
                     class="text-center text-sm focus:outline-none w-fit text-cyan-950 py-2 
-                    rounded shadow-lg hover:border-cyan-700 border border-cyan-900 focus:border-cyan-700"
+                    rounded shadow-lg "
                     {%if field.value%} value="{{field.value}}"{%endif%}> 
                     {% endfor %}
-                    <button type="submit" class="s shadow-cyan-900 w-fit p-2 focus:opacity-10 uppercase border-gray-500 focus:border-cyan-600 bg-cyan-900 text-white rounded shadow-lg hover:border-cyan-700 ">
+                    <button type="submit" class=" shadow-cyan-900 w-fit p-2 focus:opacity-10 uppercase border-gray-500 focus:border-cyan-600 bg-cyan-900 text-white rounded shadow-lg hover:border-cyan-700 ">
                       <i class="fa-solid fa-search fa-xl "></i>
                     </button>
                   </div>
           </form>
+
         </div>
 
     <table class="table-auto mt-0 max-sm:flex flex shadow-2xl shadow-cyan-900 rounded-xl mb-10 items-center justify-center">
@@ -105,11 +103,11 @@
             {% endfor %}
          <tr class="">
             <td class="p-3 text-center">        
-       <div class="flex justify-between ">
+       <div class="flex justify-center items-center">
             <span class="flex items-center">
                   {% if page_obj.has_previous %}
-                <a href="?page=1" class="p-2 px-2 rounded-lg bg-amber-500 text-white mr-2"><i class="fa-solid fa-angle-double-left fa-lg"></i></a>
-                <a href="?page={{page_obj.previous_page_number}}" class="p-2 px-2 rounded-lg bg-amber-500 text-white"><i class="fa-solid fa-angle-left fa-lg"></i></a>
+                <a href="?page=1" class="p-2 px-2 rounded-lg bg-cyan-900 text-white mr-2"><i class="fa-solid fa-angle-double-left fa-lg"></i></a>
+                <a href="?page={{page_obj.previous_page_number}}" class="p-2 px-2 rounded-lg bg-cyan-900 text-white"><i class="fa-solid fa-angle-left fa-lg"></i></a>
                 {% endif %}
             </span>
                 <span class="text-sm text-gray-700 m-2 font-semibold">
@@ -117,8 +115,8 @@
                 </span>
                 <span class="flex item-center">
                     {% if page_obj.has_next %}
-                    <a href="?page={{page_obj.next_page_number}}" class="p-2 px-2 rounded-lg bg-amber-500 text-white mr-2"><i class="fa-solid fa-angle-right fa-lg"></i></a>
-                    <a href="?page={{page_obj.paginator.num_pages}}" class="p-2 px-2 rounded-lg bg-amber-500 text-white"><i class="fa-solid fa-angle-double-right fa-lg"></i></a>
+                    <a href="?page={{page_obj.next_page_number}}" class="p-2 px-2 rounded-lg bg-cyan-900 text-white mr-2"><i class="fa-solid fa-angle-right fa-lg"></i></a>
+                    <a href="?page={{page_obj.paginator.num_pages}}" class="p-2 px-2 rounded-lg bg-cyan-900 text-white"><i class="fa-solid fa-angle-double-right fa-lg"></i></a>
                     {% endif %}
                 </span>
             </div>

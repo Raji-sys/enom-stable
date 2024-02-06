@@ -182,8 +182,7 @@ def reg_anonymous_required(view_function, redirect_to=None):
 class UserRegistrationView(CreateView):
     form_class = CustomUserCreationForm
     template_name = 'registration/register.html'
-    success_url = reverse_lazy('login')
-
+ 
     def form_valid(self, form):
         if form.is_valid():
             response = super().form_valid(form)
@@ -197,7 +196,11 @@ class UserRegistrationView(CreateView):
         else:
             print("Form errors:", form.errors)
             return self.form_invalid(form)
-        
+    def get_success_url(self):
+        if self.request.user.is_superuser:
+            return reverse_lazy('staff')
+        else:
+            return reverse_lazy('index')
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class DocumentationView(UpdateView):
