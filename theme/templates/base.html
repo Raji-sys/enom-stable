@@ -9,8 +9,10 @@
   	<link rel="stylesheet" href="{% static 'fontawesomefree/css/fontawesome.css' %}" type='text/css'>
 		<link rel="stylesheet" href="{% static 'fontawesomefree/css/solid.css' %}" type='text/css'>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+		<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+		<script src="{%static "htmx.min.js"%}"></script>
 </head>
-	<body class="bg-gray-50 leading-normal poppins tracking-normal uppercase">
+	<body class="bg-gray-50 leading-normal tracking-normal uppercase lato">
 			<header class="bg-white rounded-md shadow-2xl shadow-cyan-900 mx-3 p-1">
 					<nav class="flex flex-row max-xs:flex-wrap max-sm:flex-col justify-between mt-0 max-sm:gap-4 gap-10 p-1 rounded-sm">
 						{% if request.user.is_authenticated %}

@@ -38,10 +38,10 @@
                     <label for="{{field.id_for_label}}" class="inline">{{ field.label_tag }}</label>
                     <input type="field.field.widget.input_type" name="{{field.name}}"
                     class="text-center text-sm focus:outline-none w-fit text-cyan-950 py-2 
-                    rounded shadow-2xl shadow-cyan-900"
+                    rounded shadow-xl shadow-cyan-900"
                     {%if field.value%} value="{{field.value}}"{%endif%}> 
                     {% endfor %}
-                    <button type="submit" class="shadow-2xl shadow-cyan-900 w-fit p-2 focus:opacity-10 uppercase border-gray-500 focus:border-cyan-600 bg-cyan-900 text-white rounded hover:border-cyan-700 ">
+                    <button type="submit" class="shadow-xl shadow-cyan-900 w-fit p-2 focus:opacity-10 uppercase border-gray-500 focus:border-cyan-600 bg-cyan-900 text-white rounded hover:border-cyan-700 ">
                       <i class="fa-solid fa-search fa-xl "></i>
                     </button>
                   </div>
