@@ -19,9 +19,14 @@
               <div class="flex justify-end m-1 ">
               <span class="gap-4 bg-cyan-900 text-white uppercase max-sm:text-lg text-sm border-b-2 border-cyan-900 py-3 px-4 rounded-xl mx-2 w-fit font-semibold">total staff
               <span class=" shadow-white text-sm p-2 rounded-full bg-white text-cyan-900">{{total_profiles}}</span>
-              <span>&nbsp;<a class="bg-cyan-900  text-white uppercase max-sm:text-lg text-md border-b-2 border-cyan-900 py-2 px-2 rounded-xl w-fit font-semibold" 
-              href="{% url 'register' %}"><i class="fa-solid fa-plus fa-xl"></i></a></span>
-                <span>
+              <button 
+	id="showButton"
+	hx-get="/register" 
+	hx-target="#modals-here" 
+	class="uk-button uk-button-primary" 
+	_="on htmx:afterOnLoad wait 10ms then add .uk-open to #modal">Open Modal</button>
+
+<div id="modals-here"></div>
                 {% if request.GET.urlencode %}
                     <a href="?" class=" p-2 focus:opacity-10  focus:border-cyan-600 bg-orange-500  text-white rounded shadow-lg hover:shadow-xl text-center w-fit">
                     <i class="fa-solid fa-rotate fa-lg"></i></a>

@@ -5,7 +5,7 @@
 {% block content %}
 <button 
 	id="showButton"
-	hx-get="/modal" 
+	hx-get="/register" 
 	hx-target="#modals-here" 
 	class="uk-button uk-button-primary" 
 	_="on htmx:afterOnLoad wait 10ms then add .uk-open to #modal">Open Modal</button>
