@@ -1,9 +1,15 @@
 from django.urls import path,include
 from .views import *
 from . import views
+from django.views.generic.base import TemplateView
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('modal/', TemplateView.as_view(template_name='modal.html'), name='modal'),
+    path('maintab/', MainTabView.as_view(), name='main'),
+    path('tab1/', Tab1View.as_view(), name='tab1'),
+    path('tab2/', Tab2View.as_view(), name='tab2'),
+    path('tab3/', Tab3View.as_view(), name='tab3'),
+    path('', IndexView.as_view(), name='index'),
     path('manage/', views.manage, name='manage'),
     path('staff/', StaffListView.as_view(), name='staff'),
 

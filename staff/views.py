@@ -1,5 +1,6 @@
 from django.shortcuts import render,get_object_or_404,HttpResponseRedirect
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
+from django.views.generic.base import TemplateView
 from django.views.generic import DetailView, ListView
 from django.views import View
 from .forms import CustomUserCreationForm
@@ -15,15 +16,29 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
+class MainTabView(TemplateView):
+    template_name = "maintab.html"
+
+class Tab1View(TemplateView):
+    template_name = "tab1.html"
+
+class Tab2View(TemplateView):
+    template_name = "tab2.html"
+
+class Tab3View(TemplateView):
+    template_name = "tab3.html"
+
+
+
 def log_anonymous_required(view_function, redirect_to=None):
     if redirect_to is None:
         redirect_to = '/'
     return user_passes_test(lambda u: not u.is_authenticated,login_url=redirect_to)(view_function)
 
 
-@login_required
-def index(request):
-    return render(request, 'index.html')
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class IndexView(TemplateView):
+    template_name= "index.html"
 
 
 @login_required

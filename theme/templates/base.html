@@ -10,7 +10,10 @@
 		<link rel="stylesheet" href="{% static 'fontawesomefree/css/solid.css' %}" type='text/css'>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
 		<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
-		<script src="{%static "htmx.min.js"%}"></script>
+		<script src="{%static 'htmx.min.js'%}"></script>
+		<script src="{%static 'uikit-3.18.1/js/uikit.js'%}"></script>
+		<script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
+		<link rel="stylesheet" href="{%static 'uikit-3.18.1/css/uikit.css'%}" type="text/css">
 </head>
 	<body class="bg-gray-50 leading-normal tracking-normal uppercase lato">
 			<header class="bg-white rounded-md shadow-2xl shadow-cyan-900 mx-3 p-1">
@@ -36,6 +39,8 @@
 				</header>
 				<div class="">
 				{% block content %}{% endblock %}
-				</div>		
+				</div>
+				<script>
+				</script>		
 	</body>
 </html>

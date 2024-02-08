@@ -1,0 +1,15 @@
+{%extends "base.html" %}
+
+{% block title %}profile{% endblock%}
+
+{% block content %}
+<button 
+	id="showButton"
+	hx-get="/modal" 
+	hx-target="#modals-here" 
+	class="uk-button uk-button-primary" 
+	_="on htmx:afterOnLoad wait 10ms then add .uk-open to #modal">Open Modal</button>
+
+<div id="modals-here"></div>
+<div id="tabs" hx-get="/tab1" hx-trigger="load" hx-target="#tabs" hx-swap="innerHTML"></div>
+{%endblock%}
