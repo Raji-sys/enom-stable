@@ -2,28 +2,23 @@
 {% load static %}
 {% block title %}Create an account{% endblock %}
 {% block content %}
-<div id="modal" class="uk-modal" style="display:block;">
-	<div class="uk-modal-dialog uk-modal-body">
-		<h2 class="uk-modal-title">Modal Dialog</h2>
-		<p>This modal dialog was loaded dynamically by HTMX.</p>
 
-	<div class="font-semibold uppercase text-sm sm:max-w-lg px-16 shadow-2xl overflow-hidden shadow-cyan-900 rounded-xl bg-white">
-    <section class="text-center border-b-2 border-cyan-700 p-4 mb-4">
-      <h2 class="text-white bg-cyan-900 w-fit p-2 rounded-xl uppercase text-md">fill this form to register</h2>
-           {% for message in messages %}
-      <div class="mt-4">
-        <hr />
+<div class="flex justify-center m-10 pb-10">
+  <div class="font-semibold uppercase text-sm sm:max-w-lg px-16 shadow-2xl border-double border-cyan-800 overflow-hidden shadow-teal-900 rounded-xl bg-white">
+    <section class="text-center border-b-2 border-cyan-700 p-2">
+      <h2 class="text-white bg-cyan-900 w-fit p-2 rounded-xl uppercase text-xs m-1">fill this form to register</h2>
+      {% for message in messages %}
+      <div class="">
         <p class="text-green-700 uppercase font-bold text-md">{{ message }}</p>
-        <hr />
       </div>
       {% endfor %}
       <div class="flex justify-center text-md text-red-500">
-          {% if form.errors %}
-          {{form.errors}}
-          {% endif %}
-        </div>
+        {% if form.errors %}
+        {{form.errors}}
+        {% endif %}
+      </div>
     </section>
-    <form method="POST" class="text-xs">
+    <form action="" method="POST" class="text-xs">
       {% csrf_token %}
       <div class="mb-1 uppercase text-cyan-900">
         <div class="flex justify-center">
@@ -114,16 +109,5 @@
       </div>
     </form>
   </div>
-
-			<button 
-				id="cancelButton"
-				type="button" 
-				class="uk-button uk-button-default" 
-				_="on click take .uk-open from #modal wait 200ms then remove #modal">Close</button>
-		</form>
-	</div>
 </div>
-
-<div class="flex justify-center m-10">
-  </div>
 {% endblock %}
