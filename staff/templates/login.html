@@ -12,12 +12,12 @@
         <p class="text-green-700 uppercase font-bold text-md">{{ message }}</p>
       </div>
       {% endfor %}
-      <div class="flex justify-center text-md text-red-500">
+    </section>
+      <div class="block text-sm text-red-500">
           {% if form.errors %}
           {{form.errors}}
           {% endif %}
-        </div>
-    </section>
+      </div>
     <form action="" method="POST" class="text-xs ">
       {% csrf_token %}
       <div class="mb-2 uppercase text-cyan-900">
@@ -25,8 +25,10 @@
           <label for="uname">username</label>
         </div>
         <div class="flex justify-center mb-6">
+          
           <input
-            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-3 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700"
+            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-3 rounded shadow-lg
+             hover:border-cyan-700 focus:border-cyan-700"
             type="text"
             name="username"
             id="uname"
@@ -37,7 +39,8 @@
         </div>
         <div class="flex justify-center mb-4">
           <input
-            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-3 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700"
+            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-3 rounded shadow-lg
+             hover:border-cyan-700 focus:border-cyan-700"
             type="password"
             name="password"
             id="password"
