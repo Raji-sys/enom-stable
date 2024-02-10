@@ -1,8 +1,8 @@
     <div class="tab-list" role="tablist">
-        <button hx-get="/personal_info"  role="tab" aria-selected="false" aria-controls="tab-content">Bio Data</button>
+        <button hx-get="/bio-data"  role="tab" aria-selected="false" aria-controls="tab-content">Bio Data</button>
         <button hx-get="/qual" role="tab" aria-selected="false" aria-controls="tab-content">Qualification</button>
-        <button hx-get="/pro_qual" role="tab" aria-selected="false" aria-controls="tab-content">Professional Qualification</button>
-        <button hx-get="/tab2" class="selected" role="tab" aria-selected="false" aria-controls="tab-content">Government Appointment</button>
+        <button hx-get="/pro_qual" class="selected" role="tab" aria-selected="false" aria-controls="tab-content">Professional Qualification</button>
+        <button hx-get="/govapp" role="tab" aria-selected="false" aria-controls="tab-content">Government Appointment</button>
         <button hx-get="/leave" role="tab" aria-selected="false" aria-controls="tab-content">Leave</button>
         <button hx-get="/promotion" role="tab" aria-selected="false" aria-controls="tab-content">Promotion</button>
         <button hx-get="/discipline" role="tab" aria-selected="false" aria-controls="tab-content">Discipline</button>
@@ -11,9 +11,17 @@
     </div>
     
     <div id="tab-content" role="tabpanel" class="tab-content">
-        <p>Government Appointment Info</p>
-        <p>post:{{govapp.cpost}}</p>
+        <p>Professional Qualification Info</p>
+        <h1>professional qualification</h1>
+<a href="{%url 'pro_qual' username=profile.user.username %}">add<br>
   <hr>
-<a href="{%url 'update_govapp' profile.pk %}">update govt appt</a><br>
+{% for p in pro_qualifications %}
+    <p>{{ p.institute }}</p>
+    <p>{{ p.inst_address }}</p>
+    <a href="{%url 'pro_qual_update' p.pk %}">update</a><br>
+<a href="{%url 'pro_qual_delete' p.pk %}">delete</a><br>
+    <hr>
+{% endfor %}
 <br><hr>
+
     </div>

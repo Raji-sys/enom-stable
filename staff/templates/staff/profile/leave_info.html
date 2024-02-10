@@ -1,9 +1,9 @@
     <div class="tab-list" role="tablist">
-        <button hx-get="/personal_info"  role="tab" aria-selected="false" aria-controls="tab-content">Bio Data</button>
+        <button hx-get="/bio-data"  role="tab" aria-selected="false" aria-controls="tab-content">Bio Data</button>
         <button hx-get="/qual" role="tab" aria-selected="false" aria-controls="tab-content">Qualification</button>
         <button hx-get="/pro_qual" role="tab" aria-selected="false" aria-controls="tab-content">Professional Qualification</button>
-        <button hx-get="/tab2" class="selected" role="tab" aria-selected="false" aria-controls="tab-content">Government Appointment</button>
-        <button hx-get="/leave" role="tab" aria-selected="false" aria-controls="tab-content">Leave</button>
+        <button hx-get="/govapp" role="tab" aria-selected="false" aria-controls="tab-content">Government Appointment</button>
+        <button hx-get="/leave" class="selected" role="tab" aria-selected="false" aria-controls="tab-content">Leave</button>
         <button hx-get="/promotion" role="tab" aria-selected="false" aria-controls="tab-content">Promotion</button>
         <button hx-get="/discipline" role="tab" aria-selected="false" aria-controls="tab-content">Discipline</button>
         <button hx-get="/execapp" role="tab" aria-selected="false" aria-controls="tab-content">Executive Appointment</button>
@@ -11,9 +11,17 @@
     </div>
     
     <div id="tab-content" role="tabpanel" class="tab-content">
-        <p>Government Appointment Info</p>
-        <p>post:{{govapp.cpost}}</p>
+        <p>Leave Info</p>
+        <h1>leave</h1>
+<a href="{%url 'leave' username=profile.user.username %}">add<br>
   <hr>
-<a href="{%url 'update_govapp' profile.pk %}">update govt appt</a><br>
+{% for l in leave %}
+    <p>{{ l.nature }}</p>
+    <p>{{ l.year }}</p>
+    <a href="{%url 'leave_update' l.pk %}">update</a><br>
+    <a href="{%url 'leave_delete' l.pk %}">delete</a><br>
+    <hr>
+{% endfor %}
 <br><hr>
+
     </div>

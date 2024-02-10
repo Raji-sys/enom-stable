@@ -197,7 +197,8 @@ def reg_anonymous_required(view_function, redirect_to=None):
 class UserRegistrationView(CreateView):
     form_class = CustomUserCreationForm
     template_name = 'registration/register.html'
- 
+
+
     def form_valid(self, form):
         if form.is_valid():
             response = super().form_valid(form)
@@ -216,6 +217,7 @@ class UserRegistrationView(CreateView):
             return reverse_lazy('staff')
         else:
             return reverse_lazy('index')
+        
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class DocumentationView(UpdateView):
@@ -348,6 +350,28 @@ class ProfileDetailView(DetailView):
         context['Disciplineform'] = DisciplineForm()
         context['Execappform'] = ExecappForm()
         context['Retireform'] = RetireForm()
+        return context
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class GovappDetailView(DetailView):
+    template_name = 'staff/profile/govapp_info.html'
+    model = Profile
+
+    def get_object(self, queryset=None):
+        if self.request.user.is_superuser:
+            username_from_url = self.kwargs.get('username')
+            user = get_object_or_404(User, username=username_from_url)
+        else:
+            user = self.request.user
+        return get_object_or_404(Profile, user=user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = context['object']
+
+
+        context['govapp'] = get_object_or_404(GovernmentAppointment, user=profile.user)
         return context
 
 

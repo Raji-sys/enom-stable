@@ -3,20 +3,24 @@
 {% block title %}profile{% endblock%}
 
 {% block content %}
-
-  <h1 class="text-xl text-black text-center p-2 shadow-sm rounded-xl mt-20 ">{{profile.user.get_full_name|default_if_none:''|upper}} </h1>
-     <div class="flex justify-center text-md text-blue-500">
-          {% if messages %}
-          {%for m in messages%}
-         <p {% if m.tags%} class="{{m.tags}}"{%endif%}>{{m}}</p>
-           {%endfor%}
-          {% endif %}
-        </div>
-<h1>
-  {%if not profile.file_no %}
-  <a href="{%url 'doc' profile.user.pk %}">start documentation</a>
-  {%endif%}
-</h1>
+<div data-tabs>
+    <input checked="checked" id="tab1" type="radio" name="tab" data-tab="tab1" />
+    <input id="tab2" type="radio" name="tab" data-tab="tab2" />
+    <input id="tab3" type="radio" name="tab" data-tab="tab3" />
+    <input id="tab4" type="radio" name="tab" data-tab="tab4" />
+    <input id="tab5" type="radio" name="tab" data-tab="tab5" />
+    <input id="tab6" type="radio" name="tab" data-tab="tab6" />
+    <input id="tab7" type="radio" name="tab" data-tab="tab7" />
+    <nav>
+      <label for="tab1" data-tab-label="tab1" role="tab">First Tab</label>
+      <label for="tab2" data-tab-label="tab2" role="tab">Second Tab</label>
+      <label for="tab3" data-tab-label="tab3" role="tab">Third Tab</label>
+      <label for="tab4" data-tab-label="tab4" role="tab">Four Tab</label>
+      <label for="tab5" data-tab-label="tab5" role="tab">Five Tab</label>
+      <label for="tab6" data-tab-label="tab6" role="tab">Six Tab</label>
+      <label for="tab7" data-tab-label="tab7" role="tab">Seven Tab</label>
+    </nav>
+    <section data-tab-panel="tab1" role="tabpanel" aria-labelledby="tab1">
 <p>
   dob:{{profile.dob|default_if_none:''}}
 </p>
@@ -25,12 +29,17 @@
   file number:{{profile.file_no|default_if_none:''}}
 </p>
 <br><hr>
-<p>post:{{govapp.cpost}}</p>
-  <hr>
 <a href="{%url 'update_user' profile.user.pk %}">update user</a><br>
 <a href="{%url 'update_profile' profile.pk %}">update profile</a><br>
+    </section>
+      <section data-tab-panel="tab2" role="tabpanel" aria-labelledby="tab2">
+<p>post:{{govapp.cpost}}</p>
+  <hr>
+
 <a href="{%url 'update_govapp' profile.pk %}">update govt appt</a><br>
 <br><hr>
+    </section>
+    <section data-tab-panel="tab3" role="tabpanel" aria-labelledby="tab3">
 <h1>qualification</h1>
 <a href="{%url 'qual' username=profile.user.username %}">add<br>
   <hr>
@@ -43,6 +52,8 @@
 {% endfor %}
 <br><hr>
 
+    </section>
+    <section data-tab-panel="tab4" role="tabpanel" aria-labelledby="tab4">
 <h1>professional qualification</h1>
 <a href="{%url 'pro_qual' username=profile.user.username %}">add<br>
   <hr>
@@ -55,6 +66,8 @@
 {% endfor %}
 <br><hr>
 
+    </section>
+    <section data-tab-panel="tab5" role="tabpanel" aria-labelledby="tab5">
 <h1>promotion</h1>
 <a href="{%url 'promotion' username=profile.user.username %}">add<br>
   <hr>
@@ -68,6 +81,9 @@
 {% endfor %}
 <br><hr>
 
+    </section>
+    <section data-tab-panel="tab6" role="tabpanel" aria-labelledby="tab6">
+
 <h1>discipline</h1>
 <a href="{%url 'discipline' username=profile.user.username %}">add<br>
   <hr>
@@ -80,6 +96,8 @@
 {% endfor %}
 <br><hr>
 
+    </section>
+    <section data-tab-panel="tab7" role="tabpanel" aria-labelledby="tab7">
 <h1>leave</h1>
 <a href="{%url 'leave' username=profile.user.username %}">add<br>
   <hr>
@@ -91,6 +109,27 @@
     <hr>
 {% endfor %}
 <br><hr>
+    </section>
+  </div>
+<h1 class="text-xl text-black text-center p-2 shadow-sm rounded-xl mt-20 ">{{profile.user.get_full_name|default_if_none:''|upper}} </h1>
+     <div class="flex justify-center text-md text-blue-500">
+          {% if messages %}
+          {%for m in messages%}
+         <p {% if m.tags%} class="{{m.tags}}"{%endif%}>{{m}}</p>
+           {%endfor%}
+          {% endif %}
+        </div>
+<h1>
+  {%if not profile.file_no %}
+  <a href="{%url 'doc' profile.user.pk %}">start documentation</a>
+  {%endif%}
+</h1>
+
+
+
+
+
+
 
 <h1>executive appointment</h1>
 <a href="{%url 'execapp' username=profile.user.username %}">add<br>
