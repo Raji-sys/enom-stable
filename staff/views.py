@@ -16,20 +16,6 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-class MainTabView(TemplateView):
-    template_name = "maintab.html"
-
-class Tab1View(TemplateView):
-    template_name = "tab1.html"
-
-class Tab2View(TemplateView):
-    template_name = "tab2.html"
-
-class Tab3View(TemplateView):
-    template_name = "tab3.html"
-
-
-
 def log_anonymous_required(view_function, redirect_to=None):
     if redirect_to is None:
         redirect_to = '/'
@@ -197,8 +183,7 @@ def reg_anonymous_required(view_function, redirect_to=None):
 class UserRegistrationView(CreateView):
     form_class = CustomUserCreationForm
     template_name = 'registration/register.html'
-
-
+    success_url=""
     def form_valid(self, form):
         if form.is_valid():
             response = super().form_valid(form)
@@ -217,7 +202,31 @@ class UserRegistrationView(CreateView):
             return reverse_lazy('staff')
         else:
             return reverse_lazy('index')
-        
+
+
+# @method_decorator(reg_anonymous_required, name='dispatch')
+# class UserRegView(CreateView):
+#     form_class = CustomUserCreationForm
+#     template_name = 'registration/reg.html'
+#     success_url=""
+#     def form_valid(self, form):
+#         if form.is_valid():
+#             response = super().form_valid(form)
+#             user = User.objects.get(username=form.cleaned_data['username'])
+#             profile_instance = Profile(user=user)
+#             profile_instance.save()
+#             govapp_instance = GovernmentAppointment(user=user)
+#             govapp_instance.save()
+#             messages.success(self.request, f"Registration for: {user.get_full_name()} was successful")
+#             return response
+#         else:
+#             print("Form errors:", form.errors)
+#             return self.form_invalid(form)
+#     def get_success_url(self):
+#         if self.request.user.is_superuser:
+#             return reverse_lazy('staff')
+#         else:
+#             return reverse_lazy('index')
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class DocumentationView(UpdateView):
@@ -355,7 +364,7 @@ class ProfileDetailView(DetailView):
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class GovappDetailView(DetailView):
-    template_name = 'staff/profile/govapp_info.html'
+    template_name = 'staff//profile_details.html'
     model = Profile
 
     def get_object(self, queryset=None):

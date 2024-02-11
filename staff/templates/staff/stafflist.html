@@ -4,7 +4,6 @@
 {%block content %}
 
 <div class="flex justify center items-center">
-
     </div>
     <div class="flex justify-center text-md text-red-500">
           {% if form.errors %}
@@ -16,26 +15,24 @@
       <hr />
       {% endfor %}
         </div>
-        
               <div class="flex justify-end m-1 ">
               <span class="gap-4 bg-cyan-900 text-white uppercase max-sm:text-lg text-sm border-b-2 border-cyan-900 py-3 px-4 rounded-xl mx-2 w-fit font-semibold">total staff
               <span class=" shadow-white text-sm p-2 rounded-full bg-white text-cyan-900">{{total_profiles}}</span>
               <span>&nbsp;<a class="bg-cyan-900  text-white uppercase max-sm:text-lg text-md border-b-2 border-cyan-900 py-2 px-2 rounded-xl w-fit font-semibold" 
-              href="{% url 'register' %}"><i class="fa-solid fa-plus fa-xl"></i></a></span>
+              href="#modal"><i class="fa-solid fa-plus fa-xl"></i></a></span>
+              <div id="modal" data-modal>
 
-<div id="modal" data-modal>
   <!-- Modal  -->
   <div id="dialog" data-modal-dialog role="dialog" aria-modal="true" aria-labelledby="dialog-title" tabindex="-1">
     <h3 id="dialog-title">Modal title</h3>
-    {%include 'registration/register.html' %}
-    <a href="#" data-modal-close>
-      <i class="fa-solid fa-times fa-xl"></i>
+    {%include 'registration/reg.html'%}
+    <a href="#" data-modal-close class="bg-red-600 p-2 rounded-full">
+        <i class="fa-solid fa-times fa-xl text-white"></i>
     </a>
   </div>
   <!-- Background, click to close -->
   <a href="#" data-modal-overlay></a>
 </div>
-<div class="preview style=text-align:center"><a href=#modal class="btn btn-primary btn-lg px-4 mb-2">Open Modal</a></div>
                 <span>
                 {% if request.GET.urlencode %}
                     <a href="?" class=" p-2 focus:opacity-10  focus:border-cyan-600 bg-orange-500  text-white rounded shadow-lg hover:shadow-xl text-center w-fit">

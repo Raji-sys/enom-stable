@@ -3,24 +3,43 @@
 {% block title %}profile{% endblock%}
 
 {% block content %}
-<div data-tabs>
-    <input checked="checked" id="tab1" type="radio" name="tab" data-tab="tab1" />
-    <input id="tab2" type="radio" name="tab" data-tab="tab2" />
+<div class="text-black text-center p-2 rounded-xl mt-2">
+  <p class="text-md font-bold">{{profile.user.get_full_name|default_if_none:''|upper}} </p>
+    {%if not profile.file_no %}
+    <a href="{%url 'doc' profile.user.pk %}" class="text-cyan-900 text-lg font-semibold">start documentation</a>
+    {%endif%}
+</div>
+
+     <div class="flex justify-center text-md text-blue-500">
+          {% if messages %}
+          {%for m in messages%}
+         <p {% if m.tags%} class="{{m.tags}}"{%endif%}>{{m}}</p>
+           {%endfor%}
+          {% endif %}
+        </div>
+<div class="min-h-screen mt-10">
+<div data-tabs class="flex flex-wrap max-sm:flex-col max-sm:gap-4 p-2 justify-center max-sm:pb-2 pb-4 max-w-full">
+     <input checked="checked" id="tab1" type="radio" name="tab" data-tab="tab1" />
+     <input id="tab2" type="radio" name="tab" data-tab="tab2" />
     <input id="tab3" type="radio" name="tab" data-tab="tab3" />
     <input id="tab4" type="radio" name="tab" data-tab="tab4" />
     <input id="tab5" type="radio" name="tab" data-tab="tab5" />
     <input id="tab6" type="radio" name="tab" data-tab="tab6" />
     <input id="tab7" type="radio" name="tab" data-tab="tab7" />
-    <nav>
-      <label for="tab1" data-tab-label="tab1" role="tab">First Tab</label>
-      <label for="tab2" data-tab-label="tab2" role="tab">Second Tab</label>
-      <label for="tab3" data-tab-label="tab3" role="tab">Third Tab</label>
-      <label for="tab4" data-tab-label="tab4" role="tab">Four Tab</label>
-      <label for="tab5" data-tab-label="tab5" role="tab">Five Tab</label>
-      <label for="tab6" data-tab-label="tab6" role="tab">Six Tab</label>
-      <label for="tab7" data-tab-label="tab7" role="tab">Seven Tab</label>
+    <input id="tab8" type="radio" name="tab" data-tab="tab8" />
+    <input id="tab9" type="radio" name="tab" data-tab="tab9" />
+    <nav class="m-6 font-semibold text-sm shadow-2xl shadow-slate-800 p-4 rounded-xl">
+      <label for="tab1" data-tab-label="tab1" role="tab"><i class="fa-solid fa-circle-info fa-2xl text-teal-800"></i>&nbsp;PERSONAL INFO</label>
+      <label for="tab2" data-tab-label="tab2" role="tab"><i class="fa-solid fa-file-contract fa-2xl text-green-800"></i>&nbsp;GOVT APPT</label>
+      <label for="tab3" data-tab-label="tab3" role="tab"><i class="fa-solid fa-graduation-cap fa-2xl text-indigo-900"></i>&nbsp;QUALIFICATIONS</label>
+      <label for="tab4" data-tab-label="tab4" role="tab"><i class="fa-solid fa-graduation-cap fa-2xl text-cyan-900"></i>&nbsp;PROFESSIONAL QUALIFICATIONS</label>
+      <label for="tab5" data-tab-label="tab5" role="tab"><i class="fa-solid fa-person-arrow-up-from-line fa-2xl text-emerald-900"></i>&nbsp;PROMOTION</label>
+      <label for="tab6" data-tab-label="tab6" role="tab"><i class="fa-solid fa-circle-exclamation fa-2xl text-rose-900"></i>&nbsp;DISCIPLINE</label>
+      <label for="tab7" data-tab-label="tab7" role="tab"><i class="fa-solid fa-bed fa-2xl text-yellow-900"></i>&nbsp;LEAVE</label>
+      <label for="tab8" data-tab-label="tab8" role="tab"><i class="fa-solid fa-user-tie fa-2xl text-blue-900"></i>&nbsp;EXECUTIVE APPT</label>
+      <label for="tab9" data-tab-label="tab9" role="tab"><i class="fa-solid fa-person-walking-with-cane fa-2xl text-orange-900"></i>&nbsp;RETIREMENT</label>
     </nav>
-    <section data-tab-panel="tab1" role="tabpanel" aria-labelledby="tab1">
+    <section data-tab-panel="tab1" role="tabpanel" aria-labelledby="tab1" class="w-full  p-2 shadow-xl justify-center bg-teal-700 text-center text-sm rounded-xl">
 <p>
   dob:{{profile.dob|default_if_none:''}}
 </p>
@@ -32,14 +51,14 @@
 <a href="{%url 'update_user' profile.user.pk %}">update user</a><br>
 <a href="{%url 'update_profile' profile.pk %}">update profile</a><br>
     </section>
-      <section data-tab-panel="tab2" role="tabpanel" aria-labelledby="tab2">
+      <section data-tab-panel="tab2" role="tabpanel" aria-labelledby="tab2" class="w-full p-2 shadow-xl justify-center bg-green-700 text-center text-sm  rounded-xl">
 <p>post:{{govapp.cpost}}</p>
   <hr>
 
 <a href="{%url 'update_govapp' profile.pk %}">update govt appt</a><br>
 <br><hr>
     </section>
-    <section data-tab-panel="tab3" role="tabpanel" aria-labelledby="tab3">
+    <section data-tab-panel="tab3" role="tabpanel" aria-labelledby="tab3" class="w-full p-2 shadow-xl justify-center bg-indigo-700 text-center text-sm  rounded-xl">
 <h1>qualification</h1>
 <a href="{%url 'qual' username=profile.user.username %}">add<br>
   <hr>
@@ -51,9 +70,8 @@
     <hr>
 {% endfor %}
 <br><hr>
-
     </section>
-    <section data-tab-panel="tab4" role="tabpanel" aria-labelledby="tab4">
+    <section data-tab-panel="tab4" role="tabpanel" aria-labelledby="tab4" class="w-full p-2 shadow-xl justify-center bg-cyan-700 text-center text-xs rounded-xl">
 <h1>professional qualification</h1>
 <a href="{%url 'pro_qual' username=profile.user.username %}">add<br>
   <hr>
@@ -65,9 +83,8 @@
     <hr>
 {% endfor %}
 <br><hr>
-
     </section>
-    <section data-tab-panel="tab5" role="tabpanel" aria-labelledby="tab5">
+    <section data-tab-panel="tab5" role="tabpanel" aria-labelledby="tab5" class="w-full p-2 shadow-xl justify-center bg-emerald-700 text-center text-xs  rounded-xl">
 <h1>promotion</h1>
 <a href="{%url 'promotion' username=profile.user.username %}">add<br>
   <hr>
@@ -82,7 +99,7 @@
 <br><hr>
 
     </section>
-    <section data-tab-panel="tab6" role="tabpanel" aria-labelledby="tab6">
+    <section data-tab-panel="tab6" role="tabpanel" aria-labelledby="tab6" class="w-full p-2 shadow-xl justify-center bg-rose-700 text-center text-xs  rounded-xl">
 
 <h1>discipline</h1>
 <a href="{%url 'discipline' username=profile.user.username %}">add<br>
@@ -97,7 +114,7 @@
 <br><hr>
 
     </section>
-    <section data-tab-panel="tab7" role="tabpanel" aria-labelledby="tab7">
+    <section data-tab-panel="tab7" role="tabpanel" aria-labelledby="tab7" class="w-full p-2 shadow-xl justify-center bg-yellow-700 text-center text-xs  rounded-xl">
 <h1>leave</h1>
 <a href="{%url 'leave' username=profile.user.username %}">add<br>
   <hr>
@@ -110,27 +127,7 @@
 {% endfor %}
 <br><hr>
     </section>
-  </div>
-<h1 class="text-xl text-black text-center p-2 shadow-sm rounded-xl mt-20 ">{{profile.user.get_full_name|default_if_none:''|upper}} </h1>
-     <div class="flex justify-center text-md text-blue-500">
-          {% if messages %}
-          {%for m in messages%}
-         <p {% if m.tags%} class="{{m.tags}}"{%endif%}>{{m}}</p>
-           {%endfor%}
-          {% endif %}
-        </div>
-<h1>
-  {%if not profile.file_no %}
-  <a href="{%url 'doc' profile.user.pk %}">start documentation</a>
-  {%endif%}
-</h1>
-
-
-
-
-
-
-
+    <section data-tab-panel="tab8" role="tabpanel" aria-labelledby="tab8" class="w-full p-2 shadow-xl justify-center bg-blue-700 text-center text-xs  rounded-xl">
 <h1>executive appointment</h1>
 <a href="{%url 'execapp' username=profile.user.username %}">add<br>
   <hr>
@@ -142,7 +139,8 @@
     <hr>
 {% endfor %}
 <br><hr>
-
+    </section>
+    <section data-tab-panel="tab9" role="tabpanel" aria-labelledby="tab9" class="w-full p-2 shadow-xl justify-center bg-orange-700 text-center text-xs  rounded-xl">
 <h1>retire</h1>
 {% if not profile.user.retirement %}
 <a href="{%url 'retire' username=profile.user.username %}">add<br>
@@ -156,4 +154,7 @@
     <hr>
 {% endfor %}
 <br><hr>
+    </section>
+  </div>
+  </div>
 {% endblock %}

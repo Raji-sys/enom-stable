@@ -1,20 +1,8 @@
 from django.urls import path,include
 from .views import *
 from . import views
-from django.views.generic.base import TemplateView
 
 urlpatterns = [
-    path('modal/', TemplateView.as_view(template_name='modal.html'), name='modal'),
-    path('maintab/', MainTabView.as_view(), name='main'),
-    path('bio-data/', TemplateView.as_view(template_name="staff/profile/personal_info.html"), name='bio'),
-    path('govapp/', GovappDetailView.as_view(), name='govapp'),
-    path('qual/', TemplateView.as_view(template_name="staff/profile/qual_info.html"), name='qual'),
-    path('pro-qual/', TemplateView.as_view(template_name="staff/profile/pro_qual_info.html"), name='pro_qual'),
-    path('leave/', TemplateView.as_view(template_name="staff/profile/leave_info.html"), name='leave'),
-    path('promotion/', TemplateView.as_view(template_name="staff/profile/promotion_info.html"), name='promotion'),
-    path('discipline/', TemplateView.as_view(template_name="staff/profile/discipline_info.html"), name='discipline'),
-    path('execapp/', TemplateView.as_view(template_name="staff/profile/execapp_info.html"), name='execapp'),
-    path('retirement/', TemplateView.as_view(template_name="staff/profile/retirement_info.html"), name='retirement'),
     path('', IndexView.as_view(), name='index'),
     path('manage/', views.manage, name='manage'),
     path('staff/', StaffListView.as_view(), name='staff'),
@@ -40,6 +28,7 @@ urlpatterns = [
     
     path('login/', CustomLoginView.as_view(), name='login'),
     path('register/', UserRegistrationView.as_view(), name='register'),
+    path('reg/', UserRegistrationView.as_view(), name='reg'),
     
     path('documentation/<int:pk>/', DocumentationView.as_view(), name='doc'),
     
