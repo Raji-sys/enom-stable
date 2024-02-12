@@ -4,7 +4,9 @@
 
 {% block content %}
 <div class="text-black text-center p-2 rounded-xl mt-2">
-  <p class="text-md font-bold">{{profile.user.get_full_name|default_if_none:''|upper}} </p>
+  <span class="text-md font-bold">{{profile.user.get_full_name|default_if_none:''|upper}} 
+    <!-- <a href="{%url 'update_user' profile.user.pk %}">update user</a> -->
+  </span>
     {%if not profile.file_no %}
     <a href="{%url 'doc' profile.user.pk %}" class="text-cyan-900 text-lg font-semibold">start documentation</a>
     {%endif%}
@@ -17,144 +19,381 @@
            {%endfor%}
           {% endif %}
         </div>
-<div class="min-h-screen mt-10">
-<div data-tabs class="flex flex-wrap max-sm:flex-col max-sm:gap-4 p-2 justify-center max-sm:pb-2 pb-4 max-w-full">
-     <input checked="checked" id="tab1" type="radio" name="tab" data-tab="tab1" />
-     <input id="tab2" type="radio" name="tab" data-tab="tab2" />
-    <input id="tab3" type="radio" name="tab" data-tab="tab3" />
-    <input id="tab4" type="radio" name="tab" data-tab="tab4" />
-    <input id="tab5" type="radio" name="tab" data-tab="tab5" />
-    <input id="tab6" type="radio" name="tab" data-tab="tab6" />
-    <input id="tab7" type="radio" name="tab" data-tab="tab7" />
-    <input id="tab8" type="radio" name="tab" data-tab="tab8" />
-    <input id="tab9" type="radio" name="tab" data-tab="tab9" />
-    <nav class="m-6 font-semibold text-sm shadow-2xl shadow-slate-800 p-4 rounded-xl">
-      <label for="tab1" data-tab-label="tab1" role="tab"><i class="fa-solid fa-circle-info fa-2xl text-teal-800"></i>&nbsp;PERSONAL INFO</label>
-      <label for="tab2" data-tab-label="tab2" role="tab"><i class="fa-solid fa-file-contract fa-2xl text-green-800"></i>&nbsp;GOVT APPT</label>
-      <label for="tab3" data-tab-label="tab3" role="tab"><i class="fa-solid fa-graduation-cap fa-2xl text-indigo-900"></i>&nbsp;QUALIFICATIONS</label>
-      <label for="tab4" data-tab-label="tab4" role="tab"><i class="fa-solid fa-graduation-cap fa-2xl text-cyan-900"></i>&nbsp;PROFESSIONAL QUALIFICATIONS</label>
-      <label for="tab5" data-tab-label="tab5" role="tab"><i class="fa-solid fa-person-arrow-up-from-line fa-2xl text-emerald-900"></i>&nbsp;PROMOTION</label>
-      <label for="tab6" data-tab-label="tab6" role="tab"><i class="fa-solid fa-circle-exclamation fa-2xl text-rose-900"></i>&nbsp;DISCIPLINE</label>
-      <label for="tab7" data-tab-label="tab7" role="tab"><i class="fa-solid fa-bed fa-2xl text-yellow-900"></i>&nbsp;LEAVE</label>
-      <label for="tab8" data-tab-label="tab8" role="tab"><i class="fa-solid fa-user-tie fa-2xl text-blue-900"></i>&nbsp;EXECUTIVE APPT</label>
-      <label for="tab9" data-tab-label="tab9" role="tab"><i class="fa-solid fa-person-walking-with-cane fa-2xl text-orange-900"></i>&nbsp;RETIREMENT</label>
-    </nav>
-    <section data-tab-panel="tab1" role="tabpanel" aria-labelledby="tab1" class="w-full  p-2 shadow-xl justify-center bg-teal-700 text-center text-sm rounded-xl">
-<p>
-  dob:{{profile.dob|default_if_none:''}}
-</p>
-<br><hr>
-<p>
-  file number:{{profile.file_no|default_if_none:''}}
-</p>
-<br><hr>
-<a href="{%url 'update_user' profile.user.pk %}">update user</a><br>
-<a href="{%url 'update_profile' profile.pk %}">update profile</a><br>
-    </section>
-      <section data-tab-panel="tab2" role="tabpanel" aria-labelledby="tab2" class="w-full p-2 shadow-xl justify-center bg-green-700 text-center text-sm  rounded-xl">
-<p>post:{{govapp.cpost}}</p>
-  <hr>
+      <ul class="uk-flex-center mt-12 text-sm text-white rounded-xl" uk-tab>
 
-<a href="{%url 'update_govapp' profile.pk %}">update govt appt</a><br>
-<br><hr>
-    </section>
-    <section data-tab-panel="tab3" role="tabpanel" aria-labelledby="tab3" class="w-full p-2 shadow-xl justify-center bg-indigo-700 text-center text-sm  rounded-xl">
-<h1>qualification</h1>
-<a href="{%url 'qual' username=profile.user.username %}">add<br>
-  <hr>
-{% for q in qualifications %}
-    <p>{{ q.school }}</p>
-    <p>{{ q.qual }}</p>
-    <a href="{%url 'qual_update' q.pk %}">update</a><br>
-<a href="{%url 'qual_delete' q.pk %}">delete</a><br>
-    <hr>
-{% endfor %}
-<br><hr>
-    </section>
-    <section data-tab-panel="tab4" role="tabpanel" aria-labelledby="tab4" class="w-full p-2 shadow-xl justify-center bg-cyan-700 text-center text-xs rounded-xl">
-<h1>professional qualification</h1>
-<a href="{%url 'pro_qual' username=profile.user.username %}">add<br>
-  <hr>
-{% for p in pro_qualifications %}
-    <p>{{ p.institute }}</p>
-    <p>{{ p.inst_address }}</p>
-    <a href="{%url 'pro_qual_update' p.pk %}">update</a><br>
-<a href="{%url 'pro_qual_delete' p.pk %}">delete</a><br>
-    <hr>
-{% endfor %}
-<br><hr>
-    </section>
-    <section data-tab-panel="tab5" role="tabpanel" aria-labelledby="tab5" class="w-full p-2 shadow-xl justify-center bg-emerald-700 text-center text-xs  rounded-xl">
-<h1>promotion</h1>
-<a href="{%url 'promotion' username=profile.user.username %}">add<br>
-  <hr>
-{% for p in promotion %}
-    <p>{{ p.cpost }}</p>
-    <p>{{ p.gl }}</p>
-    <p>{{ p.step }}</p>
-    <a href="{%url 'promotion_update' p.pk %}">update</a><br>
-    <a href="{%url 'promotion_delete' p.pk %}">delete</a><br>
-    <hr>
-{% endfor %}
-<br><hr>
+      <li><a class="p-2 shadow-xl shadow-teal-300 justify-center bg-teal-700 m-2 text-sm rounded-xl" href="#">
+      <span class="text-white"><i class="fa-solid fa-circle-info fa-2xl text-white"></i>&nbsp;PERSONAL INFO</a>
+      </span></li>
 
-    </section>
-    <section data-tab-panel="tab6" role="tabpanel" aria-labelledby="tab6" class="w-full p-2 shadow-xl justify-center bg-rose-700 text-center text-xs  rounded-xl">
+      <li><a class="p-2 shadow-xl shadow-orange-300 justify-center bg-orange-600 m-2 text-sm rounded-xl" href="#">
+       <span class="text-white"><i class="fa-solid fa-file-contract fa-2xl text-white"></i>&nbsp;GOVT APPT</a>
+       </span></li>
 
-<h1>discipline</h1>
-<a href="{%url 'discipline' username=profile.user.username %}">add<br>
-  <hr>
-{% for d in discipline%}
-    <p>{{ d.offense }}</p>
-    <p>{{ d.decision }}</p>
-    <a href="{%url 'discipline_update' d.pk %}">update</a><br>
-    <a href="{%url 'discipline_delete' d.pk %}">delete</a><br>
-    <hr>
-{% endfor %}
-<br><hr>
+       <li><a class="p-2 shadow-xl shadow-indigo-300 justify-center bg-indigo-700 m-2 text-sm rounded-xl" href="#">
+       <span class="text-white"><i class="fa-solid fa-graduation-cap fa-2xl text-white"></i>&nbsp;QUALIFICATIONS</a>
+      </span></li>
+      
+      <li><a class="p-2 shadow-xl shadow-slate-300 justify-center bg-slate-700 m-2 text-sm rounded-xl" href="#">
+        <span class="text-white"><i class="fa-solid fa-graduation-cap fa-2xl white"></i>&nbsp;PROFESSIONAL QUALIFICATIONS</a>
+      </span></li>
+      
+      <li><a class="p-2 shadow-xl shadow-cyan-300 justify-center bg-cyan-700 m-2 text-sm rounded-xl" href="#">
+       <span class="text-white"><i class="fa-solid fa-person-arrow-up-from-line fa-2xl text-white"></i>&nbsp;PROMOTION</a>
+      </span></li>
+      
+      <li><a class="p-2 shadow-xl shadow-rose-300 justify-center bg-rose-700 m-2 text-sm rounded-xl" href="#">
+       <span class="text-white"><i class="fa-solid fa-circle-exclamation fa-2xl text-white"></i>&nbsp;DISCIPLINE</a>
+      </span></li>
+      
+      <li><a class="p-2 shadow-xl shadow-amber-300 justify-center bg-amber-500 m-2 text-sm rounded-xl" href="#">
+       <span class="text-white"><i class="fa-solid fa-bed fa-2xl text-white"></i>&nbsp;LEAVE</a>
+      </span></li>
 
-    </section>
-    <section data-tab-panel="tab7" role="tabpanel" aria-labelledby="tab7" class="w-full p-2 shadow-xl justify-center bg-yellow-700 text-center text-xs  rounded-xl">
-<h1>leave</h1>
-<a href="{%url 'leave' username=profile.user.username %}">add<br>
-  <hr>
-{% for l in leave %}
-    <p>{{ l.nature }}</p>
-    <p>{{ l.year }}</p>
-    <a href="{%url 'leave_update' l.pk %}">update</a><br>
-    <a href="{%url 'leave_delete' l.pk %}">delete</a><br>
-    <hr>
-{% endfor %}
-<br><hr>
-    </section>
-    <section data-tab-panel="tab8" role="tabpanel" aria-labelledby="tab8" class="w-full p-2 shadow-xl justify-center bg-blue-700 text-center text-xs  rounded-xl">
-<h1>executive appointment</h1>
-<a href="{%url 'execapp' username=profile.user.username %}">add<br>
-  <hr>
-{% for e in execapp %}
-    <p>{{ e.designation }}</p>
-    <p>{{ e.status }}</p>
-    <a href="{%url 'execapp_update' e.pk %}">update</a><br>
-    <a href="{%url 'execapp_delete' e.pk %}">delete</a><br>
-    <hr>
-{% endfor %}
-<br><hr>
-    </section>
-    <section data-tab-panel="tab9" role="tabpanel" aria-labelledby="tab9" class="w-full p-2 shadow-xl justify-center bg-orange-700 text-center text-xs  rounded-xl">
-<h1>retire</h1>
-{% if not profile.user.retirement %}
-<a href="{%url 'retire' username=profile.user.username %}">add<br>
-  {%endif%}
-  <hr>
-{% for r in retirement %}
-    <p>{{ r.status }}</p>
-    <p>{{ r.retire }}</p>
-    <a href="{%url 'retire_update' r.pk %}">update</a><br>
-    <a href="{%url 'retire_delete' r.pk %}">delete</a><br>
-    <hr>
-{% endfor %}
-<br><hr>
-    </section>
+       <li><a class="p-2 shadow-xl shadow-blue-300 justify-center bg-blue-700 m-2 text-sm rounded-xl" href="#">
+       <span class="text-white"><i class="fa-solid fa-user-tie fa-2xl text-white"></i>&nbsp;EXECUTIVE APPT</a>
+      </span></li>
+      
+      <li><a class="p-2 shadow-xl shadow-emerald-300 justify-center bg-emerald-700 m-2 text-sm rounded-xl" href="#">
+       <span class="text-white"><i class="fa-solid fa-person-walking-with-cane fa-2xl text-white"></i>&nbsp;RETIREMENT</a>
+      </span></li>
+    </ul>
+
+  
+  <ul class="uk-switcher uk-margin-medium-top">
+    <!-- bio data start -->
+    <li class="">
+  <div class="text-gray-800 max-sm:p-2 p-1 rounded-xl mx-auto">
+    <table class="table-auto mt-0 justify-center max-sm:flex flex p-2">
+      <h1 class="text-teal-800 text-2xl text-center p-2 mt-2">PERSONAL INFORMATION</h1>
+<tbody class="shadow-2xl shadow-black text-center  text-gray-800 rounded-lg max-sm:p-10 p-12 border-t border-cyan-800 border-s-fuchsia-500 overflow-x-auto mx-0 uppercase bg-white">
+  <tr class="text-sm bg-teal-800 text-white">
+  <th scope="col" class="border-2 border-cyan-800 p-3">FILE NUMBER</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">SEX</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">DATE OF BIRTH</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">PHONE NUMBER</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">MARITAL STATUS</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">STATE OF ORIGIN</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">LGA</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">SENATORIAL DISTRICT</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">RELIGION</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">RESIDENTIAL ADDRESS</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">PERMANENT HOME ADDRESS</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">GEO-POLITICAL ZONE</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">UPDATE</th>  
+</tr>
+<tr class="text-sm text-gray-800">
+<td scope="col" class="border-2 border-cyan-800 p-2">{{profile.file_no|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-cyan-800 text-center">{{profile.gender|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-cyan-800 text-center">{{profile.dob|date:'d/M/Y'|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-cyan-800 text-center">{{profile.phone_number|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-cyan-800 text-center">{{profile.marital_status|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-cyan-800 text-center">{{profile.state|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-cyan-800 text-center">{{profile.lga|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-cyan-800 text-center">{{profile.senatorial_district|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-cyan-800 text-center">{{profile.religion|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-cyan-800 text-center">{{profile.residential_address|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-cyan-800 text-center">{{profile.permanent_home_address|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-cyan-800 text-center">{{profile.zone|default_if_none:''|upper}}</td>
+<td class="border-r-2 border-cyan-800 border-b-2 flex flex-row justify-center p-3 gap-2"> 
+  <a class="justify-center text-cyan-900 " href ="{% url 'update_profile' profile.pk %}"><i class="fa-solid fa-square-pen fa-2xl"></i></a>
+  <a class="justify-center text-orange-800 " href="{%url 'update_user' profile.user.pk %}"><i class="fa-solid fa-user-circle fa-2xl"></i></a>
+</td>
+</tr>
+</tbody>
+</table>
+    </div>
+    </li>
+<!-- bio data end -->
+
+<!-- government appointment start -->
+    <li class="">
+        <div  class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
+        <table class="table-auto mt-0 justify-center max-sm:flex flex p-2">
+      <h1 class="text-teal-800 text-2xl text-center p-2 mt-2">GOVERNMENT APPOINTMENT</h1>
+<tbody class="shadow-2xl shadow-black text-center  text-gray-800 rounded-lg max-sm:p-10 p-12 border-t border-cyan-800 border-s-fuchsia-500 overflow-x-auto mx-0 uppercase bg-white">
+  <tr class="text-sm bg-orange-600 text-white">
+    <th scope="col" class="border-2 border-cyan-800 p-4">department</th>
+    <th scope="col" class="border-2 border-cyan-800 p-2 ">ippis</th>
+    <th scope="row" class="border-2 border-cyan-800 p-2 ">date of first appointment</th>
+    <th scope="col" class="border-2 border-cyan-800 p-2 ">type of appointment</th>
+    <th scope="col" class="border-2 border-cyan-800 p-2 ">current post</th>
+    <th scope="col" class="border-2 border-cyan-800 p-2 ">salary per annum at first appointment</th>
+    <th scope="col" class="border-2 border-cyan-800 p-2 ">salary scale</th>
+    <th scope="col" class="border-2 border-cyan-800 p-2 ">grade level</th>
+    <th scope="col" class="border-2 border-cyan-800 p-2 ">step</th>
+    <th scope="col" class="border-2 border-cyan-800 p-2">update</th>
+</tr>
+<tr class="text-sm">
+<td class="border-2 border-cyan-800 p-2 text-center">{{govapp.department|default_if_none:''}}</td>
+<td class="border-2 border-cyan-800 p-2 text-center">{{govapp.ippis_no|default_if_none:''}}</td>
+<td class="border-2 border-cyan-800 p-2 text-center">{{govapp.date_of_first_appointment|date:'d-M-Y'|default_if_none:''}}</td>
+<td class="border-2 border-cyan-800 p-2 text-center">{{govapp.type_of_appointment|default_if_none:''}}</td>
+<td class="border-2 border-cyan-800 p-2 text-center">{{govapp.cpost|default_if_none:''}}</td>
+<td class="border-2 border-cyan-800 p-2 text-center">{{govapp.salary_per_annum_at_date_of_first_appointment|default_if_none:''}}</td>
+<td class="border-2 border-cyan-800 p-2 text-center">{{govapp.salary_scale|default_if_none:''}}</td>
+<td class="border-2 border-cyan-800 p-2 text-center">{{govapp.grade_level|default_if_none:''}}</td>
+<td class="border-2 border-cyan-800 p-2 text-center">{{govapp.step|default_if_none:''}}</td>
+<td class="border-r-2 border-cyan-800 border-b-2 flex flex-row justify-center p-3 gap-2"> 
+  <a class="justify-center text-cyan-900" href="{%url 'update_govapp' profile.pk %}"><i class="fa-solid fa-square-pen fa-2xl"></i></a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+    </li>
+<!-- government appointment start -->
+
+<!-- qualification start -->
+    <li class="">
+<div  class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
+      <h1 class="text-green-700 text-xl text-center  p-2"> ACADEMIC QUALIFICATIONS</h1>
+      <div class="border-2 rounded-xl border-green-700 flex flex-col justify-center sm:flex-row bg-white">
+        <div class="p-4">
+          <div class="text-xs text-green-600 text-justify border-r-2 border-green-700">
+            <a href="{%url 'qual' username=profile.user.username %}">add<br>
+            {% for q in qualifications %}
+            <p class="p-2">{{q.school|default_if_none:''|upper}}</p>
+            <p class="p-2">{{q.type|default_if_none:''|upper}}</p>
+            <a class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-4"  href="{% url 'qual_update' q.id %}"><i class="fa-solid fa-square-pen fa-2xl"></i></a>
+            <a href="{%url 'qual_delete' q.pk %}">delete</a><br>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="mb-4 bg-white p-4">
+      </div>
   </div>
+    </li>
+    <!-- qualification end -->
+
+<!-- professional qualification start -->
+    <li class="">
+  <div class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
+      <h1 class="text-green-700 text-xl text-center p-2 mt-6"> PROFESSIONAL QUALIFICATIONS</h1>
+      <div class="text-gray-800 border-2 rounded-xl border-green-700 flex flex-col justify-center sm:flex-row bg-white">
+        <div class="p-8">
+          <div class="text-xs text-green-600 text-justify border-r-2 border-green-700">
+            <a href="{%url 'pro_qual' username=profile.user.username %}">add<br>
+            {% for p in pro_qualifications %}
+            <p class="p-2">{{p.institute|default_if_none:''|upper}}</p>
+            <p class="p-2">{{p.inst_address|default_if_none:''|upper}}</p>
+            <a href="{%url 'pro_qual_delete' p.pk %}">delete</a><br>
+            {% endfor %}
+          </div>
+        </div>
+      </div>      
+    </div>
+    </li>
+<!-- professional qualification  -->
+
+<!-- promotion start  -->
+<li class="">
+  <div class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
+    <h1 class="text-green-700 text-xl text-center p-2">PROMOTION</h1>
+    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
+      <tbody class="shadow-2xl text-sm rounded-xl max-sm:p-16 p-20 overflow-x-auto border-2 border-cyan-800 mx-0 uppercase text-gray-800 bg-white">
+        <tr class="text-sm">
+          <th scope="col" class="border-2 border-cyan-800 p-2">current post</th>
+          <th scope="col" class="border-2 border-cyan-800 p-2">promoted date</th>
+          <th scope="col" class="border-2 border-cyan-800 p-2">grade level</th>
+          <th scope="col" class="border-2 border-cyan-800 p-2">step</th>
+          <th scope="col" class="border-2 border-cyan-800 p-2">increment date</th>
+          <th scope="col" class="border-2 border-cyan-800 p-2">confirmation date</th>
+          <th scope="col" class="border-2 border-cyan-800 p-2">updated on</th>
+          <th scope="col" class="border-t-2 border-cyan-800 p-2"></th>
+          <th scope="col" class="border-t-2 border-cyan-800 border-r-2 p-2"></th>
+        </tr>
+        {% for p in promotion %}
+        <tr class="p-6 text-xs text-center">
+          <td class="border-2 border-cyan-800 p-2 text-center">{{ p.cpost|default_if_none:'' }}</td>
+          <td class="border-2 border-cyan-800 p-2 text-center">{{ p.prom_date|date:'d-M-Y'|default_if_none:'' }}</td>
+          <td class="border-2 border-cyan-800 p-2 text-center">{{ p.gl|default_if_none:'' }}</td>
+          <td class="border-2 border-cyan-800 p-2 text-center">{{ p.step|default_if_none:'' }}</td>
+          <td class="border-2 border-cyan-800 p-2 text-center">{{ p.inc_date|date:'d-M-Y'|default_if_none:'' }}</td>
+          <td class="border-2 border-cyan-800 p-2 text-center">{{ p.conf_date|date:'d-M-Y'|default_if_none:'' }}</td>
+          <td class="border-2 border-cyan-800 p-2 text-center">{{ p.updated|default_if_none:''|date:'d-M-Y' }}</td>
+          <td class="p-4 border-cyan-800 border-b-2 font-semibold"> 
+            <a href="{% url 'promotion_update' p.pk %}" class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-4"><i class="fa-solid fa-square-pen fa-2xl"></i></a>
+          </td>
+          <td class="p-4 border-r-2 border-cyan-800 border-b-2 font-semibold"> 
+            <a href="{% url 'promotion_delete' p.pk %}" class="shadow-xl justify-center bg-red-700 text-cyan-900 rounded-xl p-4"><i class="fa-solid fa-trash fa-2xl"></i></a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="9" class="p-4 text-sm text-center">promotion record is empty</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</li>
+<!-- promotion end  -->
+
+
+<!-- discipline start -->
+    <li class="">
+    <div class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
+    <h1 class="text-green-700 text-xl text-center p-3">DISCIPLINARY</h1>
+    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
+      <a href="{ %url 'discipline' username=profile.user.username %}" class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-2 uppercase">discipline</a>
+<tbody class="shadow-2xl text-sm rounded-xl max-sm:p-16 p-20 overflow-x-auto border-2 border-cyan-800 mx-0 uppercase text-gray-800 bg-white">
+  <tr class="text-sm ">
+    <th scope="col" class="border-2 border-cyan-800 p-2">offense</th>
+    <th scope="col" class="border-2 border-cyan-800 p-2">decision</th>
+    <th scope="col" class="border-2 border-cyan-800 p-2">date</th>
+    <th scope="col" class="border-2 border-cyan-800 p-2">comments</th>
+    <th scope="col" class="border-2 border-cyan-800 p-2">added on</th>
+    <th scope="col" class="border-t-2 border-cyan-800 p-2"></th>
+    <th scope="col" class="border-t-2 border-cyan-800 border-r-2 p-2 "></th>
+</tr>
+<tr class="p-6 text-xs">
+  {% for d in discipline %}
+  <td class="border-2 border-cyan-800 p-2 text-center">{{p.offense|default_if_none:''}}</td>
+  <td class="border-2 border-cyan-800 p-2 text-center">{{p.decision|default_if_none:''}}</td>
+  <td class="border-2 border-cyan-800 p-2 text-center">{{p.date|date:'d-M-Y'|default_if_none:''}}</td>
+  <td class="border-2 border-cyan-800 p-2 text-center">{{p.comment|default_if_none:''}}</td>
+  <td class="border-2 border-cyan-800 p-2 text-center">{{p.updated|default_if_none:''|date:'d-M-Y'}}</td>
+  <td class="p-4 border-b-2 border-cyan-800"> 
+  <a  href="{%url 'discipline_update' d.pk %}" class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-4"><i class="fa-solid fa-square-pen fa-2xl"></i></a>
+</td>
+  <td class="p-4 border-r-2 border-cyan-800 border-b-2"> 
+  <a href="{% url 'discipline_delete' d.pk %}" class="shadow-xl justify-center bg-red-700 text-cyan-900 rounded-xl p-4"><i class="fa-solid fa-trash fa-2xl"></i></a>
+</td>
+</tr>
+{%empty%}
+<p class="p-4  text-sm">discipline record is empty</p>
+{% endfor %}
+</tbody>
+</table>
+  </div>
+</li>
+<!-- discipline end -->
+
+<!-- leave start -->
+    <li class="">
+    <div class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
+      <h1 class="text-green-700 text-xl text-center p-3">LEAVE</h1>
+      <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
+        <a href="{% url 'leave' username=profile.user.username %}" class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-2 uppercase">leave application</a>
+<tbody class="shadow-2xl text-sm rounded-xl max-sm:p-16 p-20 overflow-x-auto border-2 border-cyan-800 mx-0 uppercase text-gray-800 bg-white">
+<tr class="text-sm ">
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">nature of leave</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">year</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">start date</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">total days</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">no of days granted</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">remaining days</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">return date</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">status</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">comments</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">applied on</th>
+  <th scope="col" class=" p-2 border-cyan-800 border-t-2 "></th>
+  <th scope="col" class=" p-2 border-cyan-800 border-t-2 border-r-2"></th>
+
+</tr>
+<tr class="p-6 text-xs ">
+  {% for l in leave %}
+  <td class="border-2 border-cyan-800 p-2 text-center">{{l.nature|default_if_none:''}}</td>
+  <td class="border-2 border-cyan-800 p-2 text-center">{{l.year|default_if_none:''}}</td>
+  <td class="border-2 border-cyan-800 p-2 text-center">{{l.start_date|date:'d-M-Y'|default_if_none:''}}</td>
+  <td class="border-2 border-cyan-800 p-2 text-center">{{l.total_days|default_if_none:''}}</td>
+  <td class="border-2 border-cyan-800 p-2 text-center">{{l.number_of_days_granted|default_if_none:''}}</td>
+  <td class="border-2 border-cyan-800 p-2 text-center">{{l.remaining_days|default_if_none:''}}</td>
+  <td class="border-2 border-cyan-800 p-2 text-center">{{l.u_return_date|default_if_none:''}}</td>
+  <td class="border-2 border-cyan-800 p-2 text-center">{{l.status|default_if_none:''}}</td>
+  <td class="border-2 border-cyan-800 p-2 text-center">{{l.comment_if_any|default_if_none:''}}</td>
+  <td class="border-2 border-cyan-800 p-2 text-center">{{l.updated|default_if_none:''|date:'d-M-Y'}}<p>signed by: {{request.user}}</p></td>
+  <td class="p-2 border-cyan-800 border-b-2"> 
+  <p><a href="{%url 'leave_update' l.pk %}" class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-4"><i class="fa-solid fa-square-pen fa-xl"></i></a></p>
+</td>
+<td class="p-2 border-r-2 border-cyan-800 border-b-2"> 
+  <p><a href="{% url 'leave_delete' l.pk %}" class="shadow-xl justify-center bg-red-700 text-cyan-900 rounded-xl p-4"><i class="fa-solid fa-trash fa-xl"></i></a></p>
+</td>
+</tr>
+{%empty%}
+<p class="p-4 text-sm">leave record is empty</p>
+{%endfor%}
+</tbody>
+</table>
+</div>
+    </li>
+<!-- leave end -->
+
+<!-- executive appointment start  -->
+    <li class="">
+<div class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
+<h1 class="text-green-700 text-xl text-center p-3">EXECUTIVE APPOINTMENT</h1>
+<table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
+  <a href="{% url 'execapp' username=profile.user.username %}" class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-2 uppercase">add appointment</a>
+<tbody class="uppercase shadow-2xl text-sm rounded-xl max-sm:p-16 p-20 overflow-x-auto border-2 border-cyan-800 mx-0 text-gray-800 bg-white">
+<tr class=" text-sm">
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">designation</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">appointment date</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">status current out of office</th>
+  <th scope="col" class="border-2 border-cyan-800 p-2 ">promoted on</th>
+  <th scope="col" class="border-t-2 border-cyan-800 p-2"></th>
+  <th scope="col" class="border-t-2 border-cyan-800 border-r-2 p-2"></th>
+</tr>
+<tr class="p-6 text-xs">
+  {% for e in execapp %}
+  <td class="border-2 border-cyan-800 p-2 text-center">{{e.designation|default_if_none:''}}</td>
+  <td class="border-2 border-cyan-800 p-2 text-center">{{e.date_of_appointment|date:'d-M-Y'|default_if_none:''}}</td>
+  <td class="border-2 border-cyan-800 p-2 text-center">{{e.status|default_if_none:''}}</td>
+  <td class="border-2 border-cyan-800 p-2 text-center">{{e.updated|default_if_none:''|date:'d-M-Y'}}</td>
+  <td class="p-2 border-cyan-800 border-b-2"> 
+  <a href="{%url 'execapp_update' e.pk %}" class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-4"><i class="fa-solid fa-square-pen fa-2xl"></i></a>
+  </td>
+    <td class="p-2 border-r-2 border-cyan-800 border-b-2"> 
+  <a href="{% url 'execapp_delete' e.pk %}" class="shadow-xl justify-center bg-red-700 text-cyan-900 rounded-xl p-4"><i class="fa-solid fa-trash fa-2xl"></i></a>
+  </td>
+</tr>
+{%empty%}
+<p class="p-4  text-sm">executive appointment record is empty</p>
+{%endfor%}
+</tbody>
+</table>
+</div>
+    </li>
+<!-- executive appointment end  -->
+
+<!-- retirement start  -->
+    <li class="">
+<div class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
+<h1 class="text-green-700 text-xl text-center p-3">RETIREMENT</h1>
+      <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
+        {% for e in retirement %}
+        {%empty%}
+        <a href="{% url 'retire' username=profile.user.username %}" class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-2 uppercase">retire staff</a>
+        {%endfor%}
+        <tbody class="uppercase shadow-2xl text-sm rounded-xl max-sm:p-16 border-2 border-cyan-800 p-20 overflow-x-auto mx-0 text-gray-800 bg-white">
+          <tr class=" text-sm">
+            <th scope="col" class="border-2 border-cyan-800 p-2 ">date retired</th>
+            <th scope="col" class="border-2 border-cyan-800 p-2 ">status</th>
+            <th scope="col" class="border-2 border-cyan-800 p-2 ">retire on</th>
+            <th scope="col" class=" p-2 border-t-2 border-cyan-800"></th>
+            <th scope="col" class=" p-2 border-t-2 border-cyan-800 border-r-2"></th>
+          </tr> 
+<tr class="p-6 text-xs">
+  {% for r in retirement %}
+<td class="border-2 border-cyan-800 p-2 text-center">{{r.date_retired|date:'d-M-Y'|default_if_none:''}}</td>
+<td class="border-2 border-cyan-800 p-2 text-center">{{r.status|default_if_none:''}}</td>
+<td class="border-2 border-cyan-800 p-2 text-center">{{r.updated|default_if_none:''|date:'d-M-Y'}}</td>
+<td class="p-2 border-cyan-800 border-b-2"> 
+  <a href="{%url 'retire_update' r.pk %}"> <p class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-4"><i class="fa-solid fa-square-pen fa-2xl"></i></p></a>
+</td>
+<td class="p-2 border-r-2 border-cyan-800 border-b-2"> 
+  <a href="{% url 'retire_delete' r.pk %}" class="shadow-xl justify-center bg-red-700 text-cyan-900 rounded-xl p-4"><i class="fa-solid fa-trash fa-2xl"></i></a>
+</td>
+</tr>
+{%empty%}
+<p class=" text-sm p-4">retirement record is empty</p>
+{%endfor%}
+</tbody>
+</table>
+</div>
+    </li>
+  <!-- retirement end  -->
+  </ul>
   </div>
 {% endblock %}
