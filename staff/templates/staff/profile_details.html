@@ -19,43 +19,45 @@
            {%endfor%}
           {% endif %}
         </div>
-      <ul class="uk-flex-center mt-12 text-sm text-white rounded-xl" uk-tab>
+      <ul class="uk-flex-center mt-8 text-sm text-white rounded-xl" uk-tab>
 
-      <li><a class="p-2 shadow-xl shadow-teal-300 justify-center bg-teal-700 m-2 text-sm rounded-xl" href="#">
-      <span class="text-white"><i class="fa-solid fa-circle-info fa-2xl text-white"></i>&nbsp;PERSONAL INFO</a>
-      </span></li>
+      <li>
+        <a class="p-2 shadow-xl shadow-black justify-center bg-teal-700 m-2 text-sm rounded-xl" href="#">
+      <i class="fa-solid fa-circle-info fa-2xl text-white"></i>&nbsp;<span class="text-white">PERSONAL INFO</span></a>
+      </li>
 
-      <li><a class="p-2 shadow-xl shadow-orange-300 justify-center bg-orange-600 m-2 text-sm rounded-xl" href="#">
-       <span class="text-white"><i class="fa-solid fa-file-contract fa-2xl text-white"></i>&nbsp;GOVT APPT</a>
-       </span></li>
+      <li><a class="p-2 shadow-xl shadow-black justify-center bg-orange-600 m-2 text-sm rounded-xl text-white" href="#">
+      <i class="fa-solid fa-file-contract fa-2xl text-white"></i>&nbsp;<span class="text-white">GOVT APPT</span></a>
+       </li>
 
-       <li><a class="p-2 shadow-xl shadow-indigo-300 justify-center bg-indigo-700 m-2 text-sm rounded-xl" href="#">
-       <span class="text-white"><i class="fa-solid fa-graduation-cap fa-2xl text-white"></i>&nbsp;QUALIFICATIONS</a>
-      </span></li>
+       <li><a class="p-2 shadow-xl shadow-black justify-center bg-indigo-700 m-2 text-sm rounded-xl text-white" href="#">
+       <i class="fa-solid fa-graduation-cap fa-2xl text-white"></i>&nbsp;<span class="text-white">QUALIFICATIONS</span></a>
+      </li>
       
-      <li><a class="p-2 shadow-xl shadow-slate-300 justify-center bg-slate-700 m-2 text-sm rounded-xl" href="#">
-        <span class="text-white"><i class="fa-solid fa-graduation-cap fa-2xl white"></i>&nbsp;PROFESSIONAL QUALIFICATIONS</a>
-      </span></li>
+      <li><a class="p-2 shadow-xl shadow-black justify-center bg-slate-700 m-2 text-sm rounded-xl text-white" href="#">
+        <i class="fa-solid fa-certificate fa-2xl text-slate-200"></i>&nbsp;<span class="text-white">PRO QUALIFICATIONS</span></a>
+      </li>
       
-      <li><a class="p-2 shadow-xl shadow-cyan-300 justify-center bg-cyan-700 m-2 text-sm rounded-xl" href="#">
-       <span class="text-white"><i class="fa-solid fa-person-arrow-up-from-line fa-2xl text-white"></i>&nbsp;PROMOTION</a>
-      </span></li>
+      <li><a class="p-2 shadow-xl shadow-black justify-center bg-cyan-700 m-2 text-sm rounded-xl text-white" href="#">
+       <i class="fa-solid fa-person-arrow-up-from-line fa-2xl text-white"></i>&nbsp;<span class="text-white">PROMOTION</span></a>
+      </li>
       
-      <li><a class="p-2 shadow-xl shadow-rose-300 justify-center bg-rose-700 m-2 text-sm rounded-xl" href="#">
-       <span class="text-white"><i class="fa-solid fa-circle-exclamation fa-2xl text-white"></i>&nbsp;DISCIPLINE</a>
-      </span></li>
+      <li><a class="p-2 shadow-xl shadow-black justify-center bg-rose-700 m-2 text-sm rounded-xl text-white" href="#">
+       <i class="fa-solid fa-circle-exclamation fa-2xl text-white"></i>&nbsp;<span class="text-white">DISCIPLINE</span></a>
+      </li>
       
-      <li><a class="p-2 shadow-xl shadow-amber-300 justify-center bg-amber-500 m-2 text-sm rounded-xl" href="#">
-       <span class="text-white"><i class="fa-solid fa-bed fa-2xl text-white"></i>&nbsp;LEAVE</a>
-      </span></li>
+      <li><a class="p-2 shadow-xl shadow-black justify-center bg-amber-500 m-2 text-sm rounded-xl text-white" href="#">
+      <i class="fa-solid fa-bed fa-2xl text-white"></i>&nbsp;<span class="text-white">LEAVE</span></a>
+      </li>
 
-       <li><a class="p-2 shadow-xl shadow-blue-300 justify-center bg-blue-700 m-2 text-sm rounded-xl" href="#">
-       <span class="text-white"><i class="fa-solid fa-user-tie fa-2xl text-white"></i>&nbsp;EXECUTIVE APPT</a>
-      </span></li>
+       <li><a class="p-2 shadow-xl shadow-black justify-center bg-blue-700 m-2 text-sm rounded-xl text-white" href="#">
+       <i class="fa-solid fa-user-tie fa-2xl text-white"></i>&nbsp;<span class="text-white">EXECUTIVE APPT</span></a>
+    </li>
       
-      <li><a class="p-2 shadow-xl shadow-emerald-300 justify-center bg-emerald-700 m-2 text-sm rounded-xl" href="#">
-       <span class="text-white"><i class="fa-solid fa-person-walking-with-cane fa-2xl text-white"></i>&nbsp;RETIREMENT</a>
-      </span></li>
+      <li>
+        <a class="p-2 shadow-xl shadow-black justify-center bg-emerald-700 m-2 text-sm rounded-xl text-white" href="#">
+        <i class="fa-solid fa-person-walking-with-cane fa-2xl text-white"></i>&nbsp;<span class="text-white">RETIREMENT<span></a>
+      </li>
     </ul>
 
   
@@ -94,9 +96,9 @@
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.residential_address|default_if_none:''|upper}}</td>
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.permanent_home_address|default_if_none:''|upper}}</td>
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.zone|default_if_none:''|upper}}</td>
-<td class="border-r-2 border-cyan-800 border-b-2 flex flex-row justify-center p-3 gap-2"> 
+<td class="border-r-2 border-cyan-800 border-b-2 flex flex-row justify-center p-4 gap-2"> 
   <a class="justify-center text-cyan-900 " href ="{% url 'update_profile' profile.pk %}"><i class="fa-solid fa-square-pen fa-2xl"></i></a>
-  <a class="justify-center text-orange-800 " href="{%url 'update_user' profile.user.pk %}"><i class="fa-solid fa-user-circle fa-2xl"></i></a>
+  <a class="justify-center text-blue-800 " href="{%url 'update_user' profile.user.pk %}"><i class="fa-solid fa-user-circle fa-2xl"></i></a>
 </td>
 </tr>
 </tbody>
@@ -110,31 +112,31 @@
         <div  class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
         <table class="table-auto mt-0 justify-center max-sm:flex flex p-2">
       <h1 class="text-teal-800 text-2xl text-center p-2 mt-2">GOVERNMENT APPOINTMENT</h1>
-<tbody class="shadow-2xl shadow-black text-center  text-gray-800 rounded-lg max-sm:p-10 p-12 border-t border-cyan-800 border-s-fuchsia-500 overflow-x-auto mx-0 uppercase bg-white">
+<tbody class="shadow-2xl shadow-black text-center  text-gray-800 rounded-lg max-sm:p-10 p-12 border-t border-orange-800 border-s-fuchsia-500 overflow-x-auto mx-0 uppercase bg-white">
   <tr class="text-sm bg-orange-600 text-white">
-    <th scope="col" class="border-2 border-cyan-800 p-4">department</th>
-    <th scope="col" class="border-2 border-cyan-800 p-2 ">ippis</th>
-    <th scope="row" class="border-2 border-cyan-800 p-2 ">date of first appointment</th>
-    <th scope="col" class="border-2 border-cyan-800 p-2 ">type of appointment</th>
-    <th scope="col" class="border-2 border-cyan-800 p-2 ">current post</th>
-    <th scope="col" class="border-2 border-cyan-800 p-2 ">salary per annum at first appointment</th>
-    <th scope="col" class="border-2 border-cyan-800 p-2 ">salary scale</th>
-    <th scope="col" class="border-2 border-cyan-800 p-2 ">grade level</th>
-    <th scope="col" class="border-2 border-cyan-800 p-2 ">step</th>
-    <th scope="col" class="border-2 border-cyan-800 p-2">update</th>
+    <th scope="col" class="border-2 border-orange-800 p-4">department</th>
+    <th scope="col" class="border-2 border-orange-800 p-2 ">ippis</th>
+    <th scope="row" class="border-2 border-orange-800 p-2 ">date of first appointment</th>
+    <th scope="col" class="border-2 border-orange-800 p-2 ">type of appointment</th>
+    <th scope="col" class="border-2 border-orange-800 p-2 ">current post</th>
+    <th scope="col" class="border-2 border-orange-800 p-2 ">salary per annum at first appointment</th>
+    <th scope="col" class="border-2 border-orange-800 p-2 ">salary scale</th>
+    <th scope="col" class="border-2 border-orange-800 p-2 ">grade level</th>
+    <th scope="col" class="border-2 border-orange-800 p-2 ">step</th>
+    <th scope="col" class="border-2 border-orange-800 p-2">update</th>
 </tr>
 <tr class="text-sm">
-<td class="border-2 border-cyan-800 p-2 text-center">{{govapp.department|default_if_none:''}}</td>
-<td class="border-2 border-cyan-800 p-2 text-center">{{govapp.ippis_no|default_if_none:''}}</td>
-<td class="border-2 border-cyan-800 p-2 text-center">{{govapp.date_of_first_appointment|date:'d-M-Y'|default_if_none:''}}</td>
-<td class="border-2 border-cyan-800 p-2 text-center">{{govapp.type_of_appointment|default_if_none:''}}</td>
-<td class="border-2 border-cyan-800 p-2 text-center">{{govapp.cpost|default_if_none:''}}</td>
-<td class="border-2 border-cyan-800 p-2 text-center">{{govapp.salary_per_annum_at_date_of_first_appointment|default_if_none:''}}</td>
-<td class="border-2 border-cyan-800 p-2 text-center">{{govapp.salary_scale|default_if_none:''}}</td>
-<td class="border-2 border-cyan-800 p-2 text-center">{{govapp.grade_level|default_if_none:''}}</td>
-<td class="border-2 border-cyan-800 p-2 text-center">{{govapp.step|default_if_none:''}}</td>
-<td class="border-r-2 border-cyan-800 border-b-2 flex flex-row justify-center p-3 gap-2"> 
-  <a class="justify-center text-cyan-900" href="{%url 'update_govapp' profile.pk %}"><i class="fa-solid fa-square-pen fa-2xl"></i></a>
+<td class="border-2 border-orange-800 p-2 text-center">{{govapp.department|default_if_none:''}}</td>
+<td class="border-2 border-orange-800 p-2 text-center">{{govapp.ippis_no|default_if_none:''}}</td>
+<td class="border-2 border-orange-800 p-2 text-center">{{govapp.date_of_first_appointment|date:'d-M-Y'|default_if_none:''}}</td>
+<td class="border-2 border-orange-800 p-2 text-center">{{govapp.type_of_appointment|default_if_none:''}}</td>
+<td class="border-2 border-orange-800 p-2 text-center">{{govapp.cpost|default_if_none:''}}</td>
+<td class="border-2 border-orange-800 p-2 text-center">{{govapp.salary_per_annum_at_date_of_first_appointment|default_if_none:''}}</td>
+<td class="border-2 border-orange-800 p-2 text-center">{{govapp.salary_scale|default_if_none:''}}</td>
+<td class="border-2 border-orange-800 p-2 text-center">{{govapp.grade_level|default_if_none:''}}</td>
+<td class="border-2 border-orange-800 p-2 text-center">{{govapp.step|default_if_none:''}}</td>
+<td class="border-r-2 border-orange-800 border-b-2 flex flex-row justify-center gap-2"> 
+  <a class="justify-center text-cyan-900 text-xl p-4" href="{%url 'update_govapp' profile.pk %}"><i class="fa-solid fa-square-pen fa-2xl"></i></a>
 </td>
 </tr>
 </tbody>
@@ -145,53 +147,80 @@
 
 <!-- qualification start -->
     <li class="">
-<div  class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
-      <h1 class="text-green-700 text-xl text-center  p-2"> ACADEMIC QUALIFICATIONS</h1>
-      <div class="border-2 rounded-xl border-green-700 flex flex-col justify-center sm:flex-row bg-white">
-        <div class="p-4">
-          <div class="text-xs text-green-600 text-justify border-r-2 border-green-700">
-            <a href="{%url 'qual' username=profile.user.username %}">add<br>
-            {% for q in qualifications %}
-            <p class="p-2">{{q.school|default_if_none:''|upper}}</p>
-            <p class="p-2">{{q.type|default_if_none:''|upper}}</p>
-            <a class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-4"  href="{% url 'qual_update' q.id %}"><i class="fa-solid fa-square-pen fa-2xl"></i></a>
-            <a href="{%url 'qual_delete' q.pk %}">delete</a><br>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-      <div class="mb-4 bg-white p-4">
-      </div>
-  </div>
+  <div class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
+    <table class="table-auto mt-0 justify-center max-sm:flex flex p-2">
+      <h1 class="text-teal-800 text-2xl text-center p-2 mt-2"> ACADEMIC QUALIFICATIONS</h1>
+      <tbody class="shadow-2xl shadow-black text-center  text-gray-800 rounded-lg max-sm:p-10 p-4 border-t border-cyan-800 border-s-fuchsia-500 overflow-x-auto bg-white">
+        <tr>
+          <td></td>
+          <td class="flex items-center text-center m-2 justify-center">
+            <a class="" href="{%url 'qual' username=profile.user.username %}"><i class="fa-solid fa-plus-circle fa-2xl text-cyan-800"></i></a>
+          </td>
+        </tr>
+        <tr class="text-sm bg-indigo-700 text-white">
+    <th scope="col" class="border-2 border-cyan-800 p-4">school</th>
+    <th scope="col" class="border-2 border-cyan-800 p-2 ">qualification type</th>
+    <th scope="col" class="border-2 border-cyan-800 p-2">update</th>
+</tr>
+{% for q in qualifications %}
+<tr class="text-sm">
+<td class="border-2 border-cyan-800 p-2 text-center">{{q.school|default_if_none:''}}</td>
+<td class="border-2 border-cyan-800 p-2 text-center">{{q.type|default_if_none:''}}</td>
+<td class="border-r-2 border-cyan-800 border-b-2 flex flex-row justify-center p-5 gap-2"> 
+    <a class="justify-center text-cyan-900" href="{% url 'qual_update' q.pk %}"><i class="fa-solid fa-square-pen fa-2xl"></i></a>
+  <a class="justify-center text-rose-800" href="{%url 'qual_delete' q.pk %}"><i class="fa-solid fa-times-circle fa-2xl"></i></a>
+</td>
+</tr>
+{%endfor%}
+</tbody>
+</table>
+</div>
     </li>
     <!-- qualification end -->
 
 <!-- professional qualification start -->
-    <li class="">
+    <li class="">  
   <div class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
-      <h1 class="text-green-700 text-xl text-center p-2 mt-6"> PROFESSIONAL QUALIFICATIONS</h1>
-      <div class="text-gray-800 border-2 rounded-xl border-green-700 flex flex-col justify-center sm:flex-row bg-white">
-        <div class="p-8">
-          <div class="text-xs text-green-600 text-justify border-r-2 border-green-700">
-            <a href="{%url 'pro_qual' username=profile.user.username %}">add<br>
-            {% for p in pro_qualifications %}
-            <p class="p-2">{{p.institute|default_if_none:''|upper}}</p>
-            <p class="p-2">{{p.inst_address|default_if_none:''|upper}}</p>
-            <a href="{%url 'pro_qual_delete' p.pk %}">delete</a><br>
-            {% endfor %}
-          </div>
-        </div>
-      </div>      
-    </div>
-    </li>
+    <table class="table-auto mt-0 justify-center max-sm:flex flex p-2">
+      <h1 class="text-teal-800 text-2xl text-center p-2 mt-2"> PROFESSIONAL QUALIFICATIONS</h1>
+      <tbody class="shadow-2xl shadow-black text-center  text-gray-800 rounded-lg max-sm:p-10 p-12 border-t border-cyan-800 border-s-fuchsia-500 overflow-x-auto mx-0 uppercase bg-white">
+        <tr>
+          <td class="text-center">
+              <a href="{%url 'pro_qual' username=profile.user.username %}">add</a>
+            </td>
+          </tr>
+  <tr class="text-sm bg-slate-700 text-white">
+    <th scope="col" class="border-2 border-cyan-800 p-4">institute</th>
+    <th scope="col" class="border-2 border-cyan-800 p-2 ">institute address</th>
+    <th scope="col" class="border-2 border-cyan-800 p-2">update</th>
+</tr>
+{% for p in pro_qualifications %}
+<tr class="text-sm">
+<td class="border-2 border-cyan-800 p-2 text-center">{{q.institute|default_if_none:''}}</td>
+<td class="border-2 border-cyan-800 p-2 text-center">{{q.inst_address|default_if_none:''}}</td>
+<td class="border-r-2 border-cyan-800 border-b-2 flex flex-row justify-center p-3 gap-2"> 
+  <a class="justify-center text-cyan-900" href="{% url 'pro_qual_update' p.pk %}"><i class="fa-solid fa-square-pen fa-2xl"></i></a>
+  <a class="justify-center text-rose-800" href="{%url 'pro_qual_delete' p.pk %}"><i class="fa-solid fa-times-circle fa-2xl"></i></a>
+</td>
+</tr>
+{%endfor%}
+</tbody>
+</table>
+</div>
+</li>
 <!-- professional qualification  -->
 
 <!-- promotion start  -->
 <li class="">
   <div class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
-    <h1 class="text-green-700 text-xl text-center p-2">PROMOTION</h1>
     <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
+      <h1 class="text-teal-800 text-2xl text-center p-2 mt-2">PROMOTION</h1>
       <tbody class="shadow-2xl text-sm rounded-xl max-sm:p-16 p-20 overflow-x-auto border-2 border-cyan-800 mx-0 uppercase text-gray-800 bg-white">
+        <tr>
+            <td class="text-center">
+              <a href="{% url 'promotion' username=profile.user.username %}" class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-2 uppercase">promote</a>
+            </td>
+          </tr>
         <tr class="text-sm">
           <th scope="col" class="border-2 border-cyan-800 p-2">current post</th>
           <th scope="col" class="border-2 border-cyan-800 p-2">promoted date</th>
@@ -212,11 +241,11 @@
           <td class="border-2 border-cyan-800 p-2 text-center">{{ p.inc_date|date:'d-M-Y'|default_if_none:'' }}</td>
           <td class="border-2 border-cyan-800 p-2 text-center">{{ p.conf_date|date:'d-M-Y'|default_if_none:'' }}</td>
           <td class="border-2 border-cyan-800 p-2 text-center">{{ p.updated|default_if_none:''|date:'d-M-Y' }}</td>
-          <td class="p-4 border-cyan-800 border-b-2 font-semibold"> 
-            <a href="{% url 'promotion_update' p.pk %}" class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-4"><i class="fa-solid fa-square-pen fa-2xl"></i></a>
+          <td class="border-r-2 border-cyan-800 border-b-2 flex flex-row justify-center p-3 gap-2"> 
+            <a href="{% url 'promotion_update' p.pk %}" class="justify-center text-cyan-900"><i class="fa-solid fa-square-pen fa-2xl"></i></a>
           </td>
           <td class="p-4 border-r-2 border-cyan-800 border-b-2 font-semibold"> 
-            <a href="{% url 'promotion_delete' p.pk %}" class="shadow-xl justify-center bg-red-700 text-cyan-900 rounded-xl p-4"><i class="fa-solid fa-trash fa-2xl"></i></a>
+            <a href="{% url 'promotion_delete' p.pk %}" class="justify-center text-cyan-900"><i class="fa-solid fa-trash fa-2xl"></i></a>
           </td>
         </tr>
         {% empty %}
@@ -234,10 +263,14 @@
 <!-- discipline start -->
     <li class="">
     <div class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
-    <h1 class="text-green-700 text-xl text-center p-3">DISCIPLINARY</h1>
-    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-      <a href="{ %url 'discipline' username=profile.user.username %}" class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-2 uppercase">discipline</a>
-<tbody class="shadow-2xl text-sm rounded-xl max-sm:p-16 p-20 overflow-x-auto border-2 border-cyan-800 mx-0 uppercase text-gray-800 bg-white">
+      <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
+      <h1 class="text-teal-800 text-2xl text-center p-2 mt-2">DISCIPLINARY</h1>
+      <tbody class="shadow-2xl text-sm rounded-xl max-sm:p-16 p-20 overflow-x-auto border-2 border-cyan-800 mx-0 uppercase text-gray-800 bg-white">
+        <tr>
+          <td class="text-center">
+              <a href="{ %url 'discipline' username=profile.user.username %}" class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-2 uppercase">discipline</a>
+            </td>
+          </tr>
   <tr class="text-sm ">
     <th scope="col" class="border-2 border-cyan-800 p-2">offense</th>
     <th scope="col" class="border-2 border-cyan-800 p-2">decision</th>
@@ -273,11 +306,15 @@
 <!-- leave start -->
     <li class="">
     <div class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
-      <h1 class="text-green-700 text-xl text-center p-3">LEAVE</h1>
       <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-        <a href="{% url 'leave' username=profile.user.username %}" class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-2 uppercase">leave application</a>
-<tbody class="shadow-2xl text-sm rounded-xl max-sm:p-16 p-20 overflow-x-auto border-2 border-cyan-800 mx-0 uppercase text-gray-800 bg-white">
-<tr class="text-sm ">
+        <h1 class="text-teal-800 text-2xl text-center p-2 mt-2">LEAVE</h1>
+        <tbody class="shadow-2xl text-sm rounded-xl max-sm:p-16 p-20 overflow-x-auto border-2 border-cyan-800 mx-0 uppercase text-gray-800 bg-white">
+          <tr>
+            <td class="text-center">
+              <a href="{% url 'leave' username=profile.user.username %}" class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-2 uppercase">leave application</a>
+            </td>
+          </tr>
+  <tr class="text-sm ">
   <th scope="col" class="border-2 border-cyan-800 p-2 ">nature of leave</th>
   <th scope="col" class="border-2 border-cyan-800 p-2 ">year</th>
   <th scope="col" class="border-2 border-cyan-800 p-2 ">start date</th>
@@ -323,11 +360,15 @@
 <!-- executive appointment start  -->
     <li class="">
 <div class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
-<h1 class="text-green-700 text-xl text-center p-3">EXECUTIVE APPOINTMENT</h1>
-<table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-  <a href="{% url 'execapp' username=profile.user.username %}" class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-2 uppercase">add appointment</a>
-<tbody class="uppercase shadow-2xl text-sm rounded-xl max-sm:p-16 p-20 overflow-x-auto border-2 border-cyan-800 mx-0 text-gray-800 bg-white">
-<tr class=" text-sm">
+  <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
+  <h1 class="text-teal-800 text-2xl text-center p-2 mt-2">EXECUTIVE APPOINTMENT</h1>
+  <tbody class="uppercase shadow-2xl text-sm rounded-xl max-sm:p-16 p-20 overflow-x-auto border-2 border-cyan-800 mx-0 text-gray-800 bg-white">
+    <tr>
+      <td class="text-center">
+              <a href="{% url 'execapp' username=profile.user.username %}" class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-2 uppercase">add appointment</a>
+            </td>
+          </tr>
+  <tr class=" text-sm">
   <th scope="col" class="border-2 border-cyan-800 p-2 ">designation</th>
   <th scope="col" class="border-2 border-cyan-800 p-2 ">appointment date</th>
   <th scope="col" class="border-2 border-cyan-800 p-2 ">status current out of office</th>
@@ -360,13 +401,13 @@
 <!-- retirement start  -->
     <li class="">
 <div class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
-<h1 class="text-green-700 text-xl text-center p-3">RETIREMENT</h1>
-      <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-        {% for e in retirement %}
-        {%empty%}
-        <a href="{% url 'retire' username=profile.user.username %}" class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-2 uppercase">retire staff</a>
-        {%endfor%}
+  <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
+        <h1 class="text-teal-800 text-2xl text-center p-2 mt-2">RETIREMENT</h1>
         <tbody class="uppercase shadow-2xl text-sm rounded-xl max-sm:p-16 border-2 border-cyan-800 p-20 overflow-x-auto mx-0 text-gray-800 bg-white">
+          {% for r in retirement %}
+          {%empty%}
+          <a href="{% url 'retire' username=profile.user.username %}" class="shadow-xl justify-center bg-green-600 text-cyan-900 rounded-xl p-2 uppercase">retire staff</a>
+          {%endfor%}
           <tr class=" text-sm">
             <th scope="col" class="border-2 border-cyan-800 p-2 ">date retired</th>
             <th scope="col" class="border-2 border-cyan-800 p-2 ">status</th>
