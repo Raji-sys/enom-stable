@@ -1,118 +1,22 @@
 {% load static %}
+{%block content %}
 <div id="modal" class="uk-modal" style="display:block;">
 	<div class="uk-modal-dialog uk-modal-body">
-		    <section class="flex justify-center items-center text-center border-b-2 border-cyan-700 p-2">
-      <h2 class="text-center text-white bg-cyan-900 w-fit p-2 rounded-xl uppercase text-xs m-1">fill this form to register</h2>
-    </section>
-          <div class="block text-sm text-red-500">
-        {% if form.errors %}
-        {{form.errors}}
-        {% endif %}
-      </div>
+		<h2 class="uk-modal-title">Modal Dialog</h2>
 		<p>This modal dialog was loaded dynamically by HTMX.</p>
 
-		<form action="" method="POST" class="text-xs" _="on submit take .uk-open from #modal">
+		<form _="on submit take .uk-open from #modal">
 			<div class="uk-margin">
-			      {% csrf_token %}
-      <div class="mb-1 uppercase text-cyan-900">
-        <div class="flex justify-center">
-          <label for="uname">username</label>
-        </div>
-        <div class="flex justify-center mb-4">
-          <input
-            id="uname"
-            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg 
-            hover:border-cyan-700 focus:border-cyan-700"
-            type="text"
-            name="username"
-          />
-        </div>
-        <div class="flex justify-center">
-          <label for="email">email</label>
-        </div>
-        <div class="flex justify-center mb-4">
-          <input
-            id="email"
-            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg
-          hover:border-cyan-700 focus:border-cyan-700"
-            type="text"
-            name="email"
-          />
-        </div>
-        <div class="flex justify-center">
-          <label for="lname">surname</label>
-        </div>
-        <div class="flex justify-center mb-4">
-          <input
-            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg 
-            hover:border-cyan-700 focus:border-cyan-700"
-            type="text"
-            name="last_name"
-            id="lname"
-          />
-        </div>
-        <div class="flex justify-center">
-          <label for="fname">firstname</label>
-        </div>
-        <div class="flex justify-center mb-4">
-          <input
-            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg 
-            hover:border-cyan-700 focus:border-cyan-700"
-            type="text"
-            name="first_name"
-            id="fname"
-          />
-        </div>
-        <div class="flex justify-center">
-          <label for="password">password </label>
-        </div>
-        <div class="flex justify-center mb-4">
-          <input
-            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg 
-            hover:border-cyan-700 focus:border-cyan-700"
-            type="password"
-            name="password1"
-            id="password"
-          />
-        </div>
-        <div class="flex justify-center">
-          <label for="conpassword">confirm password </label>
-        </div>
-        <div class="flex justify-center mb-4">
-          <input
-            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg 
-            hover:border-cyan-700 focus:border-cyan-700"
-            type="password"
-            name="password2"
-            id="conpassword"
-          />
-        </div>
-        <div class="flex justify-center mb-4">
-          <input
-            class="text-xs uppercase mt-2 focus:opacity-10 border-b-4 border-gray-500 focus:border-cyan-600 bg-gradient-to-r
-             from-cyan-900 via-cyan-600 to-cyan-900 text-white py-2 rounded shadow-lg hover:shadow-xl text-center w-1/2"
-            type="submit"
-            value="Register"
-          />
-        </div>
+				<input class="uk-input" placeholder="What is Your Name?">
+			</div>
+			<button type="button" class="uk-button uk-button-primary">Save Changes</button>
 			<button 
 				id="cancelButton"
 				type="button" 
 				class="uk-button uk-button-default" 
 				_="on click take .uk-open from #modal wait 200ms then remove #modal">Close</button>
 		</form>
-            <div class="mt-4 p-2 flex items-center border-t-2 border-cyan-800">
-          {% if request.user.is_authenticated == False %}
-          <div class="text-cyan-800 text-xs">
-            <a
-              class="border-b-2 border-blue-600 text-sm text-blue-800 text-bold ml-1"
-              href="{%url 'login' %}"
-              >login</a
-            >
-            instead
-          </div>
-          {% endif %}
-        </div>
 	</div>
 </div>
 
+{% endblock %}
