@@ -204,29 +204,29 @@ class UserRegistrationView(CreateView):
             return reverse_lazy('index')
 
 
-# @method_decorator(reg_anonymous_required, name='dispatch')
-# class UserRegView(CreateView):
-#     form_class = CustomUserCreationForm
-#     template_name = 'registration/reg.html'
-#     success_url=""
-#     def form_valid(self, form):
-#         if form.is_valid():
-#             response = super().form_valid(form)
-#             user = User.objects.get(username=form.cleaned_data['username'])
-#             profile_instance = Profile(user=user)
-#             profile_instance.save()
-#             govapp_instance = GovernmentAppointment(user=user)
-#             govapp_instance.save()
-#             messages.success(self.request, f"Registration for: {user.get_full_name()} was successful")
-#             return response
-#         else:
-#             print("Form errors:", form.errors)
-#             return self.form_invalid(form)
-#     def get_success_url(self):
-#         if self.request.user.is_superuser:
-#             return reverse_lazy('staff')
-#         else:
-#             return reverse_lazy('index')
+@method_decorator(reg_anonymous_required, name='dispatch')
+class UserRegView(CreateView):
+    form_class = CustomUserCreationForm
+    template_name = 'registration/reg.html'
+    success_url=""
+    def form_valid(self, form):
+        if form.is_valid():
+            response = super().form_valid(form)
+            user = User.objects.get(username=form.cleaned_data['username'])
+            profile_instance = Profile(user=user)
+            profile_instance.save()
+            govapp_instance = GovernmentAppointment(user=user)
+            govapp_instance.save()
+            messages.success(self.request, f"Registration for: {user.get_full_name()} was successful")
+            return response
+        else:
+            print("Form errors:", form.errors)
+            return self.form_invalid(form)
+    def get_success_url(self):
+        if self.request.user.is_superuser:
+            return reverse_lazy('staff')
+        else:
+            return reverse_lazy('index')
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class DocumentationView(UpdateView):

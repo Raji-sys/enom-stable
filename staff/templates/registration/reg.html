@@ -1,15 +1,19 @@
 {% load static %}
-  <div class="font-semibold uppercase text-sm rounded-xl bg-white">
-    <section class="flex justify-center items-center text-center border-b-2 border-cyan-700 p-2">
+<div id="modal" class="uk-modal" style="display:block;">
+	<div class="uk-modal-dialog uk-modal-body">
+		    <section class="flex justify-center items-center text-center border-b-2 border-cyan-700 p-2">
       <h2 class="text-center text-white bg-cyan-900 w-fit p-2 rounded-xl uppercase text-xs m-1">fill this form to register</h2>
     </section>
-      <div class="block text-sm text-red-500">
+          <div class="block text-sm text-red-500">
         {% if form.errors %}
         {{form.errors}}
         {% endif %}
       </div>
-    <form action="{% url 'register' %}" method="POST" class="text-xs">
-      {% csrf_token %}
+		<p>This modal dialog was loaded dynamically by HTMX.</p>
+
+		<form action="" method="POST" class="text-xs" _="on submit take .uk-open from #modal">
+			<div class="uk-margin">
+			      {% csrf_token %}
       <div class="mb-1 uppercase text-cyan-900">
         <div class="flex justify-center">
           <label for="uname">username</label>
@@ -91,7 +95,13 @@
             value="Register"
           />
         </div>
-        <div class="mt-4 p-2 flex items-center border-t-2 border-cyan-800">
+			<button 
+				id="cancelButton"
+				type="button" 
+				class="uk-button uk-button-default" 
+				_="on click take .uk-open from #modal wait 200ms then remove #modal">Close</button>
+		</form>
+            <div class="mt-4 p-2 flex items-center border-t-2 border-cyan-800">
           {% if request.user.is_authenticated == False %}
           <div class="text-cyan-800 text-xs">
             <a
@@ -103,6 +113,6 @@
           </div>
           {% endif %}
         </div>
-      </div>
-    </form>
-  </div>
+	</div>
+</div>
+

@@ -20,19 +20,14 @@
               <span class=" shadow-white text-sm p-2 rounded-full bg-white text-cyan-900">{{total_profiles}}</span>
               <span>&nbsp;<a class="bg-cyan-900  text-white uppercase max-sm:text-lg text-md border-b-2 border-cyan-900 py-2 px-2 rounded-xl w-fit font-semibold" 
               href="#modal"><i class="fa-solid fa-plus fa-xl"></i></a></span>
-              <div id="modal" data-modal>
-
-  <!-- Modal  -->
-  <div id="dialog" data-modal-dialog role="dialog" aria-modal="true" aria-labelledby="dialog-title" tabindex="-1">
-    <h3 id="dialog-title">Modal title</h3>
-    {%include 'registration/reg.html'%}
-    <a href="#" data-modal-close class="bg-red-600 p-2 rounded-full">
-        <i class="fa-solid fa-times fa-xl text-white"></i>
-    </a>
-  </div>
-  <!-- Background, click to close -->
-  <a href="#" data-modal-overlay></a>
+    <button 
+	id="showButton"
+	hx-get="/reg.html" 
+	hx-target="#modals-here" 
+	class="uk-button uk-button-primary" 
+	_="on htmx:afterOnLoad wait 10ms then add .uk-open to #modal">Open Modal</button>
 </div>
+<div id="modals-here"></div>
                 <span>
                 {% if request.GET.urlencode %}
                     <a href="?" class=" p-2 focus:opacity-10  focus:border-cyan-600 bg-orange-500  text-white rounded shadow-lg hover:shadow-xl text-center w-fit">
@@ -62,7 +57,7 @@
         </div>
 
     <table class="table-auto mt-0 max-sm:flex flex shadow-2xl shadow-cyan-900 rounded-xl mb-10 items-center justify-center">
-        <tbody class="text-cyan-800 border-2 shadow-2xl shadow-cyan-900 rounded-xl max-sm:p-4 p-1 overflow-x-auto border-cyan-600 bg-white">            
+        <tbody class="text-cyan-800 border-2 shadow-2xl shadow-black rounded-xl max-sm:p-4 p-1 overflow-x-auto border-cyan-600 bg-white">            
             <tr class="text-xs bg-cyan-900 rounded-xl text-white">
                 <th scope="col" class="border-l-2 border-b-2 border-b-white border-cyan-800 border-t-2 border-t-white ">S/N</th>
                 <th scope="col" class="border-2 border-cyan p-2">SURNAME</th>
@@ -136,5 +131,6 @@
         </tr>
 </tbody>
 </table>
+
 </div>
 {% endblock %}
