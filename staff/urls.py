@@ -28,7 +28,7 @@ urlpatterns = [
     
     path('login/', CustomLoginView.as_view(), name='login'),
     path('register/', UserRegistrationView.as_view(), name='register'),
-    path('reg/', UserRegistrationView.as_view(), name='reg'),
+    path('reg/', UserRegView.as_view(), name='reg'),
     
     path('documentation/<int:pk>/', DocumentationView.as_view(), name='doc'),
     

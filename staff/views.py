@@ -227,6 +227,7 @@ class UserRegView(CreateView):
             return reverse_lazy('staff')
         else:
             return reverse_lazy('index')
+            
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class DocumentationView(UpdateView):

@@ -11,32 +11,25 @@
           {% endif %}
             {% for message in messages %}
       <hr />
-      <p class="texte-center text-cyan-700 uppercase font-bold text-xl">{{ message }}</p>
+      <p class="text-center text-cyan-700 uppercase font-bold text-xl">{{ message }}</p>
       <hr />
       {% endfor %}
         </div>
-              <div class="flex justify-end m-1 ">
-              <span class="gap-4 bg-cyan-900 text-white uppercase max-sm:text-lg text-sm border-b-2 border-cyan-900 py-3 px-4 rounded-xl mx-2 w-fit font-semibold">total staff
-              <span class=" shadow-white text-sm p-2 rounded-full bg-white text-cyan-900">{{total_profiles}}</span>
-              <span>&nbsp;<a class="bg-cyan-900  text-white uppercase max-sm:text-lg text-md border-b-2 border-cyan-900 py-2 px-2 rounded-xl w-fit font-semibold" 
-              href="#"><i class="fa-solid fa-plus fa-xl"></i></a></span>
-    <button 
-	id="showButton"
-	hx-get="/reg" 
-	hx-target="#modals-here" 
-	class="uk-button uk-button-primary" 
-	_="on htmx:afterOnLoad wait 10ms then add .uk-open to #modal">Open Modal</button>
-    <div id="modals-here"></div>
-</div>
-
-                <span>
-                {% if request.GET.urlencode %}
-                    <a href="?" class=" p-2 focus:opacity-10  focus:border-cyan-600 bg-orange-500  text-white rounded shadow-lg hover:shadow-xl text-center w-fit">
-                    <i class="fa-solid fa-rotate fa-lg"></i></a>
-                    {%endif%}
-                </span>
-              </span>
+        <div class="flex justify-end m-1 ">
+            <span class="gap-4 bg-cyan-900 text-white uppercase max-sm:text-lg text-sm border-b-2 border-cyan-900 py-3 px-4 rounded-xl mx-2 w-fit font-semibold">total staff
+                <span class=" shadow-white text-sm p-2 rounded-full bg-white text-cyan-900">{{total_profiles}}</span>
+                <span>&nbsp;<button class="bg-cyan-900  text-white uppercase max-sm:text-lg text-md border-b-2 border-cyan-900 py-2 px-2 rounded-xl w-fit font-semibold" 
+                    id="showButton" hx-get="{% url 'reg' %}" hx-target="#modals-here" _="on htmx:afterOnLoad wait 10ms then add .uk-open to #modal"><i class="fa-solid fa-plus fa-xl"></i></button></span>
+                    {% if request.GET.urlencode %}
+                    <span>
+                        <a href="?" class=" p-2 focus:opacity-10  focus:border-cyan-600 bg-orange-500  text-white rounded shadow-lg hover:shadow-xl text-center w-fit">
+                            <i class="fa-solid fa-rotate fa-lg"></i></a>
+                        </span>
+                        {%endif%}
+                    </span>
+                </div>
             </div>
+            <div id="modals-here"></div>
               
 <div class="w-fit mx-auto p-1 max-sm:p-2 text-sm rounded-lg text-center">
   <div class="flex flex-row justify-center text-cyan-900 font-semibold m-1">
@@ -132,24 +125,5 @@
         </tr>
 </tbody>
 </table>
-<div id="modal" class="uk-modal" style="display:block;">
-	<div class="uk-modal-dialog uk-modal-body">
-		<h2 class="uk-modal-title">Modal Dialog</h2>
-		<p>This modal dialog was loaded dynamically by HTMX.</p>
-
-		<form _="on submit take .uk-open from #modal">
-			<div class="uk-margin">
-				<input class="uk-input" placeholder="What is Your Name?">
-			</div>
-			<button type="button" class="uk-button uk-button-primary">Save Changes</button>
-			<button 
-				id="cancelButton"
-				type="button" 
-				class="uk-button uk-button-default" 
-				_="on click take .uk-open from #modal wait 200ms then remove #modal">Close</button>
-		</form>
-	</div>
-</div>
-
 </div>
 {% endblock %}

@@ -5,12 +5,6 @@
     <!-- start of first grid  -->
     <div class="center-2 h-full overflow-y-auto ">
         <div class="flex flex-col justify-center items-center rounded-md bg-cyan-800 p-5 text-white m-2 ">
-        {% if request.GET.urlencode%}
-    <div class="flex justify-center gap-1">
-    <a href="?" class="p-2 focus:opacity-10  bg-orange-500  
-    text-white rounded shadow-lg hover:shadow-xl text-center w-fit"><i class="fa-solid fa-rotate fa-sm text-white"></i></a>
-    </div>
-    {%endif%}
             <form method="get" class="text-xs text-center">
                 {% for field in gen_filter.form %}
                 {{field.errors}}
@@ -36,8 +30,9 @@
     <!-- end of first grid -->
 
     {% if request.GET.urlencode %}
-    <table class="table-auto mt-2 max-sm:flex flex shadow-2xl shadow-cyan-900 rounded-xl mb-10 items-center justify-center mx-auto">
-        <tbody class="text-cyan-800 border-2 shadow-2xl shadow-cyan-900 rounded-xl max-sm:p-4 p-1 overflow-x-auto border-cyan-600 bg-white">            
+    <a href="?" class="m-2 p-2 focus:opacity-10 bg-orange-500 text-white rounded w-fit"><i class="fa-solid fa-rotate fa-2xl"></i></a>
+    <table class="table-auto mt-2 max-sm:flex flex shadow-2xl shadow-black rounded-xl mb-10 items-center justify-center mx-auto">
+        <tbody class="text-cyan-800 border-2 shadow-2xl shadow-black rounded-xl max-sm:p-4 p-1 overflow-x-auto border-cyan-600 bg-white">            
             <tr class="text-xs bg-cyan-900 rounded-xl text-white">
                 <th scope="col" class="border-l-2 border-b-2 border-b-white border-cyan-800 border-t-2 border-t-white ">S/N</th>
                 <th scope="col" class="border-2 border-cyan p-2">SURNAME</th>
@@ -49,7 +44,6 @@
                 <th scope="col" class="border-2 border-cyan p-2" >DEPARTMENT</th>
                 <th scope="col" class="border-2 border-cyan p-2">CURRENT POST</th>
                 <th scope="col" class="border-2 border-cyan p-4">DATE OF FIRST APPOINTMENT</th>
-                <th scope="col" class="border-2 border-cyan-800 text-gray-100 p-2 border-t-2 border-t-white border-b-white">FULL DETAILS</th>
             </tr>
         {% for p in users %}
         <tr class="text-xs text-cyan-900 font-semibold">
@@ -83,10 +77,17 @@
             <td class="border-2 border-cyan-800 p-4 text-center">
                 {{p.governmentappointment.dofa|date:'d-M-Y'|default_if_none:''|upper}}
             </td>
-            <td class="p-1 border-2 border-cyan-800 text-center"> 
-            <a class="" href="{{p.get_absolute_url}}"><i class="fa-solid fa-folder-open fa-2xl text-orange-800"></i></a>
-                </td> 
-
+            </tr>
+            {%empty%}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="text-2xl font-bold text-orange-600">record not found!</td>
+                <td class="p-2 m-2 "><a href="?" class="p-2 focus:opacity-10 bg-orange-500 text-white rounded w-fit"><i class="fa-solid fa-rotate fa-2xl"></i></a></td>
+    
             </tr>
             {% endfor %}
          <tr class="flex justify-center text-center p-1">
