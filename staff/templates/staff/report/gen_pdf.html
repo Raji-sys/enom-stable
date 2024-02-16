@@ -102,9 +102,7 @@ table {
         <tbody class="bg-white border-2 max-sm:p-2 p-2 overflow-x-auto border-green-900 text-xs">            
             <tr class="text-xs text-white">
                 <th scope="col" class="border-2  p-2">S/N</th>
-                <th scope="col" class="border-2  p-2">SURNAME</th>
-                <th scope="col" class="border-2  p-2">MIDDLE NAME</th>
-                <th scope="col" class="border-2  p-2">FIRST NAME</th>
+                <th scope="col" class="border-2  p-2">FULLNAME</th>
                 <th scope="col" class="border-2  p-2">FILE NO</th>
                 <th scope="col" class="border-2  p-2">IPPIS NO</th>
                 <th scope="col" class="border-2  p-2">SEX</th>
@@ -118,13 +116,7 @@ table {
             {{forloop.counter}}
            </td> 
             <td class="border-2  p-2 text-center">
-               {{p.last_name|default_if_none:''|upper}}
-            </td>
-            <td class="border-2  p-2 text-center">
-                {{p.middlename|default_if_none:''|upper}}
-            </td>
-            <td class="border-2  p-2 text-center">
-                {{p.first_name|default_if_none:''|upper}}
+               {{p.get_full_name|default_if_none:''|upper}} {{p.middle_name|default_if_none:''|upper}}
             </td>
             <td class="border-2  p-1 text-center">
                 {{p.file_no|default_if_none:''}}

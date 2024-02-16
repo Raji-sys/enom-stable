@@ -20,6 +20,7 @@ from xhtml2pdf import pisa
 import datetime
 from django.conf import settings
 import os
+import csv
 User = get_user_model()
 
 
@@ -107,6 +108,7 @@ class GenReportView(ListView):
         return context
 
 
+@login_required
 def fetch_resources(uri, rel):
     """
     Handles fetching static and media resources when generating the PDF.
@@ -116,7 +118,9 @@ def fetch_resources(uri, rel):
     else:
         path = os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL, ""))
     return path
-    
+
+
+@login_required
 def gen_pdf(request):
     ndate = datetime.datetime.now()
     filename = ndate.strftime('on_%d/%m/%Y_at_%I.%M%p.pdf')
@@ -141,6 +145,36 @@ def gen_pdf(request):
         return response
     return HttpResponse('Error generating PDF', status=500)
 
+
+@login_required
+def Gen_csvFile(request):    
+    ndate=datetime.datetime.now()
+    filename=ndate.strftime('on_%d/%m/%Y_at_%I.%M%p.csv')
+    response=HttpResponse(content_type='text/csv',headers={'Content-Disposition':f'attachment; filename="generated_by_{request.user}_{filename}"'})    
+    user=User.objects.all()
+    govFilter=GovFilter(request.GET, queryset=user)
+    user=govFilter.qs
+    # result=request.GET['date_of_first_appointment']
+    writer=csv.writer(response)
+    #csv headers            
+    # writer.writerow(['','','','','','','Data of {} staff'.format(result) ])
+    writer.writerow([
+                    'S/N','FULLNAME','FILE NO','IPPIS NUMBER','SEX','DEPARTMENT','CURRENT POST','DATE OF FIRST APPOINTMENT'])
+
+    #generate csv body data with variables using foor loop 
+    for i, u in enumerate(user,start=1):
+        
+        writer.writerow([
+            i,
+            str(u.first_name).upper()+str(' ')+str(u.profile.middle_name).upper()+str(' ')+str(u.last_name).upper(),
+            u.profile.file_no, 
+            u.governmentappointment.ippis_no,
+            str(u.profile.gender).upper(),
+            str(u.governmentappointment.department).upper(),
+            str(u.governmentappointment.cpost).upper(),
+            u.governmentappointment.date_fapt,
+            ])
+    return response
 
 @login_required
 def pro_report(request):

@@ -16,6 +16,7 @@ urlpatterns = [
     path('report/', views.report, name='report'),
     path('gen_report/', GenReportView.as_view(), name='gen_report'),
     path('gen_pdf/', views.gen_pdf, name='gen_pdf'),
+    path('gen_csvFile/', views.Gen_csvFile, name='gen_csvfile'),
     path('pro_report/', views.pro_report, name='pro_report'),
     path('lv_report/', views.lv_report, name='lv_report'),
     path('govapp_report/', views.govapp_report, name='govapp_report'),
