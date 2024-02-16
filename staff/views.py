@@ -9,10 +9,17 @@ from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.views import LoginView, LogoutView
+from django.http import HttpResponse
 from .models import *
 from .forms import *
 from .filters import *
 from django.contrib.auth import get_user_model
+from io import BytesIO
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+import datetime
+from django.conf import settings
+import os
 User = get_user_model()
 
 
@@ -71,7 +78,6 @@ def dirs(request):
 def dirs_details(request):
     pass
 
-
 @login_required
 def report(request):
     return render(request, 'report.html')
@@ -99,6 +105,41 @@ class GenReportView(ListView):
         context['gen_filter'] = GovFilter(self.request.GET, queryset=self.get_queryset())
         context['total'] = self.total
         return context
+
+
+def fetch_resources(uri, rel):
+    """
+    Handles fetching static and media resources when generating the PDF.
+    """
+    if uri.startswith(settings.STATIC_URL):
+        path = os.path.join(settings.STATIC_ROOT, uri.replace(settings.STATIC_URL, ""))
+    else:
+        path = os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL, ""))
+    return path
+    
+def gen_pdf(request):
+    ndate = datetime.datetime.now()
+    filename = ndate.strftime('on_%d/%m/%Y_at_%I.%M%p.pdf')
+    f = GovFilter(request.GET, queryset=User.objects.all()).qs
+
+    result = ""
+    for key, value in request.GET.items():
+        if value:
+            result+= f" {value.upper()}<br>Generated on: {ndate.strftime('%d-%B-%Y at %I:%M %p')}</br>By: {request.user.username.upper()}"
+    
+    context = {'f': f, 'pagesize': 'A4', 'orientation': 'landscape','result':result}
+    response = HttpResponse(content_type='application/pdf', headers={'Content-Disposition': f'filename="Report__{filename}"'})
+   
+    buffer = BytesIO()
+
+    pisa_status = pisa.CreatePDF(get_template('staff/report/gen_pdf.html').render(context), dest=buffer, encoding='utf-8', link_callback=fetch_resources)
+
+    if not pisa_status.err:
+        pdf = buffer.getvalue()
+        buffer.close()
+        response.write(pdf)
+        return response
+    return HttpResponse('Error generating PDF', status=500)
 
 
 @login_required
@@ -227,7 +268,7 @@ class UserRegView(CreateView):
             return reverse_lazy('staff')
         else:
             return reverse_lazy('index')
-            
+
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class DocumentationView(UpdateView):

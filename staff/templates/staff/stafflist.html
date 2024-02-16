@@ -10,9 +10,10 @@
           {{form.errors}}
           {% endif %}
             {% for message in messages %}
-      <hr />
-      <p class="text-center text-cyan-700 uppercase font-bold text-xl">{{ message }}</p>
-      <hr />
+           <div class="uk-alert-success rounded-2xl text-sm" uk-alert>
+            <a href class="uk-alert-close font-bold" uk-close></a>
+            <p class="text-cyan-900 font-semibold">{{ message }}</p>
+            </div> 
       {% endfor %}
         </div>
         <div class="flex justify-end m-1 ">
@@ -22,8 +23,8 @@
                     id="showButton" hx-get="{% url 'reg' %}" hx-target="#modals-here" _="on htmx:afterOnLoad wait 10ms then add .uk-open to #modal"><i class="fa-solid fa-plus fa-xl"></i></button></span>
                     {% if request.GET.urlencode %}
                     <span>
-                        <a href="?" class=" p-2 focus:opacity-10  focus:border-cyan-600 bg-orange-500  text-white rounded shadow-lg hover:shadow-xl text-center w-fit">
-                            <i class="fa-solid fa-rotate fa-lg"></i></a>
+                        <a href="?" class=" p-2 focus:opacity-10  focus:border-cyan-600 bg-orange-500text-white rounded shadow-lg hover:shadow-xl text-center w-fit">
+                            <i class="fa-solid fa-rotate fa-lg text-white"></i></a>
                         </span>
                         {%endif%}
                     </span>

@@ -1,31 +1,28 @@
 {% load static %}
 {%block content %}
 <div id="modal" class="uk-modal" style="display:block;">
-	<div class="w-fit uk-modal-dialog uk-modal-body rounded-2xl font-semibold text-sm">			
+	<div class="uk-modal-dialog uk-modal-body rounded-2xl font-semibold text-sm">			
 			<button 
 				id="cancelButton"
 				type="button"  
 				_="on click take .uk-open from #modal wait 200ms then remove #modal"><i class="fa-solid fa-times fa-2xl text-rose-700"></i></button>
 		<div class="flex justify-center m-2 pb-6">
   <div class="">
-    <section class="text-center border-b-2 border-cyan-700 p-2">
-      <h2 class="text-white bg-cyan-900 w-fit p-2 rounded-xl uppercase text-xs m-1">fill this form to register</h2>
-    </section>
       <div class="block text-sm text-red-500">
         {% if form.errors %}
         {{form.errors}}
         {% endif %}
       </div>
-    <form action="{% url 'register' %}" method="POST" class="text-xs" _="on submit .uk-open from #modal">
+    <form action="{% url 'reg' %}" method="POST" class="text-xs" _="on submit .uk-open from #modal">
       {% csrf_token %}
-      <div class="mb-1 uppercase text-cyan-900">
+      <div class="mb-1  text-cyan-900">
         <div class="flex justify-center">
           <label for="uname">username</label>
         </div>
         <div class="flex justify-center mb-4">
           <input
             id="uname"
-            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg 
+            class="lg:w-80 text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg 
             hover:border-cyan-700 focus:border-cyan-700"
             type="text"
             name="username"
@@ -37,7 +34,7 @@
         <div class="flex justify-center mb-4">
           <input
             id="email"
-            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg
+            class="lg:w-80 text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg
           hover:border-cyan-700 focus:border-cyan-700"
             type="text"
             name="email"
@@ -48,7 +45,7 @@
         </div>
         <div class="flex justify-center mb-4">
           <input
-            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg 
+            class="lg:w-80 text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg 
             hover:border-cyan-700 focus:border-cyan-700"
             type="text"
             name="last_name"
@@ -60,7 +57,7 @@
         </div>
         <div class="flex justify-center mb-4">
           <input
-            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg 
+            class="lg:w-80 text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg 
             hover:border-cyan-700 focus:border-cyan-700"
             type="text"
             name="first_name"
@@ -72,7 +69,7 @@
         </div>
         <div class="flex justify-center mb-4">
           <input
-            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg 
+            class="lg:w-80 text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg 
             hover:border-cyan-700 focus:border-cyan-700"
             type="password"
             name="password1"
@@ -84,7 +81,7 @@
         </div>
         <div class="flex justify-center mb-4">
           <input
-            class="text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg 
+            class="lg:w-80 text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg 
             hover:border-cyan-700 focus:border-cyan-700"
             type="password"
             name="password2"
@@ -99,18 +96,7 @@
             value="Register"
           />
         </div>
-        <div class="mt-4 p-2 flex items-center border-t-2 border-cyan-800">
-          {% if request.user.is_authenticated == False %}
-          <div class="text-cyan-800 text-xs">
-            <a
-              class="border-b-2 border-blue-600 text-sm text-blue-800 text-bold ml-1"
-              href="{%url 'login' %}"
-              >login</a
-            >
-            instead
-          </div>
-          {% endif %}
-        </div>
+       
       </div>
     </form>
   </div>
