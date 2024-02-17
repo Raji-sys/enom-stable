@@ -6,7 +6,8 @@
   {% tailwind_css %}
   <title>{% block title %}{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  	<link rel="stylesheet" href="{% static 'fontawesomefree/css/fontawesome.css' %}" type='text/css'>
+  		<link rel="stylesheet" href="{% static 'fonts/fontstyle.css' %}" type='text/css'>
+  		<link rel="stylesheet" href="{% static 'fontawesomefree/css/fontawesome.css' %}" type='text/css'>
 		<link rel="stylesheet" href="{% static 'fontawesomefree/css/solid.css' %}" type='text/css'>
 		<link rel="stylesheet" href="{% static 'uikit/css/uikit.min.css' %}" type="text/css">
 		<script src="{%static '_hyperscript.js' %}"></script>
@@ -15,7 +16,10 @@
 		<script src="{% static 'uikit/js/uikit-icons.js' %}"></script>
 
 </head>
-	<body class="uppercase lato">
+	<body class="uppercase">
+		<style>
+
+		</style>
 			<header class="bg-cyan-800 rounded-md border-b-2 border-cyan-900  mx-3 p-2 shadow-2xl shadow-black">
 					<nav class="flex flex-row max-xs:flex-wrap max-sm:flex-col justify-between mt-0 max-sm:gap-4 gap-10 p-1 rounded-sm">
 						{% if request.user.is_authenticated %}
