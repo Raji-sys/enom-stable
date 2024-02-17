@@ -17,8 +17,8 @@
       {% endfor %}
         </div>
         <div class="flex justify-end m-1 ">
-            <span class="gap-4 bg-cyan-900 text-white uppercase max-sm:text-lg text-sm border-b-2 border-cyan-900 py-3 px-4 rounded-xl mx-2 w-fit font-semibold">total staff
-                <span class=" shadow-white text-sm p-2 rounded-full bg-white text-cyan-900">{{total_profiles}}</span>
+            <span class="gap-4 bg-cyan-900 text-white uppercase max-sm:text-lg text-sm border-b-2 border-cyan-900 py-1 px-4 rounded-xl mx-2 w-fit font-semibold">total staff
+                <span class=" shadow-white text-sm p-1 rounded-full bg-white text-cyan-900">{{total_profiles}}</span>
                 <span>&nbsp;<button class="bg-cyan-900  text-white uppercase max-sm:text-lg text-md border-b-2 border-cyan-900 py-2 px-2 rounded-xl w-fit font-semibold" 
                     id="showButton" hx-get="{% url 'reg' %}" hx-target="#modals-here" _="on htmx:afterOnLoad wait 10ms then add .uk-open to #modal"><i class="fa-solid fa-plus fa-xl"></i></button></span>
                     {% if request.GET.urlencode %}
@@ -39,12 +39,12 @@
                   {% for field in staffFilter.form %}
                     <label for="{{field.id_for_label}}" class="inline">{{ field.label_tag }}</label>
                     <input type="field.field.widget.input_type" name="{{field.name}}"
-                    class="text-center text-sm focus:outline-none w-fit text-cyan-950 py-2 
+                    class="text-center text-sm focus:outline-none w-fit text-cyan-950 py-2
                     rounded shadow-xl shadow-cyan-900 border-cyan-900 border"
                     {%if field.value%} value="{{field.value}}"{%endif%}> 
                     {% endfor %}
                     <button type="submit" class="shadow-xl shadow-cyan-900 w-fit p-2 focus:opacity-10 uppercase border-gray-500 focus:border-cyan-600 bg-cyan-900 text-white rounded hover:border-cyan-700 ">
-                      <i class="fa-solid fa-search fa-xl "></i>
+                      <i class="fa-solid fa-search fa-2xl "></i>
                     </button>
                   </div>
           </form>
@@ -68,34 +68,34 @@
             </tr>
         {% for p in profiles %}
         <tr class="text-xs text-cyan-900 font-semibold">
-           <td class="border-2 border-cyan-800 text-center">
+           <td class="border-2 border-cyan-800 text-center p-2">
             {{forloop.counter}}
            </td> 
-            <td class="border-2 border-cyan-800 p-4 text-center">
+            <td class="border-2 border-cyan-800 p-2 text-center">
                {{p.user.last_name|default_if_none:''|upper}}
             </td>
-            <td class="border-2 border-cyan-800 p-4 text-center">
+            <td class="border-2 border-cyan-800 p-2 text-center">
                 {{p.middle_name|default_if_none:''|upper}}
             </td>
-            <td class="border-2 border-cyan-800 p-4 text-center">
+            <td class="border-2 border-cyan-800 p-2 text-center">
                 {{p.user.first_name|default_if_none:''|upper}}
             </td>
-            <td class="border-2 border-cyan-800 p-1 text-center">
+            <td class="border-2 border-cyan-800 p-2 text-center">
                 {{p.file_no|default_if_none:''}}
             </td>
-            <td class="border-2 border-cyan-800 p-1 text-center">
+            <td class="border-2 border-cyan-800 p-2 text-center">
                 {{p.user.governmentappointment.ippis_no|default_if_none:''}}
             </td>
-            <td class="border-2 border-cyan-800 p-4 text-center">
+            <td class="border-2 border-cyan-800 p-2 text-center">
                 {{p.gender|default_if_none:''|upper}}
             </td>
             <td class="border-2 border-cyan-800 p-2 text-center">                
                 {{p.governmentappointment.department|default_if_none:''|upper}}
             </td>
-            <td class="border-2 border-cyan-800 p-4 text-center">
+            <td class="border-2 border-cyan-800 p-2 text-center">
                 {{p.user.governmentappointment.cpost|default_if_none:''|upper}}
             </td>
-            <td class="border-2 border-cyan-800 p-4 text-center">
+            <td class="border-2 border-cyan-800 p-2 text-center">
                 {{p.user.governmentappointment.date_fapt|date:'d-M-Y'|default_if_none:''|upper}}
             </td>
              <td class="p-1 border-2 border-cyan-800"> 

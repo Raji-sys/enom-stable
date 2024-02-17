@@ -1,4 +1,4 @@
-from django.urls import path,include
+from django.urls import path, include
 from .views import *
 from . import views
 
@@ -9,20 +9,20 @@ urlpatterns = [
 
     path('dept/', views.dept, name='dept'),
     path('dept_details/<str:name>/', views.dept_details, name='dept_details'),
-    
+
     path('dirs/', views.dirs, name='dirs'),
     path('dirs_detail/<str:name>/', views.dirs_details, name='dirs_details'),
-    
+
     path('report/', views.report, name='report'),
+
     path('gen_report/', GenReportView.as_view(), name='gen_report'),
     path('gen_pdf/', views.Gen_pdf, name='gen_pdf'),
     path('gen_csvFile/', views.Gen_csv, name='gen_csvfile'),
-    
-    path('gov_report/', GenReportView.as_view(), name='gen_report'),
-    path('gov_pdf/', views.Gov_pdf, name='gen_pdf'),
+
+    path('gov_report/', GovReportView.as_view(), name='gov_report'),
+    path('gov_pdf/', views.Gov_pdf, name='gov_pdf'),
     path('gov_csv/', views.Gov_csv, name='gov_csv'),
-    
-    path('govapp_report/', views.govapp_report, name='govapp_report'),
+
     path('pro_report/', views.pro_report, name='pro_report'),
     path('lv_report/', views.lv_report, name='lv_report'),
     path('qual_report/', views.qual_report, name='qual_report'),
@@ -32,48 +32,67 @@ urlpatterns = [
 
     path('stats/', views.stats, name='stats'),
     path('notice/', views.notice, name='notice'),
-    
+
     path('login/', CustomLoginView.as_view(), name='login'),
     path('register/', UserRegistrationView.as_view(), name='register'),
     path('reg/', UserRegView.as_view(), name='reg'),
-    
+
     path('documentation/<int:pk>/', DocumentationView.as_view(), name='doc'),
-    
-    path('profile/<str:username>/', ProfileDetailView.as_view(), name='profile_details'),
+
+    path('profile/<str:username>/',
+         ProfileDetailView.as_view(), name='profile_details'),
     path('update-user/<int:pk>/', UpdateUserView.as_view(), name='update_user'),
-    path('update-profile/<int:pk>/', UpdateProfileView.as_view(), name='update_profile'),
-    
-    path('update-govapp/<int:pk>/', UpdateGovappView.as_view(), name='update_govapp'),
-    
-    path('qualification/<str:username>/', QualCreateView.as_view(), name='qual'),
-    path('qualification/update/<int:pk>/', QualUpdateView.as_view(), name='qual_update'),
-    path('qualification/delete/<int:pk>/', QualDeleteView.as_view(), name='qual_delete'),
+    path('update-profile/<int:pk>/',
+         UpdateProfileView.as_view(), name='update_profile'),
 
-    path('pro-qualification/<str:username>/', ProQualCreateView.as_view(), name='pro_qual'),
-    path('pro-qualification/update/<int:pk>/', ProQualUpdateView.as_view(), name='pro_qual_update'),
-    path('pro-qualification/delete/<int:pk>/', ProQualDeleteView.as_view(), name='pro_qual_delete'),
+    path('update-govapp/<int:pk>/',
+         UpdateGovappView.as_view(), name='update_govapp'),
 
-    path('promotion/<str:username>/', PromotionCreateView.as_view(), name='promotion'),
-    path('promotion/update/<int:pk>/', PromotionUpdateView.as_view(), name='promotion_update'),
-    path('promotion/delete/<int:pk>/', PromotionDeleteView.as_view(), name='promotion_delete'),
+    path('qualification/<str:username>/',
+         QualCreateView.as_view(), name='qual'),
+    path('qualification/update/<int:pk>/',
+         QualUpdateView.as_view(), name='qual_update'),
+    path('qualification/delete/<int:pk>/',
+         QualDeleteView.as_view(), name='qual_delete'),
 
-    path('discipline/<str:username>/', DisciplineCreateView.as_view(), name='discipline'),
-    path('discipline/update/<int:pk>/', DisciplineUpdateView.as_view(), name='discipline_update'),
-    path('discipline/delete/<int:pk>/', DisciplineDeleteView.as_view(), name='discipline_delete'),
+    path('pro-qualification/<str:username>/',
+         ProQualCreateView.as_view(), name='pro_qual'),
+    path('pro-qualification/update/<int:pk>/',
+         ProQualUpdateView.as_view(), name='pro_qual_update'),
+    path('pro-qualification/delete/<int:pk>/',
+         ProQualDeleteView.as_view(), name='pro_qual_delete'),
+
+    path('promotion/<str:username>/',
+         PromotionCreateView.as_view(), name='promotion'),
+    path('promotion/update/<int:pk>/',
+         PromotionUpdateView.as_view(), name='promotion_update'),
+    path('promotion/delete/<int:pk>/',
+         PromotionDeleteView.as_view(), name='promotion_delete'),
+
+    path('discipline/<str:username>/',
+         DisciplineCreateView.as_view(), name='discipline'),
+    path('discipline/update/<int:pk>/',
+         DisciplineUpdateView.as_view(), name='discipline_update'),
+    path('discipline/delete/<int:pk>/',
+         DisciplineDeleteView.as_view(), name='discipline_delete'),
 
     path('leave/<str:username>/', LeaveCreateView.as_view(), name='leave'),
     path('leave/update/<int:pk>/', LeaveUpdateView.as_view(), name='leave_update'),
     path('leave/delete/<int:pk>/', LeaveDeleteView.as_view(), name='leave_delete'),
 
     path('execapp/<str:username>/', ExecappCreateView.as_view(), name='execapp'),
-    path('execapp/update/<int:pk>/', ExecappUpdateView.as_view(), name='execapp_update'),
-    path('execapp/delete/<int:pk>/', ExecappDeleteView.as_view(), name='execapp_delete'),
+    path('execapp/update/<int:pk>/',
+         ExecappUpdateView.as_view(), name='execapp_update'),
+    path('execapp/delete/<int:pk>/',
+         ExecappDeleteView.as_view(), name='execapp_delete'),
 
     path('retire/<str:username>/', RetireCreateView.as_view(), name='retire'),
-    path('retire/update/<int:pk>/', RetireUpdateView.as_view(), name='retire_update'),
-    path('retire/delete/<int:pk>/', RetireDeleteView.as_view(), name='retire_delete'),
+    path('retire/update/<int:pk>/',
+         RetireUpdateView.as_view(), name='retire_update'),
+    path('retire/delete/<int:pk>/',
+         RetireDeleteView.as_view(), name='retire_delete'),
 
-    
+
     path('logout/', CustomLogoutView.as_view(), name='logout'),
-    path('',include('django.contrib.auth.urls')),
+    path('', include('django.contrib.auth.urls')),
 ]

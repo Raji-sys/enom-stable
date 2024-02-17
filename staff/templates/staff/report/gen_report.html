@@ -30,11 +30,11 @@
     <!-- end of first grid -->
 
     {% if request.GET.urlencode %}
-    <a href="?" class="m-2 p-2 focus:opacity-10 bg-orange-500 text-white rounded w-fit"><i class="fa-solid fa-rotate fa-2xl"></i></a>
-    <a class="text-xl text-white focus:opacity-10  bg-green-600 m-2 p-2 rounded" href="{% url 'gen_pdf' %}?{{request.GET.urlencode}}">
-        <i class="fa-solid fa-file-pdf fa-2xl"></i></a>
-    <a class="text-xl text-black focus:opacity-10m-2 p-2 rounded" href="{% url 'gov_csv' %}?{{request.GET.urlencode}}">
-    <i class="fa-solid fa-table fa-2xl"></i></a>
+    <a href="?" class="m-1 p-1 focus:opacity-10 bg-orange-500 text-white rounded w-fit"><i class="fa-solid fa-rotate fa-2xl"></i></a>
+    <a class="text-xl text-white focus:opacity-10  bg-green-600 m-1 p-1 rounded w-fit" href="{% url 'gen_pdf' %}?{{request.GET.urlencode}}">
+        <i class="fa-solid fa-file-pdf fa-xl"></i></a>
+    <a class="text-xl text-black focus:opacity-10 m-1 p-1 rounded w-fit" href="{% url 'gov_csv' %}?{{request.GET.urlencode}}">
+    <i class="fa-solid fa-table fa-xl"></i></a>
     <table class="table-auto mt-2 max-sm:flex flex shadow-2xl shadow-black rounded-xl mb-10 items-center justify-center mx-auto">
         <tbody class="text-cyan-800 border-2 shadow-2xl shadow-black rounded-xl max-sm:p-4 p-1 overflow-x-auto border-cyan-600 bg-white">            
             <tr class="text-xs bg-cyan-900 rounded-xl text-white">
@@ -51,34 +51,34 @@
             </tr>
         {% for p in users %}
         <tr class="text-xs text-cyan-900 font-semibold">
-           <td class="border-2 border-cyan-800 text-center">
+           <td class="border-2 border-cyan-800 text-center p-2">
             {{forloop.counter}}
            </td> 
-            <td class="border-2 border-cyan-800 p-4 text-center">
+            <td class="border-2 border-cyan-800 p-2 text-center">
                {{p.last_name|default_if_none:''|upper}}
             </td>
-            <td class="border-2 border-cyan-800 p-4 text-center">
+            <td class="border-2 border-cyan-800 p-2 text-center">
                 {{p.middle_name|default_if_none:''|upper}}
             </td>
-            <td class="border-2 border-cyan-800 p-4 text-center">
+            <td class="border-2 border-cyan-800 p-2 text-center">
                 {{p.first_name|default_if_none:''|upper}}
             </td>
-            <td class="border-2 border-cyan-800 p-1 text-center">
+            <td class="border-2 border-cyan-800 p-2 text-center">
                 {{p.file_no|default_if_none:''}}
             </td>
-            <td class="border-2 border-cyan-800 p-1 text-center">
+            <td class="border-2 border-cyan-800 p-2 text-center">
                 {{p.governmentappointment.ippis_no|default_if_none:''}}
             </td>
-            <td class="border-2 border-cyan-800 p-4 text-center">
+            <td class="border-2 border-cyan-800 p-2 text-center">
                 {{p.gender|default_if_none:''|upper}}
             </td>
             <td class="border-2 border-cyan-800 p-2 text-center">                
                 {{p.governmentappointment.department|default_if_none:''|upper}}
             </td>
-            <td class="border-2 border-cyan-800 p-4 text-center">
+            <td class="border-2 border-cyan-800 p-2 text-center">
                 {{p.governmentappointment.cpost|default_if_none:''|upper}}
             </td>
-            <td class="border-2 border-cyan-800 p-4 text-center">
+            <td class="border-2 border-cyan-800 p-2 text-center">
                 {{p.governmentappointment.date_fapt|date:'d-M-Y'|default_if_none:''|upper}}
             </td>
             </tr>

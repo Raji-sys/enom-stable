@@ -57,10 +57,10 @@ class StaffListView(ListView):
     model=Profile
     template_name="staff/stafflist.html"
     context_object_name='profiles'
-    paginate_by=10
+    paginate_by=15
 
     def get_queryset(self):
-        profiles = super().get_queryset().order_by('file_no')
+        profiles = super().get_queryset().order_by('user__governmentappointment__department')
         staff_filter = StaffFilter(self.request.GET, queryset=profiles)
         return staff_filter.qs
 
@@ -192,7 +192,7 @@ class GovReportView(ListView):
         gov = gov_filter.qs.order_by('department')
 
         # self.total = total
-        return users
+        return gov
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -205,7 +205,7 @@ class GovReportView(ListView):
 def Gov_pdf(request):
     ndate = datetime.datetime.now()
     filename = ndate.strftime('on_%d/%m/%Y_at_%I.%M%p.pdf')
-    f = GovFilter(request.GET, queryset=User.objects.all()).qs
+    f = GovFilter(request.GET, queryset=GovernmentAppointment.objects.all()).qs
 
     result = ""
     for key, value in request.GET.items():
@@ -232,9 +232,9 @@ def Gov_csv(request):
     ndate=datetime.datetime.now()
     filename=ndate.strftime('on_%d/%m/%Y_at_%I.%M%p.csv')
     response=HttpResponse(content_type='text/csv',headers={'Content-Disposition':f'attachment; filename="generated_by_{request.user}_{filename}"'})    
-    user=User.objects.all()
-    genFilter=GenFilter(request.GET, queryset=user)
-    user=genFilter.qs
+    gov=GovernmentAppointment.objects.all()
+    govFilter=GovFilter(request.GET, queryset=gov)
+    gov=genFilter.qs
     # result=request.GET['date_of_first_appointment']
     writer=csv.writer(response)
     #csv headers            
@@ -258,11 +258,6 @@ def Gov_csv(request):
     return response
 
 
-
-@login_required
-def govapp_report(request):
-    pass
-    # return render(request, 'govapp_report.html')
 
 @login_required
 def pro_report(request):

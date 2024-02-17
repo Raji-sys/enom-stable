@@ -103,23 +103,22 @@ table {
             <tr class="text-xs text-white">
                 <th scope="col" class="border-2  p-2">S/N</th>
                 <th scope="col" class="border-2  p-2">NAME</th>
-                <th scope="col" class="border-2  p-2">ippis number</th>
-                <th scope="col" class="border-2  p-2">department</th>
-                <th scope="col" class="border-2  p-2">current post</th>
-                <th scope="col" class="border-2  p-2">DATE OF FIRST APPOINTMENT</th>
-                <th scope="col" class="border-2  p-2">DATE OF CURRENT APPOINTMENT</th>
-                <th scope="col" class="border-2  p-2">type of appointment</th>
-                <th scope="col" class="border-2  p-2">salary scale</th>
-                <th scope="col" class="border-2  p-2" >grade level</th>
-                <th scope="col" class="border-2  p-2">step</th>
+                <th scope="col" class="border-2  p-2">IPPIS NO</th>
+                <th scope="col" class="border-2  p-2">DEPARTMENT</th>
+                <th scope="col" class="border-2  p-2">POST</th>
+                <th scope="col" class="border-2  p-2">DATE OF 1ST APPT</th>
+                <th scope="col" class="border-2  p-2">DATE OF CURRENT APPT</th>
+                <th scope="col" class="border-2  p-2">TYPE OF APPT</th>
+                <th scope="col" class="border-2  p-2">SALARY SCALE</th>
+                <th scope="col" class="border-2  p-2" >GRADE LEVEL/STEP</th>
             </tr>
-        {% for p in f %}
+        {% for g in f %}
         <tr class="text-xs p-2">
             <td class="border-2 text-center">
             {{forloop.counter}}
            </td> 
             <td class="border-2 p-4 text-center">
-               {{g.user.full_name|default_if_none:''|upper}} {{g.user.middle_name|default_if_none:''|upper}}
+               {{g.user.get_full_name|default_if_none:''|upper}} {{g.user.profile.middle_name|default_if_none:''|upper}}
             </td>
             <td class="border-2 p-1 text-center">
                 {{g.ippis_no|default_if_none:''}}
@@ -143,7 +142,7 @@ table {
                 {{g.salary_scale|default_if_none:''|upper}}
             </td>
             <td class="border-2 p-4 text-center">
-                {{g.step|default_if_none:''|upper}}
+                {{g.grade_level|default_if_none:''|upper}}/{{g.step|default_if_none:''|upper}}
             </td>
             </tr>
             {%empty%}
