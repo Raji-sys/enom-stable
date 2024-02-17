@@ -15,11 +15,16 @@ urlpatterns = [
     
     path('report/', views.report, name='report'),
     path('gen_report/', GenReportView.as_view(), name='gen_report'),
-    path('gen_pdf/', views.gen_pdf, name='gen_pdf'),
-    path('gen_csvFile/', views.Gen_csvFile, name='gen_csvfile'),
+    path('gen_pdf/', views.Gen_pdf, name='gen_pdf'),
+    path('gen_csvFile/', views.Gen_csv, name='gen_csvfile'),
+    
+    path('gov_report/', GenReportView.as_view(), name='gen_report'),
+    path('gov_pdf/', views.Gov_pdf, name='gen_pdf'),
+    path('gov_csv/', views.Gov_csv, name='gov_csv'),
+    
+    path('govapp_report/', views.govapp_report, name='govapp_report'),
     path('pro_report/', views.pro_report, name='pro_report'),
     path('lv_report/', views.lv_report, name='lv_report'),
-    path('govapp_report/', views.govapp_report, name='govapp_report'),
     path('qual_report/', views.qual_report, name='qual_report'),
     path('pro_qual_report/', views.pro_qual_report, name='pro_qual_report'),
     path('dis_report/', views.dis_report, name='dis_report'),

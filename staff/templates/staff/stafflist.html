@@ -55,15 +55,15 @@
         <tbody class="text-cyan-800 border-2 shadow-2xl shadow-black rounded-xl max-sm:p-4 p-1 overflow-x-auto border-cyan-600 bg-white">            
             <tr class="text-xs bg-cyan-900 rounded-xl text-white">
                 <th scope="col" class="border-l-2 border-b-2 border-b-white border-cyan-800 border-t-2 border-t-white ">S/N</th>
-                <th scope="col" class="border-2 border-cyan p-2">SURNAME</th>
-                <th scope="col" class="border-2 border-cyan p-2">MIDDLE NAME</th>
-                <th scope="col" class="border-2 border-cyan p-2">FIRST NAME</th>
-                <th scope="col" class="border-2 border-cyan p-2">FILE NUMBER</th>
-                <th scope="col" class="border-2 border-cyan p-2">IPPIS NUMBER</th>
-                <th scope="col" class="border-2 border-cyan p-2">SEX</th>
-                <th scope="col" class="border-2 border-cyan p-2" >DEPARTMENT</th>
-                <th scope="col" class="border-2 border-cyan p-2">CURRENT POST</th>
-                <th scope="col" class="border-2 border-cyan p-4">DATE OF FIRST APPOINTMENT</th>
+                <th scope="col" class="border-2 p-2">SURNAME</th>
+                <th scope="col" class="border-2 p-2">MIDDLE NAME</th>
+                <th scope="col" class="border-2 p-2">FIRST NAME</th>
+                <th scope="col" class="border-2 p-2">FILE NUMBER</th>
+                <th scope="col" class="border-2 p-2">IPPIS NUMBER</th>
+                <th scope="col" class="border-2 p-2">SEX</th>
+                <th scope="col" class="border-2 p-2" >DEPARTMENT</th>
+                <th scope="col" class="border-2 p-2">CURRENT POST</th>
+                <th scope="col" class="border-2 p-4">DATE OF FIRST APPOINTMENT</th>
                 <th scope="col" class="border-2 border-cyan-800 text-gray-100 p-2 border-t-2 border-t-white border-b-white">FULL DETAILS</th>
             </tr>
         {% for p in profiles %}
@@ -96,7 +96,7 @@
                 {{p.user.governmentappointment.cpost|default_if_none:''|upper}}
             </td>
             <td class="border-2 border-cyan-800 p-4 text-center">
-                {{p.user.governmentappointment.dofa|date:'d-M-Y'|default_if_none:''|upper}}
+                {{p.user.governmentappointment.date_fapt|date:'d-M-Y'|default_if_none:''|upper}}
             </td>
              <td class="p-1 border-2 border-cyan-800"> 
             <a class="" href="{{p.get_absolute_url}}"><i class="fa-solid fa-folder-open fa-2xl text-orange-800"></i></a>
