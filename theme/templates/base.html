@@ -20,7 +20,7 @@
 		<style>
 
 		</style>
-			<header class="bg-cyan-800 rounded-md border-b-2 border-cyan-900  mx-3 p-2 shadow-2xl shadow-black">
+			<header class="bg-cyan-800 rounded-md border-b-2 border-cyan-900  mx-3 p-2 shadow-2xl shadow-white">
 					<nav class="flex flex-row max-xs:flex-wrap max-sm:flex-col justify-between mt-0 max-sm:gap-4 gap-10 p-1 rounded-sm">
 						{% if request.user.is_authenticated %}
 						  <div class="">
@@ -31,7 +31,7 @@
 					
 						<div class="">
 						<a href="#"><i class="text-white fa-solid fa-circle-user fa-lg"></i>
-						<span class="border-b-2 border-cyan-800 text-white text-lg font-bold uppercase"> {{request.user}}</span></span></a>
+						<span class="border-b-2 border-cyan-800 text-white text-lg uppercase"> {{request.user}}</span></span></a>
 						</div>
 
 						<div class="">									
@@ -41,8 +41,8 @@
 						{% endif %}
 					</nav>
 				</header>
-				
-				{% block content %}{% endblock %}
-
+					{% block content %}
+					
+					{% endblock %}
 	</body>
 </html>
