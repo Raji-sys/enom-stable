@@ -2,34 +2,37 @@
 <h1>Stats</h1>
 {% block title %}stats{% endblock%}
 {% block content %}
-<section class="flex text-center border-t-2 border-green-800"></section>
-<div class=" p-14 mt-10 max-sm:p-4 max-sm:mt-10 grid grid-cols-2 gap-8 max-sm:grid max-sm:grid-cols-2">
+<div class="justify-center text-center items-center flex">
+    <h2 class="text-cyan-900 p-2 rounded-xl text-3xl uppercase m-2">statistics module</h2>
+</div>
+<div class="flex justify-center items-center">
+<div class=" p-10 mt-2 max-sm:p-4 max-sm:mt-10 grid grid-cols-3 gap-20 max-sm:grid max-sm:grid-cols-2">
 <div>
 <details> 
-    <summary class="bg-cyan-600 p-1 shadow-2xl text-white  text-lg rounded-lg">GENDER</summary>
-    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-cyan-600 bg-white">
-            {%for g in gender_counts %}
-          <tr class=" text-sm">
+    <summary class="bg-cyan-600 p-4 text-white text-center text-lg rounded-full w-fit">GENDER</summary>
+    <table class="justify-center table-auto m-2 max-sm:flex p-2">
+        <tbody class="uppercase text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-cyan-600 bg-white">
+            <tr class=" text-sm">
+              {%for g in gender_counts %}
             <th scope="col" class="border-2 p-2 ">{{g.gender}}</th>
-            <td class="border-2 p-2 text-center">{{g.pc}}</td>
+            <th class="border-2 p-2 text-center">{{g.pc}}</th>
+            {% endfor %}
           </tr>
-        {% endfor %}
         </tbody>
     </table>
 </details>
 </div>
 <div>
     <details>
-        <summary class="bg-blue-600 p-1 text-white  text-lg rounded-lg shadow-2xl">GEO-POLITICAL ZONE</summary>
-    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-blue-700 bg-white">
+        <summary class="bg-blue-600 p-4 text-white text-lg rounded-full w-fit text-center">GEO-POLITICAL ZONE</summary>
+    <table class="justify-center table-auto  m-2 max-sm:flex p-2">
+        <tbody class="uppercase  text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-blue-700 bg-white">
+            <tr class=" text-sm">
             {%for gz in geo_counts %}
-        <tr class=" text-sm">
             <th scope="col" class="border-2 p-2 ">{{gz.zone}}</th>
             <td class="border-2 p-2 text-center">{{gz.pc}}</td>
+            {%endfor%}
         </tr>
-        {%endfor%}
         </tbody>
     </table>
     </details>
@@ -37,15 +40,15 @@
 
 <div>
     <details>
-        <summary class=" bg-amber-600 p-1 text-white  text-lg shadow-2xl rounded-lg">STATE OF ORIGIN</summary>
-            <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-amber-600 bg-white">
-            {%for s in state_counts %}
+        <summary class=" bg-amber-600 p-4 text-white  text-lg rounded-full w-fit text-center">STATE OF ORIGIN</summary>
+            <table class="justify-center table-auto  m-2 max-sm:flex p-2">
+        <tbody class="uppercase  text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-amber-600 bg-white">
             <tr class=" text-sm">
+                {%for s in state_counts %}
             <th scope="col" class="border-2 p-2 ">{{s.state}}</th>
             <td class="border-2 p-2 text-center">{{s.pc}}</td>
+            {%endfor%}
         </tr>
-        {%endfor%}
         </tbody>
     </table>
     </details>
@@ -53,15 +56,15 @@
 
 <div>
     <details>
-        <summary class=" bg-cyan-800 p-1 text-white  text-lg shadow-2xl rounded-lg">LGA</summary>
-    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-cyan-800 bg-white">
-            {%for l in lga_counts%}
+        <summary class=" bg-cyan-800 p-4 text-white  text-lg rounded-full w-fit text-center">LGA</summary>
+    <table class="justify-center table-auto  m-2 max-sm:flex p-2">
+        <tbody class="uppercase  text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-cyan-800 bg-white">
             <tr class=" text-sm">
+                {%for l in lga_counts%}
             <th scope="col" class="border-2 p-2 ">{{l.lga}}</th>
             <td class="border-2 p-2 text-center">{{l.pc}}</td>
+            {%endfor%}
         </tr>
-        {%endfor%}
         </tbody>
     </table>
     </details>    
@@ -69,15 +72,15 @@
 
 <div>
     <details>
-        <summary class=" bg-teal-400 p-1 text-white  text-lg shadow-2xl rounded-lg">RELIGION</summary>
-        <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-teal-400 bg-white">
-            {%for r in religion_counts %}
+        <summary class=" bg-teal-400 p-4 text-white  text-lg rounded-full w-fit text-center">RELIGION</summary>
+        <table class="justify-center table-auto  m-2 max-sm:flex p-2">
+        <tbody class="uppercase  text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-teal-400 bg-white">
             <tr class=" text-sm">
+                {%for r in religion_counts %}
             <th scope="col" class="border-2 p-2 ">{{r.religion}}</th>
             <td class="border-2 p-2 text-center">{{r.pc}}</td>
+            {%endfor%}
         </tr>
-        {%endfor%}
         </tbody>
     </table>
 </details>    
@@ -85,15 +88,15 @@
 
 <div>
     <details>
-        <summary class=" bg-orange-500 p-1 text-white  text-lg shadow-2xl rounded-lg">MARITAL STATUS</summary>
-        <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-orange-500 bg-white">
-        {%for m in ms_counts %}
-        <tr class=" text-sm">
+        <summary class=" bg-orange-500 p-4 text-white  text-lg rounded-full w-fit text-center">MARITAL STATUS</summary>
+        <table class="justify-center table-auto  m-2 max-sm:flex p-2">
+        <tbody class="uppercase  text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-orange-500 bg-white">
+            <tr class=" text-sm">
+            {%for m in ms_counts %}
             <th scope="col" class="border-2 p-2 ">{{m.marital_status}}</th>
             <td class="border-2 p-2 text-center">{{m.pc}}</td>
+            {%endfor%}
         </tr>
-        {%endfor%}
         </tbody>
     </table>
 </details>    
@@ -101,15 +104,15 @@
 
 <div>
     <details>
-        <summary class=" bg-green-500 p-1 text-white  text-lg shadow-2xl rounded-lg">TYPE OF CADRE</summary>
-        <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-green-500 bg-white">
-            {%for t in tc_counts %}
+        <summary class=" bg-green-500 p-4 text-white  text-lg rounded-full w-fit text-center">TYPE OF CADRE</summary>
+        <table class="justify-center table-auto  m-2 max-sm:flex p-2">
+        <tbody class="uppercase  text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-green-500 bg-white">
             <tr class=" text-sm">
+                {%for t in tc_counts %}
             <th scope="col" class="border-2 p-2 ">{{t.type_of_cadre}}</th>
             <td class="border-2 p-2 text-center">{{t.pc}}</td>
+            {%endfor%}
         </tr>
-        {%endfor%}
         </tbody>
     </table>
 </details>    
@@ -117,15 +120,15 @@
 
 <div>
     <details>
-        <summary class=" bg-purple-600 p-1 text-white  text-lg shadow-2xl rounded-lg">DEPARTMENT</summary>
-        <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-purple-600 bg-white">
-            {%for d in department_counts%}
+        <summary class=" bg-purple-600 p-4 text-white  text-lg rounded-full w-fit text-center">DEPARTMENT</summary>
+        <table class="justify-center table-auto  m-2 max-sm:flex p-2">
+        <tbody class="uppercase  text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-purple-600 bg-white">
             <tr class=" text-sm">
+                {%for d in department_counts%}
             <th scope="col" class="border-2 p-2 ">{{d.department}}</th>
             <td class="border-2 p-2 text-center">{{d.pc}}</td>
+            {%endfor%}
         </tr>
-        {%endfor%}
         </tbody>
     </table>
 </details>    
@@ -133,15 +136,15 @@
 
 <div>
     <details>
-        <summary class=" bg-red-600 p-1 text-white  text-lg shadow-2xl rounded-lg">CADRE</summary>
-    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-red-600 bg-white">
-            {%for c in cpost_counts %}
+        <summary class=" bg-red-600 p-4 text-white  text-lg rounded-full w-fit text-center">CADRE</summary>
+    <table class="justify-center table-auto  m-2 max-sm:flex p-2">
+        <tbody class="uppercase  text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-red-600 bg-white">
             <tr class=" text-sm">
+                {%for c in cpost_counts %}
             <th scope="col" class="border-2 p-2 ">{{c.cpost}}</th>
             <td class="border-2 p-2 text-center">{{c.pc}}</td>
+            {%endfor%}
         </tr>
-        {%endfor%}
         </tbody>
     </table>
     </details>    
@@ -149,15 +152,15 @@
 
 <div>
     <details>
-        <summary class=" bg-teal-600 p-1 text-white  text-lg shadow-2xl rounded-lg">SALARY SCALE</summary>
-    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-teal-600 bg-white">
-            {%for ss in ss_counts %}
+        <summary class=" bg-teal-600 p-4 text-white  text-lg rounded-full w-fit text-center">SALARY SCALE</summary>
+    <table class="justify-center table-auto  m-2 max-sm:flex p-2">
+        <tbody class="uppercase  text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-teal-600 bg-white">
             <tr class=" text-sm">
+                {%for ss in ss_counts %}
             <th scope="col" class="border-2 p-2 ">{{ss.salary_scale}}</th>
             <td class="border-2 p-2 text-center">{{ss.pc}}</td>
+            {%endfor%}
         </tr>
-        {%endfor%}
         </tbody>
     </table>
     </details>    
@@ -165,15 +168,15 @@
 
 <div>
     <details>
-        <summary class=" bg-stone-600 p-1 text-white  text-lg shadow-2xl rounded-lg">GRADE LEVEL</summary>
-    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-stone-600 bg-white">
-        {%for gl in gl_counts %}
-        <tr class=" text-sm">
+        <summary class=" bg-stone-600 p-4 text-white  text-lg rounded-full w-fit text-center">GRADE LEVEL</summary>
+    <table class="justify-center table-auto  m-2 max-sm:flex p-2">
+        <tbody class="uppercase  text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-stone-600 bg-white">
+            <tr class=" text-sm">
+            {%for gl in gl_counts %}
             <th scope="col" class="border-2 p-2 ">{{gl.grade_level}}</th>
             <td class="border-2 p-2 text-center">{{gl.pc}}</td>
+            {%endfor%}
         </tr>
-        {%endfor%}
         </tbody>
     </table>
     </details>    
@@ -181,23 +184,19 @@
 
 <div>
     <details>
-        <summary class=" bg-indigo-600 p-1 text-white  text-lg shadow-2xl rounded-lg">EDUCATIONAL CATEGORY</summary>
-    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-indigo-600 bg-white">
-            {%for sc in sc_counts%}
+        <summary class=" bg-indigo-600 p-4 text-white  text-lg rounded-full w-fit text-center">EDUCATIONAL CATEGORY</summary>
+    <table class="justify-center table-auto  m-2 max-sm:flex p-2">
+        <tbody class="uppercase  text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-indigo-600 bg-white">
             <tr class=" text-sm">
+                {% for sc in sc_counts %}
             <th scope="col" class="border-2 p-2 ">{{sc.school_category}}</th>
             <td class="border-2 p-2 text-center">{{sc.pc}}</td>
+            {%endfor%}
         </tr>
-        {%endfor%}
         </tbody>
     </table>
     </details>    
 </div>
-
-
-
 </div>
 <div>
-
 {% endblock %}
