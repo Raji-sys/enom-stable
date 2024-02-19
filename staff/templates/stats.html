@@ -1,7 +1,7 @@
 {%extends "base.html" %}
 <h1>Stats</h1>
 {% block title %}stats{% endblock%}
-{% block main %}
+{% block content %}
 <section class="flex text-center border-t-2 border-green-800"></section>
 <div class=" p-14 mt-10 max-sm:p-4 max-sm:mt-10 grid grid-cols-2 gap-8 max-sm:grid max-sm:grid-cols-2">
 <div>
@@ -9,41 +9,27 @@
     <summary class="bg-cyan-600 p-1 shadow-2xl text-white  text-lg rounded-lg">GENDER</summary>
     <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
         <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-cyan-600 bg-white">
+            {%for g in gender_counts %}
           <tr class=" text-sm">
-            <th scope="col" class="border-2 p-2 ">male</th>
-            <th scope="col" class="border-2 p-2 ">female</th>
+            <th scope="col" class="border-2 p-2 ">{{g.gender}}</th>
+            <td class="border-2 p-2 text-center">{{g.pc}}</td>
           </tr>
-        <tr class="p-6 text-xs ">
-            <td class="border-2 p-2 text-center">{{male}}</td>
-            <td class="border-2 p-2 text-center">{{female}}</td>
-        </tr>
+        {% endfor %}
         </tbody>
     </table>
 </details>
 </div>
-
-
 <div>
     <details>
         <summary class="bg-blue-600 p-1 text-white  text-lg rounded-lg shadow-2xl">GEO-POLITICAL ZONE</summary>
     <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
         <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-blue-700 bg-white">
+            {%for gz in geo_counts %}
         <tr class=" text-sm">
-            <th scope="col" class="border-2 p-2 ">north-east</th>
-            <th scope="col" class="border-2 p-2 ">north-west</th>
-            <th scope="col" class="border-2 p-2 ">north-central</th>
-            <th scope="col" class="border-2 p-2 ">south-east</th>
-            <th scope="col" class="border-2 p-2 ">south-west</th>
-            <th scope="col" class="border-2 p-2 ">south-south</th>
+            <th scope="col" class="border-2 p-2 ">{{gz.zone}}</th>
+            <td class="border-2 p-2 text-center">{{gz.pc}}</td>
         </tr>
-        <tr class="p-6 text-xs ">
-            <td class="border-2 p-2 text-center">{{ne}}</td>
-            <td class="border-2 p-2 text-center">{{nw}}</td>
-            <td class="border-2 p-2 text-center">{{nc}}</td>
-            <td class="border-2 p-2 text-center">{{se}}</td>
-            <td class="border-2 p-2 text-center">{{sw}}</td>
-            <td class="border-2 p-2 text-center">{{ss}}</td>
-        </tr>
+        {%endfor%}
         </tbody>
     </table>
     </details>
@@ -54,102 +40,28 @@
         <summary class=" bg-amber-600 p-1 text-white  text-lg shadow-2xl rounded-lg">STATE OF ORIGIN</summary>
             <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
         <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-amber-600 bg-white">
-        <tr class=" text-sm">
-            <th scope="col" class="border-2 p-2 ">abia</th>
-            <th scope="col" class="border-2 p-2 ">adamawa</th>
-            <th scope="col" class="border-2 p-2 ">akwa-ibom</th>
-            <th scope="col" class="border-2 p-2 ">anambra</th>
-            <th scope="col" class="border-2 p-2 ">bauchi</th>
-            <th scope="col" class="border-2 p-2 ">bayelsa</th>
-            <th scope="col" class="border-2 p-2 ">benue</th>
-            <th scope="col" class="border-2 p-2 ">borno</th>
-            <th scope="col" class="border-2 p-2 ">cross-river</th>
-            <th scope="col" class="border-2 p-2 ">delta</th>
-            <th scope="col" class="border-2 p-2 ">ebonyi</th>
-            <th scope="col" class="border-2 p-2 ">edo</th>
-            <th scope="col" class="border-2 p-2 ">ekiti</th>
-            <th scope="col" class="border-2 p-2 ">enugu</th>
-            <th scope="col" class="border-2 p-2 ">fct_abuja</th>
-            <th scope="col" class="border-2 p-2 ">gombe</th>
-            <th scope="col" class="border-2 p-2 ">imo</th>
-            <th scope="col" class="border-2 p-2 ">jigawa</th>
-            <th scope="col" class="border-2 p-2 ">kaduna</th>
-            <th scope="col" class="border-2 p-2 ">kano</th>
-            <th scope="col" class="border-2 p-2 ">katsina</th>
-            <th scope="col" class="border-2 p-2 ">kebbi</th>
-            <th scope="col" class="border-2 p-2 ">kogi</th>
-            <th scope="col" class="border-2 p-2 ">kwara</th>
-            <th scope="col" class="border-2 p-2 ">nassarawa</th>
-            <th scope="col" class="border-2 p-2 ">niger</th>
-            <th scope="col" class="border-2 p-2 ">ogun</th>
-            <th scope="col" class="border-2 p-2 ">osun</th>
-            <th scope="col" class="border-2 p-2 ">ondo</th>
-            <th scope="col" class="border-2 p-2 ">oyo</th>
-            <th scope="col" class="border-2 p-2 ">plateau</th>
-            <th scope="col" class="border-2 p-2 ">rivers</th>
-            <th scope="col" class="border-2 p-2 ">sokoto</th>
-            <th scope="col" class="border-2 p-2 ">taraba</th>
-            <th scope="col" class="border-2 p-2 ">yobe</th>
-            <th scope="col" class="border-2 p-2 ">zamfara</th>
+            {%for s in state_counts %}
+            <tr class=" text-sm">
+            <th scope="col" class="border-2 p-2 ">{{s.state}}</th>
+            <td class="border-2 p-2 text-center">{{s.pc}}</td>
         </tr>
-        <tr class="p-6 text-xs">
-            <td class="border-2 p-2 text-center">{{abia}}</td>
-            <td class="border-2 p-2 text-center">{{adamawa}}</td>
-            <td class="border-2 p-2 text-center">{{akwa_ibom}}</td>
-            <td class="border-2 p-2 text-center">{{anambra}}</td>
-            <td class="border-2 p-2 text-center">{{bauchi}}</td>
-            <td class="border-2 p-2 text-center">{{bayelsa}}</td>
-            <td class="border-2 p-2 text-center">{{benue}}</td>
-            <td class="border-2 p-2 text-center">{{borno}}</td>
-            <td class="border-2 p-2 text-center">{{cross_river}}</td>
-            <td class="border-2 p-2 text-center">{{delta}}</td>
-            <td class="border-2 p-2 text-center">{{ebonyi}}</td>
-            <td class="border-2 p-2 text-center">{{edo}}</td>
-            <td class="border-2 p-2 text-center">{{ekiti}}</td>
-            <td class="border-2 p-2 text-center">{{enugu}}</td>
-            <td class="border-2 p-2 text-center">{{fct_abuja}}</td>
-            <td class="border-2 p-2 text-center">{{gombe}}</td>
-            <td class="border-2 p-2 text-center">{{imo}}</td>
-            <td class="border-2 p-2 text-center">{{jigawa}}</td>
-            <td class="border-2 p-2 text-center">{{kaduna}}</td>
-            <td class="border-2 p-2 text-center">{{kano}}</td>
-            <td class="border-2 p-2 text-center">{{katsina}}</td>
-            <td class="border-2 p-2 text-center">{{kebbi}}</td>
-            <td class="border-2 p-2 text-center">{{kogi}}</td>
-            <td class="border-2 p-2 text-center">{{kwara}}</td>
-            <td class="border-2 p-2 text-center">{{nassarawa}}</td>
-            <td class="border-2 p-2 text-center">{{niger}}</td>
-            <td class="border-2 p-2 text-center">{{ogun}}</td>
-            <td class="border-2 p-2 text-center">{{osun}}</td>
-            <td class="border-2 p-2 text-center">{{ondo}}</td>
-            <td class="border-2 p-2 text-center">{{oyo}}</td>
-            <td class="border-2 p-2 text-center">{{plateau}}</td>
-            <td class="border-2 p-2 text-center">{{rivers}}</td>
-            <td class="border-2 p-2 text-center">{{sokoto}}</td>
-            <td class="border-2 p-2 text-center">{{taraba}}</td>
-            <td class="border-2 p-2 text-center">{{yobe}}</td>
-            <td class="border-2 p-2 text-center">{{zamfara}}</td>
-        </tr>
+        {%endfor%}
         </tbody>
     </table>
     </details>
 </div>
-
-
 
 <div>
     <details>
         <summary class=" bg-cyan-800 p-1 text-white  text-lg shadow-2xl rounded-lg">LGA</summary>
     <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
         <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-cyan-800 bg-white">
-        <tr class=" text-sm">
-            <th scope="col" class="border-2 p-2 ">Dala</th>
-            <th scope="col" class="border-2 p-2 ">Kano Municipal</th>
+            {%for l in lga_counts%}
+            <tr class=" text-sm">
+            <th scope="col" class="border-2 p-2 ">{{l.lga}}</th>
+            <td class="border-2 p-2 text-center">{{l.pc}}</td>
         </tr>
-        <tr class="p-6 text-xs ">
-            <td class="border-2 p-2 text-center">{{dala}}</td>
-            <td class="border-2 p-2 text-center">{{kano_municipal}}</td>
-        </tr>
+        {%endfor%}
         </tbody>
     </table>
     </details>    
@@ -157,72 +69,15 @@
 
 <div>
     <details>
-        <summary class=" bg-teal-600 p-1 text-white  text-lg shadow-2xl rounded-lg">SALARY SCALE</summary>
-    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-teal-600 bg-white">
-        <tr class=" text-sm">
-            <th scope="col" class="border-2 p-2 ">conhess</th>
-            <th scope="col" class="border-2 p-2 ">conmess</th>
-        </tr>
-        <tr class="p-6 text-xs ">
-            <td class="border-2 p-2 text-center">{{conhess}}</td>
-            <td class="border-2 p-2 text-center">{{conmess}}</td>
-        </tr>
-        </tbody>
-    </table>
-    </details>    
-</div>
-
-<div>
-    <details>
-        <summary class=" bg-stone-600 p-1 text-white  text-lg shadow-2xl rounded-lg">GRADE LEVEL</summary>
-    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-stone-600 bg-white">
-        <tr class=" text-sm">
-            <th scope="col" class="border-2 p-2 ">07</th>
-            <th scope="col" class="border-2 p-2 ">08</th>
-        </tr>
-        <tr class="p-6 text-xs ">
-            <td class="border-2 p-2 text-center">{{gl_07}}</td>
-            <td class="border-2 p-2 text-center">{{gl_08}}</td>
-        </tr>
-        </tbody>
-    </table>
-    </details>    
-</div>
-
-<div>
-    <details>
-        <summary class=" bg-red-600 p-1 text-white  text-lg shadow-2xl rounded-lg">CADRE</summary>
-    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-red-600 bg-white">
-        <tr class=" text-sm">
-            <th scope="col" class="border-2 p-2 ">CONSULTANT</th>
-            <!-- <th scope="col" class="border-2 p-2 ">PROGRAM ANALYST</th> -->
-        </tr>
-        <tr class="p-6 text-xs ">
-            <td class="border-2 p-2 text-center">{{consultant}}</td>
-        </tr>
-        </tbody>
-    </table>
-    </details>    
-</div>
-
-<div>
-    <details>
-        <summary class=" bg-purple-600 p-1 text-white  text-lg shadow-2xl rounded-lg">DEPARTMENT</summary>
+        <summary class=" bg-teal-400 p-1 text-white  text-lg shadow-2xl rounded-lg">RELIGION</summary>
         <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-purple-600 bg-white">
-        <tr class=" text-sm">
-            <th scope="col" class="border-2 p-2 ">account</th>
-            <th scope="col" class="border-2 p-2 ">record</th>
-            <th scope="col" class="border-2 p-2 ">clinical services</th>
+        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-teal-400 bg-white">
+            {%for r in religion_counts %}
+            <tr class=" text-sm">
+            <th scope="col" class="border-2 p-2 ">{{r.religion}}</th>
+            <td class="border-2 p-2 text-center">{{r.pc}}</td>
         </tr>
-        <tr class="p-6 text-xs ">
-            <td class="border-2 p-2 text-center">{{account}}</td>
-            <td class="border-2 p-2 text-center">{{record}}</td>
-            <td class="border-2 p-2 text-center">{{clinical_service}}</td>
-        </tr>
+        {%endfor%}
         </tbody>
     </table>
 </details>    
@@ -233,20 +88,12 @@
         <summary class=" bg-orange-500 p-1 text-white  text-lg shadow-2xl rounded-lg">MARITAL STATUS</summary>
         <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
         <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-orange-500 bg-white">
+        {%for m in ms_counts %}
         <tr class=" text-sm">
-            <th scope="col" class="border-2 p-2 ">married</th>
-            <th scope="col" class="border-2 p-2 ">single</th>
-            <th scope="col" class="border-2 p-2 ">divorced</th>
-            <th scope="col" class="border-2 p-2 ">widow</th>
-            <th scope="col" class="border-2 p-2 ">widower</th>
+            <th scope="col" class="border-2 p-2 ">{{m.marital_status}}</th>
+            <td class="border-2 p-2 text-center">{{m.pc}}</td>
         </tr>
-        <tr class="p-6 text-xs ">
-            <td class="border-2 p-2 text-center">{{married}}</td>
-            <td class="border-2 p-2 text-center">{{single}}</td>
-            <td class="border-2 p-2 text-center">{{divorced}}</td>
-            <td class="border-2 p-2 text-center">{{widow}}</td>
-            <td class="border-2 p-2 text-center">{{widower}}</td>
-        </tr>
+        {%endfor%}
         </tbody>
     </table>
 </details>    
@@ -254,31 +101,103 @@
 
 <div>
     <details>
-        <summary class=" bg-teal-400 p-1 text-white  text-lg shadow-2xl rounded-lg">RELIGION</summary>
+        <summary class=" bg-green-500 p-1 text-white  text-lg shadow-2xl rounded-lg">TYPE OF CADRE</summary>
         <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
-        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-teal-400 bg-white">
-        <tr class=" text-sm">
-            <th scope="col" class="border-2 p-2 ">islam</th>
-            <th scope="col" class="border-2 p-2 ">christianity</th>
-            <th scope="col" class="border-2 p-2 ">traditional</th>
+        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-green-500 bg-white">
+            {%for t in tc_counts %}
+            <tr class=" text-sm">
+            <th scope="col" class="border-2 p-2 ">{{t.type_of_cadre}}</th>
+            <td class="border-2 p-2 text-center">{{t.pc}}</td>
         </tr>
-        <tr class="p-6 text-xs ">
-            <td class="border-2 p-2 text-center">{{islam}}</td>
-            <td class="border-2 p-2 text-center">{{christianity}}</td>
-            <td class="border-2 p-2 text-center">{{traditional}}</td>
-        </tr>
+        {%endfor%}
         </tbody>
     </table>
 </details>    
 </div>
 
+<div>
+    <details>
+        <summary class=" bg-purple-600 p-1 text-white  text-lg shadow-2xl rounded-lg">DEPARTMENT</summary>
+        <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
+        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-purple-600 bg-white">
+            {%for d in department_counts%}
+            <tr class=" text-sm">
+            <th scope="col" class="border-2 p-2 ">{{d.department}}</th>
+            <td class="border-2 p-2 text-center">{{d.pc}}</td>
+        </tr>
+        {%endfor%}
+        </tbody>
+    </table>
+</details>    
 </div>
-<div></div>
-<div></div>
+
+<div>
+    <details>
+        <summary class=" bg-red-600 p-1 text-white  text-lg shadow-2xl rounded-lg">CADRE</summary>
+    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
+        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-red-600 bg-white">
+            {%for c in cpost_counts %}
+            <tr class=" text-sm">
+            <th scope="col" class="border-2 p-2 ">{{c.cpost}}</th>
+            <td class="border-2 p-2 text-center">{{c.pc}}</td>
+        </tr>
+        {%endfor%}
+        </tbody>
+    </table>
+    </details>    
+</div>
+
+<div>
+    <details>
+        <summary class=" bg-teal-600 p-1 text-white  text-lg shadow-2xl rounded-lg">SALARY SCALE</summary>
+    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
+        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-teal-600 bg-white">
+            {%for ss in ss_counts %}
+            <tr class=" text-sm">
+            <th scope="col" class="border-2 p-2 ">{{ss.salary_scale}}</th>
+            <td class="border-2 p-2 text-center">{{ss.pc}}</td>
+        </tr>
+        {%endfor%}
+        </tbody>
+    </table>
+    </details>    
+</div>
+
+<div>
+    <details>
+        <summary class=" bg-stone-600 p-1 text-white  text-lg shadow-2xl rounded-lg">GRADE LEVEL</summary>
+    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
+        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-stone-600 bg-white">
+        {%for gl in gl_counts %}
+        <tr class=" text-sm">
+            <th scope="col" class="border-2 p-2 ">{{gl.grade_level}}</th>
+            <td class="border-2 p-2 text-center">{{gl.pc}}</td>
+        </tr>
+        {%endfor%}
+        </tbody>
+    </table>
+    </details>    
+</div>
+
+<div>
+    <details>
+        <summary class=" bg-indigo-600 p-1 text-white  text-lg shadow-2xl rounded-lg">EDUCATIONAL CATEGORY</summary>
+    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex">
+        <tbody class="uppercase shadow-2xl text-sm rounded-lg max-sm:p-16 p-4 overflow-x-auto mx-0 text-indigo-600 bg-white">
+            {%for sc in sc_counts%}
+            <tr class=" text-sm">
+            <th scope="col" class="border-2 p-2 ">{{sc.school_category}}</th>
+            <td class="border-2 p-2 text-center">{{sc.pc}}</td>
+        </tr>
+        {%endfor%}
+        </tbody>
+    </table>
+    </details>    
+</div>
+
+
 
 </div>
-</div>
-
 <div>
 
 {% endblock %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render,get_object_or_404,HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.base import TemplateView
 from django.views.generic import DetailView, ListView
@@ -21,13 +21,14 @@ import datetime
 from django.conf import settings
 import os
 import csv
+from django.db.models import Count
 User = get_user_model()
 
 
 def log_anonymous_required(view_function, redirect_to=None):
     if redirect_to is None:
         redirect_to = '/'
-    return user_passes_test(lambda u: not u.is_authenticated,login_url=redirect_to)(view_function)
+    return user_passes_test(lambda u: not u.is_authenticated, login_url=redirect_to)(view_function)
 
 
 @login_required
@@ -36,15 +37,17 @@ def fetch_resources(uri, rel):
     Handles fetching static and media resources when generating the PDF.
     """
     if uri.startswith(settings.STATIC_URL):
-        path = os.path.join(settings.STATIC_ROOT, uri.replace(settings.STATIC_URL, ""))
+        path = os.path.join(settings.STATIC_ROOT,
+                            uri.replace(settings.STATIC_URL, ""))
     else:
-        path = os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL, ""))
+        path = os.path.join(settings.MEDIA_ROOT,
+                            uri.replace(settings.MEDIA_URL, ""))
     return path
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class IndexView(TemplateView):
-    template_name= "index.html"
+    template_name = "index.html"
 
 
 @login_required
@@ -54,20 +57,22 @@ def manage(request):
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class StaffListView(ListView):
-    model=Profile
-    template_name="staff/stafflist.html"
-    context_object_name='profiles'
-    paginate_by=15
+    model = Profile
+    template_name = "staff/stafflist.html"
+    context_object_name = 'profiles'
+    paginate_by = 15
 
     def get_queryset(self):
-        profiles = super().get_queryset().order_by('user__governmentappointment__department')
+        profiles = super().get_queryset().order_by(
+            'user__governmentappointment__department')
         staff_filter = StaffFilter(self.request.GET, queryset=profiles)
         return staff_filter.qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         total_profiles = self.get_queryset().count()
-        context['staffFilter'] = StaffFilter(self.request.GET, queryset=self.get_queryset())
+        context['staffFilter'] = StaffFilter(
+            self.request.GET, queryset=self.get_queryset())
         context['total_profiles'] = total_profiles
         return context
 
@@ -90,6 +95,7 @@ def dirs(request):
 @login_required
 def dirs_details(request):
     pass
+
 
 @login_required
 def report(request):
@@ -115,7 +121,8 @@ class GenReportView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['gen_filter'] = GenFilter(self.request.GET, queryset=self.get_queryset())
+        context['gen_filter'] = GenFilter(
+            self.request.GET, queryset=self.get_queryset())
         context['total'] = self.total
         return context
 
@@ -129,14 +136,17 @@ def Gen_pdf(request):
     result = ""
     for key, value in request.GET.items():
         if value:
-            result+= f" {value.upper()}<br>Generated on: {ndate.strftime('%d-%B-%Y at %I:%M %p')}</br>By: {request.user.username.upper()}"
-    
-    context = {'f': f, 'pagesize': 'A4', 'orientation': 'landscape','result':result}
-    response = HttpResponse(content_type='application/pdf', headers={'Content-Disposition': f'filename="Report__{filename}"'})
-   
+            result += f" {value.upper()}<br>Generated on: {ndate.strftime('%d-%B-%Y at %I:%M %p')}</br>By: {request.user.username.upper()}"
+
+    context = {'f': f, 'pagesize': 'A4',
+               'orientation': 'landscape', 'result': result}
+    response = HttpResponse(content_type='application/pdf',
+                            headers={'Content-Disposition': f'filename="Report__{filename}"'})
+
     buffer = BytesIO()
 
-    pisa_status = pisa.CreatePDF(get_template('staff/report/gen_pdf.html').render(context), dest=buffer, encoding='utf-8', link_callback=fetch_resources)
+    pisa_status = pisa.CreatePDF(get_template('staff/report/gen_pdf.html').render(
+        context), dest=buffer, encoding='utf-8', link_callback=fetch_resources)
 
     if not pisa_status.err:
         pdf = buffer.getvalue()
@@ -147,33 +157,36 @@ def Gen_pdf(request):
 
 
 @login_required
-def Gen_csv(request):    
-    ndate=datetime.datetime.now()
-    filename=ndate.strftime('on_%d/%m/%Y_at_%I.%M%p.csv')
-    response=HttpResponse(content_type='text/csv',headers={'Content-Disposition':f'attachment; filename="generated_by_{request.user}_{filename}"'})    
-    user=User.objects.all()
-    genFilter=GenFilter(request.GET, queryset=user)
-    user=genFilter.qs
+def Gen_csv(request):
+    ndate = datetime.datetime.now()
+    filename = ndate.strftime('on_%d/%m/%Y_at_%I.%M%p.csv')
+    response = HttpResponse(content_type='text/csv', headers={
+                            'Content-Disposition': f'attachment; filename="generated_by_{request.user}_{filename}"'})
+    user = User.objects.all()
+    genFilter = GenFilter(request.GET, queryset=user)
+    user = genFilter.qs
     # result=request.GET['date_of_first_appointment']
-    writer=csv.writer(response)
-    #csv headers            
+    writer = csv.writer(response)
+    # csv headers
     # writer.writerow(['','','','','','','Data of {} staff'.format(result) ])
     writer.writerow([
-                    'S/N','FULLNAME','FILE NO','IPPIS NUMBER','SEX','DEPARTMENT','CURRENT POST','DATE OF FIRST APPOINTMENT'])
+                    'S/N', 'FULLNAME', 'FILE NO', 'IPPIS NUMBER', 'SEX', 'DEPARTMENT', 'CURRENT POST', 'DATE OF FIRST APPOINTMENT'])
 
-    #generate csv body data with variables using foor loop 
-    for i, u in enumerate(user,start=1):
-        
+    # generate csv body data with variables using foor loop
+    for i, u in enumerate(user, start=1):
+
         writer.writerow([
             i,
-            str(u.first_name).upper()+str(' ')+str(u.profile.middle_name).upper()+str(' ')+str(u.last_name).upper(),
-            u.profile.file_no, 
+            str(u.first_name).upper()+str(' ') +
+            str(u.profile.middle_name).upper() +
+            str(' ')+str(u.last_name).upper(),
+            u.profile.file_no,
             u.governmentappointment.ippis_no,
             str(u.profile.gender).upper(),
             str(u.governmentappointment.department).upper(),
             str(u.governmentappointment.cpost).upper(),
             u.governmentappointment.date_fapt,
-            ])
+        ])
     return response
 
 
@@ -196,7 +209,8 @@ class GovReportView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['gov_filter'] = GovFilter(self.request.GET, queryset=self.get_queryset())
+        context['gov_filter'] = GovFilter(
+            self.request.GET, queryset=self.get_queryset())
         # context['total'] = self.total
         return context
 
@@ -210,14 +224,17 @@ def Gov_pdf(request):
     result = ""
     for key, value in request.GET.items():
         if value:
-            result+= f" {value.upper()}<br>Generated on: {ndate.strftime('%d-%B-%Y at %I:%M %p')}</br>By: {request.user.username.upper()}"
-    
-    context = {'f': f, 'pagesize': 'A4', 'orientation': 'potrait','result':result}
-    response = HttpResponse(content_type='application/pdf', headers={'Content-Disposition': f'filename="Report__{filename}"'})
-   
+            result += f" {value.upper()}<br>Generated on: {ndate.strftime('%d-%B-%Y at %I:%M %p')}</br>By: {request.user.username.upper()}"
+
+    context = {'f': f, 'pagesize': 'A4',
+               'orientation': 'potrait', 'result': result}
+    response = HttpResponse(content_type='application/pdf',
+                            headers={'Content-Disposition': f'filename="Report__{filename}"'})
+
     buffer = BytesIO()
 
-    pisa_status = pisa.CreatePDF(get_template('staff/report/gov_pdf.html').render(context), dest=buffer, encoding='utf-8', link_callback=fetch_resources)
+    pisa_status = pisa.CreatePDF(get_template('staff/report/gov_pdf.html').render(
+        context), dest=buffer, encoding='utf-8', link_callback=fetch_resources)
 
     if not pisa_status.err:
         pdf = buffer.getvalue()
@@ -228,41 +245,44 @@ def Gov_pdf(request):
 
 
 @login_required
-def Gov_csv(request):    
-    ndate=datetime.datetime.now()
-    filename=ndate.strftime('on_%d/%m/%Y_at_%I.%M%p.csv')
-    response=HttpResponse(content_type='text/csv',headers={'Content-Disposition':f'attachment; filename="generated_by_{request.user}_{filename}"'})    
-    gov=GovernmentAppointment.objects.all()
-    govFilter=GovFilter(request.GET, queryset=gov)
-    gov=genFilter.qs
+def Gov_csv(request):
+    ndate = datetime.datetime.now()
+    filename = ndate.strftime('on_%d/%m/%Y_at_%I.%M%p.csv')
+    response = HttpResponse(content_type='text/csv', headers={
+                            'Content-Disposition': f'attachment; filename="generated_by_{request.user}_{filename}"'})
+    gov = GovernmentAppointment.objects.all()
+    govFilter = GovFilter(request.GET, queryset=gov)
+    gov = genFilter.qs
     # result=request.GET['date_of_first_appointment']
-    writer=csv.writer(response)
-    #csv headers            
+    writer = csv.writer(response)
+    # csv headers
     # writer.writerow(['','','','','','','Data of {} staff'.format(result) ])
     writer.writerow([
-                    'S/N','FULLNAME','FILE NO','IPPIS NUMBER','DEPARTMENT','CURRENT POST','DATE OF FIRST APPOINTMENT','DATE OF CURRENT APPOINTMENT'])
+                    'S/N', 'FULLNAME', 'FILE NO', 'IPPIS NUMBER', 'DEPARTMENT', 'CURRENT POST', 'DATE OF FIRST APPOINTMENT', 'DATE OF CURRENT APPOINTMENT'])
 
-    #generate csv body data with variables using foor loop 
-    for i, u in enumerate(user,start=1):
-        
+    # generate csv body data with variables using foor loop
+    for i, u in enumerate(user, start=1):
+
         writer.writerow([
             i,
-            str(u.first_name).upper()+str(' ')+str(u.profile.middle_name).upper()+str(' ')+str(u.last_name).upper(),
-            u.profile.file_no, 
+            str(u.first_name).upper()+str(' ') +
+            str(u.profile.middle_name).upper() +
+            str(' ')+str(u.last_name).upper(),
+            u.profile.file_no,
             u.governmentappointment.ippis_no,
             str(u.profile.gender).upper(),
             str(u.governmentappointment.department).upper(),
             str(u.governmentappointment.cpost).upper(),
             u.governmentappointment.date_fapt,
-            ])
+        ])
     return response
-
 
 
 @login_required
 def pro_report(request):
     pass
     # return render(request, 'pro_report.html')
+
 
 @login_required
 def lv_report(request):
@@ -294,9 +314,41 @@ def rt_report(request):
     # return render(request, 'rt_report.html')
 
 
-@login_required
-def stats(request):
-    return render(request, 'stats.html')
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class StatsView(TemplateView):
+    template_name = 'stats.html'
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+
+        pc = Profile.objects.all().count()
+        gender_counts = Profile.objects.values('gender').annotate(pc=Count('id'))
+        geo_counts = Profile.objects.values('zone').annotate(pc=Count('id'))
+        state_counts = Profile.objects.values('state').annotate(pc=Count('id'))
+        lga_counts = Profile.objects.values('lga').annotate(pc=Count('id'))
+        religion_counts = Profile.objects.values('religion').annotate(pc=Count('id'))
+        ms_counts = Profile.objects.values('marital_status').annotate(pc=Count('id'))
+        tc_counts = GovernmentAppointment.objects.values('type_of_cadre').annotate(pc=Count('id'))
+        department_counts = GovernmentAppointment.objects.values('department').annotate(pc=Count('id'))
+        cpost_counts = GovernmentAppointment.objects.values('cpost').annotate(pc=Count('id'))
+        ss_counts = GovernmentAppointment.objects.values('salary_scale').annotate(pc=Count('id'))
+        gl_counts = GovernmentAppointment.objects.values('grade_level').annotate(pc=Count('id'))
+        sc_counts = Qualification.objects.values('school_category').annotate(pc=Count('id'))
+        context['pc'] = pc
+        context['gender_counts'] = gender_counts
+        context['geo_counts'] = geo_counts
+        context['state_counts'] = state_counts
+        context['lga_counts'] = lga_counts
+        context['religion_counts'] = religion_counts
+        context['ms_counts'] = ms_counts
+        context['tc_counts'] = tc_counts
+        context['department_counts'] = department_counts
+        context['cpost_counts'] = cpost_counts
+        context['ss_counts'] = ss_counts
+        context['gl_counts'] = gl_counts
+        context['sc_counts'] = sc_counts
+
+        return context
 
 
 @login_required
@@ -306,35 +358,37 @@ def notice(request):
 
 @method_decorator(log_anonymous_required, name='dispatch')
 class CustomLoginView(LoginView):
-    template_name='login.html'
+    template_name = 'login.html'
+
     def get_success_url(self):
         if self.request.user.is_superuser:
             return reverse_lazy('index')
         else:
-            return reverse_lazy('profile_details',args=[self.request.user.username])
+            return reverse_lazy('profile_details', args=[self.request.user.username])
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class CustomLogoutView(LogoutView):
-    template_name='login.html'
-    
-    def dispatch(self,request, *args, **kwargs):
-        response=super().dispatch(request, *args, **kwargs)
+    template_name = 'login.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super().dispatch(request, *args, **kwargs)
         messages.success(request, 'logout successful')
         return response
-        
+
 
 def reg_anonymous_required(view_function, redirect_to=None):
     if redirect_to is None:
         redirect_to = '/'
-    return user_passes_test(lambda u: not u.is_authenticated or u.is_superuser,login_url=redirect_to)(view_function)
+    return user_passes_test(lambda u: not u.is_authenticated or u.is_superuser, login_url=redirect_to)(view_function)
 
 
 @method_decorator(reg_anonymous_required, name='dispatch')
 class UserRegistrationView(CreateView):
     form_class = CustomUserCreationForm
     template_name = 'registration/register.html'
-    success_url=""
+    success_url = ""
+
     def form_valid(self, form):
         if form.is_valid():
             response = super().form_valid(form)
@@ -343,11 +397,13 @@ class UserRegistrationView(CreateView):
             profile_instance.save()
             govapp_instance = GovernmentAppointment(user=user)
             govapp_instance.save()
-            messages.success(self.request, f"Registration for: {user.get_full_name()} was successful")
+            messages.success(
+                self.request, f"Registration for: {user.get_full_name()} was successful")
             return response
         else:
             print("Form errors:", form.errors)
             return self.form_invalid(form)
+
     def get_success_url(self):
         if self.request.user.is_superuser:
             return reverse_lazy('staff')
@@ -359,7 +415,8 @@ class UserRegistrationView(CreateView):
 class UserRegView(CreateView):
     form_class = CustomUserCreationForm
     template_name = 'registration/reg.html'
-    success_url=""
+    success_url = ""
+
     def form_valid(self, form):
         if form.is_valid():
             response = super().form_valid(form)
@@ -368,11 +425,13 @@ class UserRegView(CreateView):
             profile_instance.save()
             govapp_instance = GovernmentAppointment(user=user)
             govapp_instance.save()
-            messages.success(self.request, f"Registration for: {user.get_full_name()} was successful")
+            messages.success(
+                self.request, f"Registration for: {user.get_full_name()} was successful")
             return response
         else:
             print("Form errors:", form.errors)
             return self.form_invalid(form)
+
     def get_success_url(self):
         if self.request.user.is_superuser:
             return reverse_lazy('staff')
@@ -390,84 +449,92 @@ class DocumentationView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['profileform'] = ProfileForm(instance=self.object.profile)
-        context['govtappform'] = GovtAppForm(instance=self.object.governmentappointment)
+        context['govtappform'] = GovtAppForm(
+            instance=self.object.governmentappointment)
         return context
 
     def form_valid(self, form):
-        userform=UserForm(self.request.POST, instance=self.object)
-        profileform = ProfileForm(self.request.POST, instance=self.object.profile)
-        govtappform = GovtAppForm(self.request.POST, instance=self.object.governmentappointment)
+        userform = UserForm(self.request.POST, instance=self.object)
+        profileform = ProfileForm(
+            self.request.POST, instance=self.object.profile)
+        govtappform = GovtAppForm(
+            self.request.POST, instance=self.object.governmentappointment)
 
         if userform.is_valid() and profileform.is_valid() and govtappform.is_valid():
             userform.save()
             profileform.save()
             govtappform.save()
-            messages.success(self.request, f'Documentation successful for:{self.request.user.last_name}')
+            messages.success(
+                self.request, f'Documentation successful for:{self.request.user.last_name}')
             return HttpResponseRedirect(self.get_success_url())
         else:
-            messages.error(self.request, 'Please correct the errors to proceed')
+            messages.error(
+                self.request, 'Please correct the errors to proceed')
             return self.form_invalid(form)
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class UpdateUserView(UpdateView):
-    model=User
-    template_name= 'staff/update-user.html'
-    form_class=UserForm
-    success_url=reverse_lazy('profile_details')
+    model = User
+    template_name = 'staff/update-user.html'
+    form_class = UserForm
+    success_url = reverse_lazy('profile_details')
 
     def get_success_url(self):
-        messages.success(self.request, 'Staff Information Updated Successfully')
+        messages.success(
+            self.request, 'Staff Information Updated Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.username})
 
-    def form_valid(self,form):
+    def form_valid(self, form):
         if form.is_valid():
             form.save()
             return super().form_valid(form)
         else:
             return self.form_invalid(form)
 
-    def form_invalid(self,form):
-        messages.error(self.request,'error updating staff information')
+    def form_invalid(self, form):
+        messages.error(self.request, 'error updating staff information')
         return self.render_to_response(self.get_context_data(form=form))
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class UpdateProfileView(UpdateView):
-    model=Profile
+    model = Profile
     template_name = 'staff/update-profile.html'
-    form_class=ProfileForm
-    success_url=reverse_lazy('profile_details')
+    form_class = ProfileForm
+    success_url = reverse_lazy('profile_details')
 
     def get_success_url(self):
-        messages.success(self.request, 'Staff Information Updated Successfully')
+        messages.success(
+            self.request, 'Staff Information Updated Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.user})
 
-    def form_valid(self,form):
+    def form_valid(self, form):
         if form.is_valid():
             form.save()
             return super().form_valid(form)
         else:
             return self.form_invalid(form)
 
-    def form_invalid(self,form):
-        messages.error(self.request,'error updating staff information')
+    def form_invalid(self, form):
+        messages.error(self.request, 'error updating staff information')
         return self.render_to_response(self.get_context_data(form=form))
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class UpdateGovappView(UpdateView):
-    model=GovernmentAppointment
+    model = GovernmentAppointment
     template_name = 'staff/update-govapp.html'
-    form_class=GovtAppForm
-    success_url=reverse_lazy('profile_details')
+    form_class = GovtAppForm
+    success_url = reverse_lazy('profile_details')
 
     def get_success_url(self):
-        messages.success(self.request, 'Staff Information Updated Successfully')
+        messages.success(
+            self.request, 'Staff Information Updated Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.user})
 
-    def form_invalid(self,form):
-        messages.error(self.request,'error updating staff information')
+    def form_invalid(self, form):
+        messages.error(self.request, 'error updating staff information')
         return self.render_to_response(self.get_context_data(form=form))
 
 
@@ -489,14 +556,16 @@ class ProfileDetailView(DetailView):
         profile = context['object']
 
         qualifications = Qualification.objects.filter(user=profile.user)
-        pro_qualifications = ProfessionalQualification.objects.filter(user=profile.user)
+        pro_qualifications = ProfessionalQualification.objects.filter(
+            user=profile.user)
         promotion = Promotion.objects.filter(user=profile.user)
         discipline = Discipline.objects.filter(user=profile.user)
         leave = Leave.objects.filter(user=profile.user)
         execapp = ExecutiveAppointment.objects.filter(user=profile.user)
         retirement = Retirement.objects.filter(user=profile.user)
 
-        context['govapp'] = get_object_or_404(GovernmentAppointment, user=profile.user)
+        context['govapp'] = get_object_or_404(
+            GovernmentAppointment, user=profile.user)
         context['qualifications'] = qualifications
         context['pro_qualifications'] = pro_qualifications
         context['promotion'] = promotion
@@ -531,8 +600,8 @@ class GovappDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         profile = context['object']
 
-
-        context['govapp'] = get_object_or_404(GovernmentAppointment, user=profile.user)
+        context['govapp'] = get_object_or_404(
+            GovernmentAppointment, user=profile.user)
         return context
 
 
@@ -561,18 +630,18 @@ class QualCreateView(CreateView):
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class QualUpdateView(UpdateView):
-    model=Qualification
-    form_class=QualForm
-    template_name='staff/qual-update.html'
+    model = Qualification
+    form_class = QualForm
+    template_name = 'staff/qual-update.html'
 
     def get_success_url(self):
         messages.success(self.request, 'Qualification Updated Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
-    
-    def form_invalid(self,form):
-        messages.error(self.request,'Error Updating Qualification')
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Error Updating Qualification')
         return super().form_invalid(form)
-    
+
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class QualDeleteView(DeleteView):
@@ -586,11 +655,12 @@ class QualDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
         if response.status_code == 302:
-            messages.success(self.request, 'Qualification deleted successfully')
+            messages.success(
+                self.request, 'Qualification deleted successfully')
         else:
             messages.error(self.request, 'Error deleting qualification')
         return response
-    
+
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class ProQualCreateView(CreateView):
@@ -610,24 +680,27 @@ class ProQualCreateView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        messages.success(self.request, 'Professional Qualification Added Successfully')
+        messages.success(
+            self.request, 'Professional Qualification Added Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.kwargs['username']})
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class ProQualUpdateView(UpdateView):
-    model=ProfessionalQualification
-    form_class=ProQualForm
-    template_name='staff/pro-qual-update.html'
+    model = ProfessionalQualification
+    form_class = ProQualForm
+    template_name = 'staff/pro-qual-update.html'
 
     def get_success_url(self):
-        messages.success(self.request, 'Professional Qualification Updated Successfully')
+        messages.success(
+            self.request, 'Professional Qualification Updated Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
-    
-    def form_invalid(self,form):
-        messages.error(self.request,'Error Updating Professional Qualification')
+
+    def form_invalid(self, form):
+        messages.error(
+            self.request, 'Error Updating Professional Qualification')
         return super().form_invalid(form)
-    
+
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class ProQualDeleteView(DeleteView):
@@ -635,15 +708,18 @@ class ProQualDeleteView(DeleteView):
     template_name = 'staff/pro-qual-delete-confirm.html'
 
     def get_success_url(self):
-        messages.success(self.request, 'Professional Qualification deleted successfully')
+        messages.success(
+            self.request, 'Professional Qualification deleted successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
         if response.status_code == 302:
-            messages.success(self.request, 'Professional Qualification deleted successfully')
+            messages.success(
+                self.request, 'Professional Qualification deleted successfully')
         else:
-            messages.error(self.request, 'Error deleting professional qualification')
+            messages.error(
+                self.request, 'Error deleting professional qualification')
         return response
 
 
@@ -671,18 +747,18 @@ class PromotionCreateView(CreateView):
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class PromotionUpdateView(UpdateView):
-    model=Promotion
-    form_class=PromotionForm
-    template_name='staff/promotion-update.html'
+    model = Promotion
+    form_class = PromotionForm
+    template_name = 'staff/promotion-update.html'
 
     def get_success_url(self):
         messages.success(self.request, 'Promotion Updated Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
-    
-    def form_invalid(self,form):
-        messages.error(self.request,'Error Updating Promotion')
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Error Updating Promotion')
         return super().form_invalid(form)
-    
+
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class PromotionDeleteView(DeleteView):
@@ -726,18 +802,18 @@ class DisciplineCreateView(CreateView):
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class DisciplineUpdateView(UpdateView):
-    model=Discipline
-    form_class=DisciplineForm
-    template_name='staff/discipline-update.html'
+    model = Discipline
+    form_class = DisciplineForm
+    template_name = 'staff/discipline-update.html'
 
     def get_success_url(self):
         messages.success(self.request, 'Discipline Updated Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
-    
-    def form_invalid(self,form):
-        messages.error(self.request,'Error Updating Discipline')
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Error Updating Discipline')
         return super().form_invalid(form)
-    
+
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class DisciplineDeleteView(DeleteView):
@@ -781,18 +857,18 @@ class LeaveCreateView(CreateView):
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class LeaveUpdateView(UpdateView):
-    model=Leave
-    form_class=LeaveForm
-    template_name='staff/leave-update.html'
+    model = Leave
+    form_class = LeaveForm
+    template_name = 'staff/leave-update.html'
 
     def get_success_url(self):
         messages.success(self.request, 'Leave Updated Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
-    
-    def form_invalid(self,form):
-        messages.error(self.request,'Error Updating Leave')
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Error Updating Leave')
         return super().form_invalid(form)
-    
+
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class LeaveDeleteView(DeleteView):
@@ -830,24 +906,26 @@ class ExecappCreateView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        messages.success(self.request, 'Executive Appointment Added Successfully')
+        messages.success(
+            self.request, 'Executive Appointment Added Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.kwargs['username']})
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class ExecappUpdateView(UpdateView):
-    model=ExecutiveAppointment
-    form_class=ExecappForm
-    template_name='staff/execapp-update.html'
+    model = ExecutiveAppointment
+    form_class = ExecappForm
+    template_name = 'staff/execapp-update.html'
 
     def get_success_url(self):
-        messages.success(self.request, 'Executive Appointment Updated Successfully')
+        messages.success(
+            self.request, 'Executive Appointment Updated Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
-    
-    def form_invalid(self,form):
-        messages.error(self.request,'Error Updating Executive Appointment')
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Error Updating Executive Appointment')
         return super().form_invalid(form)
-    
+
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class ExecappDeleteView(DeleteView):
@@ -855,15 +933,18 @@ class ExecappDeleteView(DeleteView):
     template_name = 'staff/execapp-delete-confirm.html'
 
     def get_success_url(self):
-        messages.success(self.request, 'Executive Appointment deleted successfully')
+        messages.success(
+            self.request, 'Executive Appointment deleted successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
         if response.status_code == 302:
-            messages.success(self.request, 'Executive Appointment deleted successfully')
+            messages.success(
+                self.request, 'Executive Appointment deleted successfully')
         else:
-            messages.error(self.request, 'Error deleting executive appointment')
+            messages.error(
+                self.request, 'Error deleting executive appointment')
         return response
 
 
@@ -891,18 +972,18 @@ class RetireCreateView(CreateView):
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class RetireUpdateView(UpdateView):
-    model=Retirement
-    form_class=RetireForm
-    template_name='staff/retire-update.html'
+    model = Retirement
+    form_class = RetireForm
+    template_name = 'staff/retire-update.html'
 
     def get_success_url(self):
         messages.success(self.request, 'Retirement Updated Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.object.user.username})
-    
-    def form_invalid(self,form):
-        messages.error(self.request,'Error Updating Retirement')
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Error Updating Retirement')
         return super().form_invalid(form)
-    
+
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class RetireDeleteView(DeleteView):
