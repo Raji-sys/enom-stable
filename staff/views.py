@@ -60,7 +60,7 @@ class StaffListView(ListView):
     model = Profile
     template_name = "staff/stafflist.html"
     context_object_name = 'profiles'
-    paginate_by = 15
+    paginate_by = 10
 
     def get_queryset(self):
         profiles = super().get_queryset().order_by(

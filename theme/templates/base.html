@@ -20,7 +20,7 @@
 		<style>
 
 		</style>
-			<header class="bg-cyan-800 rounded-md border-b-2 border-cyan-900  mx-3 p-2 shadow-2xl shadow-white">
+			<header class="bg-cyan-800 p-2">
 					<nav class="flex flex-row max-xs:flex-wrap max-sm:flex-col justify-between mt-0 max-sm:gap-4 gap-10 p-1 rounded-sm">
 						{% if request.user.is_authenticated %}
 						  <div class="">
@@ -41,6 +41,14 @@
 						{% endif %}
 					</nav>
 				</header>
+	{%if request.user.is_authenticated and request.path != '/' %}
+	<div class="flex justify-center text-center text-gray-800 font-medium text-sm align-middle items-center p-3 m-auto bg-gray-200 gap-4 mx-auto">
+		<a href="{%url 'staff'%}" class="focus:opacity-10 bg-green-600 p-2 px-4 rounded-2xl ml-2"><i class="text-white fa-solid fa-rectangle-list fa-xl"></i></a>
+        <a href="{%url 'report' %}" class="focus:opacity-10 bg-indigo-600 p-2 px-4 rounded-2xl ml-2"><i class="text-white fa-solid fa-file fa-xl"></i></a>
+        <a href="{%url 'stats' %}" class="focus:opacity-10 bg-orange-600 p-2 px-4 rounded-2xl ml-2"><i class="text-white fa-solid fa-list-ol fa-xl"></i></a>
+        <a href="{%url 'notice' %}" class="focus:opacity-10 bg-cyan-600 p-2 px-4 rounded-2xl ml-2"><i class="text-white fa-solid fa-bell fa-xl"></i></a>
+	</div>
+	{% endif %}
 					{% block content %}
 					
 					{% endblock %}
