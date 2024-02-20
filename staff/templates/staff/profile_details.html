@@ -86,7 +86,7 @@
 <tr class="text-sm text-gray-800">
 <td scope="col" class="border-2 border-cyan-800 p-2">{{profile.file_no|default_if_none:''|upper}}</td>
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.gender|default_if_none:''|upper}}</td>
-<td class="border-2 p-2 border-cyan-800 text-center">{{profile.dob|date:'d/M/Y'|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-cyan-800 text-center">{{profile.dob|date:'d-M-Y'|default_if_none:''|upper}}</td>
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.phone_number|default_if_none:''|upper}}</td>
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.marital_status|default_if_none:''|upper}}</td>
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.state|default_if_none:''|upper}}</td>
@@ -128,10 +128,10 @@
 <tr class="text-sm">
 <td class="border-2 border-orange-800 p-2 text-center">{{govapp.department|default_if_none:''}}</td>
 <td class="border-2 border-orange-800 p-2 text-center">{{govapp.ippis_no|default_if_none:''}}</td>
-<td class="border-2 border-orange-800 p-2 text-center">{{govapp.date_of_first_appointment|date:'d-M-Y'|default_if_none:''}}</td>
-<td class="border-2 border-orange-800 p-2 text-center">{{govapp.type_of_appointment|default_if_none:''}}</td>
+<td class="border-2 border-orange-800 p-2 text-center">{{govapp.date_fapt|date:'d-M-Y'|default_if_none:''}}</td>
+<td class="border-2 border-orange-800 p-2 text-center">{{govapp.type_of_appt|default_if_none:''}}</td>
 <td class="border-2 border-orange-800 p-2 text-center">{{govapp.cpost|default_if_none:''}}</td>
-<td class="border-2 border-orange-800 p-2 text-center">{{govapp.salary_per_annum_at_date_of_first_appointment|default_if_none:''}}</td>
+<td class="border-2 border-orange-800 p-2 text-center">{{govapp.sfapt|default_if_none:''}}</td>
 <td class="border-2 border-orange-800 p-2 text-center">{{govapp.salary_scale|default_if_none:''}}</td>
 <td class="border-2 border-orange-800 p-2 text-center">{{govapp.grade_level|default_if_none:''}}</td>
 <td class="border-2 border-orange-800 p-2 text-center">{{govapp.step|default_if_none:''}}</td>

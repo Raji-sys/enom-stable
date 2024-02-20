@@ -340,11 +340,11 @@ class Leave(models.Model):
     start_date = models.DateField(null=True, blank=False)
     total_days = models.PositiveIntegerField(null=True, blank=True)
     balance = models.PositiveIntegerField(null=True, blank=True)
-    granted = models.PositiveIntegerField(
+    granted_days = models.PositiveIntegerField(
         'number of days granted', null=True, blank=False)
     status = models.CharField(null=True, max_length=300, blank=True)
     is_leave_over = models.BooleanField(default=False)
-    comments = models.TextField('comments if any', null=True, blank=True)
+    comment = models.TextField('comments if any', null=True, blank=True)
     created = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

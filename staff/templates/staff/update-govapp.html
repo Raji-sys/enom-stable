@@ -7,9 +7,11 @@
         <h2 class="bg-cyan-800 text-white uppercase max-sm:text-lg text-xl text-center border-b-2 border-t-2 border-cyan-900 p-2 rounded-3xl mx-auto">update government appointment</h2> 
         {% for message in messages %}
       <div class="mt-4">
-        <hr />
+        {%if message.success %}
         <p class="text-cyan-700 uppercase font-bold text-xl">{{ message }}</p>
-        <hr />
+        {%else%}
+        <p class="text-rose-700 uppercase font-bold text-xl">{{ message }}</p>
+        {% endif %}
       </div>
       {% endfor %}
       <div class="flex justify-center text-md text-red-500">
