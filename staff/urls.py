@@ -31,7 +31,7 @@ urlpatterns = [
     path('rt_report/', views.rt_report, name='rt_report'),
 
     path('stats/', StatsView.as_view(), name='stats'),
-    path('notice/', views.notice, name='notice'),
+    path('notice/', NoticeView.as_view(), name='notice'),
 
     path('login/', CustomLoginView.as_view(), name='login'),
     path('register/', UserRegistrationView.as_view(), name='register'),

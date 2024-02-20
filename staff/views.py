@@ -351,10 +351,26 @@ class StatsView(TemplateView):
         return context
 
 
-@login_required
-def notice(request):
-    return render(request, 'notice.html')
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class NoticeView(TemplateView):
+    template_name='notice.html'
 
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+    
+        due_appts=Promotion.objects.filter(due='ok').select_related('user__profile')
+        retire_st=Retirement.objects.filter(retire=True).select_related('user__profile')
+        leave_st=Leave.objects.filter(is_leave_over=True).select_related('user__profile')
+
+        context.update({
+            'due_count':due_appts.count(),
+            'retire_count':retire_st.count(),
+            'leave_count':leave_st.count(),
+            'due_appts':due_appts,
+            'retire_st':retire_st,
+            'leave_st':leave_st
+        })
+        return context
 
 @method_decorator(log_anonymous_required, name='dispatch')
 class CustomLoginView(LoginView):
