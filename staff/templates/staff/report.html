@@ -41,8 +41,21 @@
     </form>
         
    <table class="table-auto mt-2 border-green-800 max-sm:flex flex shadow-2xl rounded-xl text-sm mb-10 justify-center items-center">
-        {%for m in messages %}
-{% endfor %}
+        {% for message in messages %}
+      <div class="mt-4">
+        {%if message.success %}
+           <div class="uk-alert-success rounded-2xl text-sm" uk-alert>
+            <a href class="uk-alert-close font-bold" uk-close></a>
+            <p class="text-green-700 font-semibold">{{ message }}</p>
+            </div>
+            {%else%}
+            <div class="uk-alert-success rounded-2xl text-sm" uk-alert>
+            <a href class="uk-alert-close font-bold" uk-close></a>
+            <p class="text-rose-700 font-semibold">{{ message }}</p>
+            </div> 
+        {% endif %}
+      </div>
+      {% endfor %}
         <tbody class="shadow-2xl rounded-xl max-sm:p-2 p-2 overflow-x-auto mx-0 text-green-800 border-2 border-green-800 bg-white">
             <tr class="bg-gradient-to-r from-green-800 via-green-600 to-green-800 rounded-xl text-white text-sm">
                 <th scope="col" class="border-l-2 border-b-2 border-b-white border-green-800 border-t-2 border-t-white p-2">S/N</th>

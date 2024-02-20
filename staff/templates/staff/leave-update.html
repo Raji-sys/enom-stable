@@ -5,11 +5,19 @@
   <div class="font-semibold uppercase text-sm shadow-cyan-900 rounded-xl bg-white p-4">
 <section class=" text-center  border-cyan-700 text-sm">
         <h2 class="bg-cyan-800 text-white uppercase max-sm:text-lg text-xl text-center border-b-2 border-t-2 border-cyan-900 p-2 rounded-3xl mx-auto">leave update form</h2> 
-        {% for message in messages %}
+                  {% for message in messages %}
       <div class="mt-4">
-        <hr />
-        <p class="text-cyan-700 uppercase font-bold text-xl">{{ message }}</p>
-        <hr />
+        {%if message.success %}
+           <div class="uk-alert-success rounded-2xl text-sm" uk-alert>
+            <a href class="uk-alert-close font-bold" uk-close></a>
+            <p class="text-green-700 font-semibold">{{ message }}</p>
+            </div>
+            {%else%}
+            <div class="uk-alert-success rounded-2xl text-sm" uk-alert>
+            <a href class="uk-alert-close font-bold" uk-close></a>
+            <p class="text-rose-700 font-semibold">{{ message }}</p>
+            </div> 
+        {% endif %}
       </div>
       {% endfor %}
       <div class="flex justify-center text-md text-red-500">
