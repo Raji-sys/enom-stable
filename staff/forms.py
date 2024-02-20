@@ -59,7 +59,7 @@ class GovtAppForm(forms.ModelForm):
         date_fapt = self.cleaned_data.get('date_fapt')
         if self.instance.date_fapt and date_fapt != self.instance.date_fapt:
             raise forms.ValidationError(
-                f'this action is forbidden, {self.instance.date_fapt.strftime("%m-%d-%Y")} is the default ')
+                f'this action is forbidden, {self.instance.date_fapt.strftime("%m-%d-%Y")} is the default date of first appointment, you cannot alter it')
         return date_fapt
 
     class Meta:
@@ -85,9 +85,9 @@ class QualForm(forms.ModelForm):
     class Meta:
         model = Qualification
         fields = ['school', 'school_category', 'qual', 'date_obtained']
-        
-        widgets={
-            'date_obtained':forms.DateInput(attrs={'type': 'date'}),
+
+        widgets = {
+            'date_obtained': forms.DateInput(attrs={'type': 'date'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -103,9 +103,9 @@ class ProQualForm(forms.ModelForm):
         model = ProfessionalQualification
         fields = ['institute', 'inst_address',
                   'qual_obtained', 'date_obtained']
-        
-        widgets={
-            'date_obtained':forms.DateInput(attrs={'type': 'date'}),
+
+        widgets = {
+            'date_obtained': forms.DateInput(attrs={'type': 'date'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -120,11 +120,11 @@ class PromotionForm(forms.ModelForm):
     class Meta:
         model = Promotion
         fields = ['cpost', 'prom_date', 'gl', 'step', 'inc_date', 'conf_date']
-        
-        widgets={
-            'prom_date':forms.DateInput(attrs={'type': 'date'}),
-            'inc_date':forms.DateInput(attrs={'type': 'date'}),
-            'conf_date':forms.DateInput(attrs={'type': 'date'}),
+
+        widgets = {
+            'prom_date': forms.DateInput(attrs={'type': 'date'}),
+            'inc_date': forms.DateInput(attrs={'type': 'date'}),
+            'conf_date': forms.DateInput(attrs={'type': 'date'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -157,7 +157,7 @@ class LeaveForm(forms.ModelForm):
         model = Leave
         fields = ['nature', 'year', 'start_date',
                   'total_days', 'granted_days', 'status', 'comment']
-        
+
         widgets = {
             'start_date': forms.DateInput(attrs={'type': 'date'}),
         }
@@ -174,10 +174,11 @@ class ExecappForm(forms.ModelForm):
     class Meta:
         model = ExecutiveAppointment
         fields = ['designation', 'date', 'status']
-        
-        widgets={
-            'date':forms.DateInput(attrs={'type': 'date'}),
+
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
         }
+
     def __init__(self, *args, **kwargs):
         super(ExecappForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
@@ -190,9 +191,9 @@ class RetireForm(forms.ModelForm):
     class Meta:
         model = Retirement
         fields = ['date', 'status', 'retire', 'rtb']
-        
-        widgets={
-            'date':forms.DateInput(attrs={'type': 'date'}),
+
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
         }
 
     def __init__(self, *args, **kwargs):

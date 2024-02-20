@@ -815,6 +815,9 @@ class DisciplineCreateView(CreateView):
         messages.success(self.request, 'Discipline Added Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.kwargs['username']})
 
+    def form_invalid(self, form):
+        messages.error(self.request, 'Error Adding Discipline')
+        return super().form_invalid(form)
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class DisciplineUpdateView(UpdateView):

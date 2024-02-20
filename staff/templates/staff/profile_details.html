@@ -15,16 +15,11 @@
      <div class="flex justify-center text-md text-blue-500">
         {% for message in messages %}
       <div class="mt-4">
-        {%if message.success %}
+        {%if message %}
            <div class="uk-alert-success rounded-2xl text-sm" uk-alert>
             <a href class="uk-alert-close font-bold" uk-close></a>
             <p class="text-green-700 font-semibold">{{ message }}</p>
             </div>
-            {%else%}
-            <div class="uk-alert-success rounded-2xl text-sm" uk-alert>
-            <a href class="uk-alert-close font-bold" uk-close></a>
-            <p class="text-rose-700 font-semibold">{{ message }}</p>
-            </div> 
         {% endif %}
       </div>
       {% endfor %}
@@ -168,15 +163,15 @@
           </td>
         </tr>
         <tr class="text-sm bg-indigo-700 text-white">
-    <th scope="col" class="border-2 border-cyan-800 p-2">school</th>
-    <th scope="col" class="border-2 border-cyan-800 p-2 ">qualification type</th>
-    <th scope="col" class="border-2 border-cyan-800 p-2"></th>
+    <th scope="col" class="border-2 border-indigo-800 p-2">school</th>
+    <th scope="col" class="border-2 border-indigo-800 p-2 ">qualification type</th>
+    <th scope="col" class="border-2 border-indigo-800 p-2"></th>
 </tr>
 {% for q in qualifications %}
 <tr class="text-xs">
-<td class="border-2 border-cyan-800 p-2 text-center">{{q.school|default_if_none:''}}</td>
-<td class="border-2 border-cyan-800 p-2 text-center">{{q.type|default_if_none:''}}</td>
-<td class="border-r-2 border-cyan-800 border-b-2 flex flex-row justify-center p-6 gap-2"> 
+<td class="border-2 border-indigo-800 p-2 text-center">{{q.school|default_if_none:''}}</td>
+<td class="border-2 border-indigo-800 p-2 text-center">{{q.type|default_if_none:''}}</td>
+<td class="border-r-2 border-indigo-800 border-b-2 flex flex-row justify-center p-6 gap-2"> 
     <a class="justify-center text-cyan-900" href="{% url 'qual_update' q.pk %}"><i class="fa-solid fa-square-pen fa-2xl"></i></a>
   <a class="justify-center text-rose-800" href="{%url 'qual_delete' q.pk %}"><i class="fa-solid fa-trash fa-2xl"></i></a>
 </td>
@@ -201,15 +196,15 @@
             </td>
           </tr>
   <tr class="text-sm bg-slate-700 text-white">
-    <th scope="col" class="border-2 border-cyan-800 p-2">institute</th>
-    <th scope="col" class="border-2 border-cyan-800 p-2 ">institute address</th>
-    <th scope="col" class="border-2 border-cyan-800 p-2"></th>
+    <th scope="col" class="border-2 border-slate-800 p-2">institute</th>
+    <th scope="col" class="border-2 border-slate-800 p-2 ">institute address</th>
+    <th scope="col" class="border-2 border-slate-800 p-2"></th>
 </tr>
 {% for p in pro_qualifications %}
 <tr class="text-xs">
-<td class="border-2 border-cyan-800 p-2 text-center">{{p.institute|default_if_none:''}}</td>
-<td class="border-2 border-cyan-800 p-2 text-center">{{p.inst_address|default_if_none:''}}</td>
-<td class="border-r-2 border-cyan-800 border-b-2 flex flex-row justify-center p-7 gap-2"> 
+<td class="border-2 border-slate-800 p-2 text-center">{{p.institute|default_if_none:''}}</td>
+<td class="border-2 border-slate-800 p-2 text-center">{{p.inst_address|default_if_none:''}}</td>
+<td class="border-r-2 border-slate-800 border-b-2 flex flex-row justify-center p-7 gap-2"> 
   <a class="justify-center text-cyan-900" href="{% url 'pro_qual_update' p.pk %}"><i class="fa-solid fa-square-pen fa-2xl"></i></a>
   <a class="justify-center text-rose-800" href="{%url 'pro_qual_delete' p.pk %}"><i class="fa-solid fa-trash fa-2xl"></i></a>
 </td>
@@ -282,7 +277,7 @@
           <td></td>
           <td></td>
           <td class="flex items-center text-center m-2 justify-center">
-              <a href="{ %url 'discipline' username=profile.user.username %}" class=" bg-rose-700 text-white rounded-xl p-2">discipline&nbsp;<i class="fa-solid fa-plus-circle fa-2xl text-white"></i></a>
+              <a href="{% url 'discipline' username=profile.user.username %}" class=" bg-rose-700 text-white rounded-xl p-2">discipline&nbsp;<i class="fa-solid fa-plus-circle fa-2xl text-white"></i></a>
             </td>
           </tr>
   <tr class="text-sm bg-rose-700 text-white">
