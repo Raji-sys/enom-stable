@@ -430,22 +430,49 @@ class Retirement(models.Model):
         if self.user:
             return f"{self.user.last_name} {self.user.first_name}"
 
-    def rt(self):
-        today = date.today()
-        age_at_retirement = self.profile.age()
-        years_of_service = today.year - \
-            self.govapp.date_fapt.year if self.govapp.date_fapt else None
 
-        if age_at_retirement is not None and age_at_retirement >= 65:
-            self.retire = True
-            self.rtb = "RETIRE BY DATE OF BIRTH"
-        elif years_of_service is not None and years_of_service >= 35:
-            self.retire = True
-            self.rtb = "RETIRE BY DATE OF APPOINTMENT"
+@receiver(post_save, sender=User)
+@receiver(post_save, sender=GovernmentAppointment)
+@receiver(post_save, sender=Profile)
+def update_retirement_fields(sender, instance, **kwargs):
+    print("Signal handler is triggered for:", instance)
+    try:
+        if sender == User:
+            retirement_obj, created = Retirement.objects.get_or_create(
+                user=instance)
+        elif sender == GovernmentAppointment:
+            retirement_obj, created = Retirement.objects.get_or_create(
+                govapp=instance)
+        elif sender == Profile:
+            retirement_obj, created = Retirement.objects.get_or_create(
+                profile=instance)
+
+        if created:  # Check if Retirement instance was just created
+            profile = retirement_obj.profile
+            govapp = retirement_obj.govapp
+
+            if profile and govapp:  # Check if profile and govapp are both set
+                today = date.today()
+                age_at_retirement = profile.age() if profile.dob else None
+                years_of_service = today.year - govapp.date_fapt.year if govapp.date_fapt else None
+
+                if age_at_retirement is not None and age_at_retirement >= 65:
+                    retirement_obj.retire = True
+                    retirement_obj.rtb = "RETIRE BY DATE OF BIRTH"
+                elif years_of_service is not None and years_of_service >= 35:
+                    retirement_obj.retire = True
+                    retirement_obj.rtb = "RETIRE BY DATE OF APPOINTMENT"
+                else:
+                    retirement_obj.delete()  # Delete the Retirement instance if conditions are not met
+            else:
+                retirement_obj.delete()  # Delete the Retirement instance if profile or govapp is not set
         else:
-            self.retire = False
+            # If the Retirement instance already existed, we don't need to do anything here
+            pass
+    except Exception as e:
+        print("Error in signal handler:", e)
+        traceback.print_exc()
 
-        self.save()
 
 
 # class Department(models.Model):

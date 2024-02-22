@@ -48,7 +48,7 @@
 {% for r in retire_st %}
         <tr class="p-2 text-md ">
         <td class="border-2 p-0 text-center  ">{{forloop.counter}}</td>            
-        <td class="border-2 p-2 text-center "><a href="{{r.get_absolute_url}}">{{ r.user.get_full_name|default_if_none:''|upper }} {{ r.middlename|default_if_none:''|upper }}</a></td>
+        <td class="border-2 p-2 text-center "><a href="{{r.user.profile.get_absolute_url}}">{{ r.user.get_full_name|default_if_none:''|upper }} {{ r.middlename|default_if_none:''|upper }}</a></td>
 {% empty %}
     <p>No data available</p>
 {% endfor %}

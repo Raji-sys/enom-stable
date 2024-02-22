@@ -357,8 +357,9 @@ class NoticeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
-    
-        due_appts=Promotion.objects.filter(due='ok').select_related('user__profile')
+
+        
+        due_appts=Promotion.objects.filter(due=True).select_related('user__profile')
         retire_st=Retirement.objects.filter(retire=True).select_related('user__profile')
         leave_st=Leave.objects.filter(is_leave_over=True).select_related('user__profile')
 

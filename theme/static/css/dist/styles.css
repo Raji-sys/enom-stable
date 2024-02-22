@@ -1181,6 +1181,11 @@ select {
   border-color: rgb(20 83 45 / var(--tw-border-opacity));
 }
 
+.border-indigo-800 {
+  --tw-border-opacity: 1;
+  border-color: rgb(55 48 163 / var(--tw-border-opacity));
+}
+
 .border-orange-600 {
   --tw-border-opacity: 1;
   border-color: rgb(234 88 12 / var(--tw-border-opacity));
@@ -1199,6 +1204,11 @@ select {
 .border-rose-800 {
   --tw-border-opacity: 1;
   border-color: rgb(159 18 57 / var(--tw-border-opacity));
+}
+
+.border-slate-800 {
+  --tw-border-opacity: 1;
+  border-color: rgb(30 41 59 / var(--tw-border-opacity));
 }
 
 .border-white {
