@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.utils.translation import gettext as _
 from django.utils import timezone
 from datetime import datetime
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
 
@@ -220,6 +220,8 @@ class GovernmentAppointment(models.Model):
     type_of_cadre = models.CharField(
         choices=tc, null=True, blank=True, max_length=100)
     exams_status = models.CharField(null=True, blank=True, max_length=100)
+    retire = models.BooleanField(default=False)
+    rtb = models.CharField('retired by', null=True, blank=True, max_length=50)
     created = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -238,6 +240,23 @@ class GovernmentAppointment(models.Model):
     def __str__(self):
         if self.user:
             return f"{self.user.last_name} {self.user.first_name}"
+
+
+@receiver(pre_save, sender=GovernmentAppointment)
+def ret(sender, instance, **kwargs):
+    today = date.today()
+    age_at_retirement = instance.user.profile.age()
+    years_of_service = today.year - instance.date_fapt.year if instance.date_fapt else None
+
+    if age_at_retirement is not None and age_at_retirement >= 65:
+        instance.retire = True
+        instance.rtb = "RETIRE BY DATE OF BIRTH"
+
+    elif years_of_service is not None and years_of_service >= 35:
+        instance.retire = True
+        instance.rtb = "RETIRE BY DATE OF APPOINTMENT"
+    else:
+        instance.retire = False
 
 
 @receiver(post_save, sender=GovernmentAppointment)
@@ -418,8 +437,7 @@ class Retirement(models.Model):
     profile = models.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name='profile', null=True)
     status = models.CharField(null=True, max_length=300, blank=True)
-    retire = models.BooleanField(default=False)
-    rtb = models.CharField('retired by', null=True, blank=True, max_length=50)
+    retire=models.BooleanField(default=False)
     created = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -429,52 +447,14 @@ class Retirement(models.Model):
     def __str__(self):
         if self.user:
             return f"{self.user.last_name} {self.user.first_name}"
-
-
-@receiver(post_save, sender=User)
-@receiver(post_save, sender=GovernmentAppointment)
-@receiver(post_save, sender=Profile)
-def update_retirement_fields(sender, instance, **kwargs):
-    print("Signal handler is triggered for:", instance)
-    try:
-        if sender == User:
-            retirement_obj, created = Retirement.objects.get_or_create(
-                user=instance)
-        elif sender == GovernmentAppointment:
-            retirement_obj, created = Retirement.objects.get_or_create(
-                govapp=instance)
-        elif sender == Profile:
-            retirement_obj, created = Retirement.objects.get_or_create(
-                profile=instance)
-
-        if created:  # Check if Retirement instance was just created
-            profile = retirement_obj.profile
-            govapp = retirement_obj.govapp
-
-            if profile and govapp:  # Check if profile and govapp are both set
-                today = date.today()
-                age_at_retirement = profile.age() if profile.dob else None
-                years_of_service = today.year - govapp.date_fapt.year if govapp.date_fapt else None
-
-                if age_at_retirement is not None and age_at_retirement >= 65:
-                    retirement_obj.retire = True
-                    retirement_obj.rtb = "RETIRE BY DATE OF BIRTH"
-                elif years_of_service is not None and years_of_service >= 35:
-                    retirement_obj.retire = True
-                    retirement_obj.rtb = "RETIRE BY DATE OF APPOINTMENT"
-                else:
-                    retirement_obj.delete()  # Delete the Retirement instance if conditions are not met
-            else:
-                retirement_obj.delete()  # Delete the Retirement instance if profile or govapp is not set
-        else:
-            # If the Retirement instance already existed, we don't need to do anything here
-            pass
-    except Exception as e:
-        print("Error in signal handler:", e)
-        traceback.print_exc()
-
-
-
+    
+    
+@receiver(post_save, sender=Retirement)
+def clear_rt(sender, instance, **kwargs):
+    gov_appointment = instance.user.governmentappointment
+    gov_appointment.retire = instance.retire
+    gov_appointment.rtb = None
+    gov_appointment.save()
 # class Department(models.Model):
 #     name=models.CharField(max_length=200)
 

@@ -360,7 +360,7 @@ class NoticeView(TemplateView):
 
         
         due_appts=Promotion.objects.filter(due=True).select_related('user__profile')
-        retire_st=Retirement.objects.filter(retire=True).select_related('user__profile')
+        retire_st=GovernmentAppointment.objects.filter(retire=True).select_related('user__profile')
         leave_st=Leave.objects.filter(is_leave_over=True).select_related('user__profile')
 
         context.update({

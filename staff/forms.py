@@ -190,7 +190,7 @@ class ExecappForm(forms.ModelForm):
 class RetireForm(forms.ModelForm):
     class Meta:
         model = Retirement
-        fields = ['date', 'status', 'retire', 'rtb']
+        fields = ['date', 'status']
 
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
