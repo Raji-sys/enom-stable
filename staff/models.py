@@ -98,7 +98,8 @@ class Profile(models.Model):
         return f"{self.user.get_full_name()} {self.middle_name} {self.file_no}, {self.user.id}"
 
     def __str__(self):
-        return self.user.username
+        if self.user:
+            return f"{self.user.username} {self.user.last_name} {self.user.first_name}"
 
     def age(self):
         today = date.today()
@@ -135,7 +136,7 @@ class Qualification(models.Model):
 
     def __str__(self):
         if self.user:
-            return f"{self.user.get_full_name()} - {self.qual}"
+            return f"{self.user.username} {self.user.get_full_name()} - {self.qual}"
         else:
             return f"Unknown User - {self.qual}"
 
@@ -157,7 +158,7 @@ class ProfessionalQualification(models.Model):
 
     def __str__(self):
         if self.user:
-            return f"{self.user.first_name} {self.user.last_name} - {self.qual_obtained}"
+            return f"{self.user.username} {self.user.first_name} {self.user.last_name} - {self.qual_obtained}"
 
 
 class GovernmentAppointment(models.Model):
@@ -232,14 +233,15 @@ class GovernmentAppointment(models.Model):
         return f"{self.user.get_full_name()}, {self.cpost}"
 
     def __str__(self):
-        return self.user.username
+        if self.user:
+            return f"{self.user.last_name} {self.user.first_name}"
 
     def get_absolute_url(self):
         return reverse('prom_details', args=[self.user])
 
     def __str__(self):
         if self.user:
-            return f"{self.user.last_name} {self.user.first_name}"
+            return f"{self.user.username} {self.user.last_name} {self.user.first_name}"
 
 
 @receiver(pre_save, sender=GovernmentAppointment)
@@ -295,7 +297,7 @@ class Promotion(models.Model):
 
     def __str__(self):
         if self.user:
-            return f"{self.user.last_name} {self.user.first_name}"
+            return f"{self.user.username} {self.user.last_name} {self.user.first_name}"
 
     def calculate_promotion(self):
         today = date.today()
@@ -347,7 +349,7 @@ class Discipline(models.Model):
 
     def __str__(self):
         if self.user:
-            return f"{self.user.last_name} {self.user.first_name}"
+            return f"{self.user.username} {self.user.last_name} {self.user.first_name}"
 
 
 class Leave(models.Model):
@@ -419,7 +421,7 @@ class ExecutiveAppointment(models.Model):
 
     def __str__(self):
         if self.user:
-            return f"{self.user.last_name} {self.user.first_name}"
+            return f"{self.user.username} {self.user.last_name} {self.user.first_name}"
 
 
 @receiver(post_save, sender=ExecutiveAppointment)
@@ -433,11 +435,11 @@ class Retirement(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     date = models.DateField(null=True, blank=True)
     govapp = models.ForeignKey(
-        GovernmentAppointment, on_delete=models.CASCADE, related_name='rtgovapp', null=True)
+        GovernmentAppointment, on_delete=models.CASCADE, related_name='rtgovapp', null=True,blank=True)
     profile = models.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name='profile', null=True)
     status = models.CharField(null=True, max_length=300, blank=True)
-    retire=models.BooleanField(default=False)
+    retire = models.BooleanField(default=False)
     created = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -446,15 +448,8 @@ class Retirement(models.Model):
 
     def __str__(self):
         if self.user:
-            return f"{self.user.last_name} {self.user.first_name}"
-    
-    
-@receiver(post_save, sender=Retirement)
-def clear_rt(sender, instance, **kwargs):
-    gov_appointment = instance.user.governmentappointment
-    gov_appointment.retire = instance.retire
-    gov_appointment.rtb = None
-    gov_appointment.save()
+            return f"{self.user.username} {self.user.last_name} {self.user.first_name}"
+
 # class Department(models.Model):
 #     name=models.CharField(max_length=200)
 

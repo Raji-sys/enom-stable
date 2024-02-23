@@ -435,7 +435,7 @@
           </tr> 
           {% for r in retirement %}
 <tr class="p-2 text-xs">
-<td class="border-2 border-green-800 p-2 text-center">{{r.date_retirose|date:'d-M-Y'|default_if_none:''}}</td>
+<td class="border-2 border-green-800 p-2 text-center">{{r.date|date:'d-M-Y'|default_if_none:''}}</td>
 <td class="border-2 border-green-800 p-2 text-center">{{r.status|default_if_none:''}}</td>
 <td class="border-2 border-green-800 p-2 text-center">{{r.updated|default_if_none:''|date:'d-M-Y'}}</td>
 <td class="border-r-2 border-green-800 border-b-2 flex flex-row justify-center p-4 gap-2"> 

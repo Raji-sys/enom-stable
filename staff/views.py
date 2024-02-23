@@ -355,12 +355,13 @@ class StatsView(TemplateView):
 class NoticeView(TemplateView):
     template_name='notice.html'
 
+
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
 
         
         due_appts=Promotion.objects.filter(due=True).select_related('user__profile')
-        retire_st=GovernmentAppointment.objects.filter(retire=True).select_related('user__profile')
+        retire_st= GovernmentAppointment.objects.filter(retire=True).select_related('user__profile') 
         leave_st=Leave.objects.filter(is_leave_over=True).select_related('user__profile')
 
         context.update({
@@ -461,7 +462,7 @@ class DocumentationView(UpdateView):
     model = User
     template_name = 'doc.html'
     form_class = UserForm
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('staff')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
