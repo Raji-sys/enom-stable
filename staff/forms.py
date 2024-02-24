@@ -65,7 +65,7 @@ class GovtAppForm(forms.ModelForm):
     class Meta:
         model = GovernmentAppointment
         fields = ['department', 'cpost', 'ippis_no', 'date_fapt', 'date_capt', 'sfapt',
-                  'salary_scale', 'grade_level', 'step', 'type_of_cadre', 'exams_status','retire']
+                  'salary_scale', 'grade_level', 'step', 'type_of_cadre', 'exams_status','cleared']
         widgets = {
             'department': forms.Select(attrs={'id': 'id_department'}),
             'current_post': forms.Select(attrs={'id': 'id_current_post'}),

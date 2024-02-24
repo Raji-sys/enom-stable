@@ -10,8 +10,9 @@
     {%if not profile.file_no %}
     <a href="{%url 'doc' profile.user.pk %}" class="text-cyan-900 text-lg font-semibold">start documentation</a>
     {%endif%}
-    {{profile.age}} Yes
+    {%if govapp.rtb %}
     <p>{{govapp.rtb}}</p>
+    {% endif %}
 </div>
 
      <div class="flex justify-center text-md text-blue-500">

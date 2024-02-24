@@ -5,5 +5,7 @@ class StaffConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'staff'
 
+    # def ready(self):
+    #     import staff.models
     def ready(self):
-        import staff.models
+        import staff.signals

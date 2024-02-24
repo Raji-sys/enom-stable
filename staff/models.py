@@ -8,8 +8,6 @@ from django.contrib import messages
 from django.utils.translation import gettext as _
 from django.utils import timezone
 from datetime import datetime
-from django.db.models.signals import post_save, pre_save
-from django.dispatch import receiver
 
 
 class Profile(models.Model):
@@ -222,6 +220,7 @@ class GovernmentAppointment(models.Model):
         choices=tc, null=True, blank=True, max_length=100)
     exams_status = models.CharField(null=True, blank=True, max_length=100)
     retire = models.BooleanField(default=False)
+    cleared = models.BooleanField(default=False)
     rtb = models.CharField('retired by', null=True, blank=True, max_length=50)
     created = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -242,31 +241,6 @@ class GovernmentAppointment(models.Model):
     def __str__(self):
         if self.user:
             return f"{self.user.username} {self.user.last_name} {self.user.first_name}"
-
-
-@receiver(pre_save, sender=GovernmentAppointment)
-def ret(sender, instance, **kwargs):
-    today = date.today()
-    age_at_retirement = instance.user.profile.age()
-    years_of_service = today.year - instance.date_fapt.year if instance.date_fapt else None
-
-    if age_at_retirement is not None and age_at_retirement >= 65:
-        instance.retire = True
-        instance.rtb = "RETIRE BY DATE OF BIRTH"
-
-    elif years_of_service is not None and years_of_service >= 35:
-        instance.retire = True
-        instance.rtb = "RETIRE BY DATE OF APPOINTMENT"
-    else:
-        instance.retire = False
-
-
-@receiver(post_save, sender=GovernmentAppointment)
-def increment_step(sender, instance, **kwargs):
-    today = date.today()
-    if today.month == 1 and today.day == 1 and instance.step is None:
-        instance.step = instance.step + 1 if instance.step is not None else 1
-        instance.save()
 
 
 PROMOTION_CONDITIONS = [
@@ -321,13 +295,6 @@ class Promotion(models.Model):
         # Save changes
         self.save()
         return None
-
-
-@receiver(post_save, sender=Promotion)
-def update_govapp(sender, instance, **kwargs):
-    gov_appointment = instance.user.governmentappointment
-    gov_appointment.cpost = instance.cpost
-    gov_appointment.save()
 
 
 class Discipline(models.Model):
@@ -423,21 +390,13 @@ class ExecutiveAppointment(models.Model):
         if self.user:
             return f"{self.user.username} {self.user.last_name} {self.user.first_name}"
 
-
-@receiver(post_save, sender=ExecutiveAppointment)
-def update_govapp(sender, instance, **kwargs):
-    gov_app = instance.user.governmentappointment
-    gov_app.cpost = instance.designation
-    gov_app.save()
-
-
 class Retirement(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     date = models.DateField(null=True, blank=True)
-    govapp = models.ForeignKey(
-        GovernmentAppointment, on_delete=models.CASCADE, related_name='rtgovapp', null=True,blank=True)
-    profile = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name='profile', null=True)
+    # govapp = models.ForeignKey(
+    #     GovernmentAppointment, on_delete=models.CASCADE, related_name='rtgovapp', null=True,blank=True)
+    # profile = models.ForeignKey(
+    #     Profile, on_delete=models.CASCADE, related_name='profile', null=True)
     status = models.CharField(null=True, max_length=300, blank=True)
     retire = models.BooleanField(default=False)
     created = models.DateTimeField('date added', auto_now_add=True)
@@ -449,12 +408,3 @@ class Retirement(models.Model):
     def __str__(self):
         if self.user:
             return f"{self.user.username} {self.user.last_name} {self.user.first_name}"
-
-# class Department(models.Model):
-#     name=models.CharField(max_length=200)
-
-#     def __str__(self):
-#         return self.name
-
-#     def get_absolute_url(self):
-#         return reverse('dept_details', args=[self.name])

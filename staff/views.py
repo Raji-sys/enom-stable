@@ -355,7 +355,6 @@ class StatsView(TemplateView):
 class NoticeView(TemplateView):
     template_name='notice.html'
 
-
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
 
@@ -483,7 +482,7 @@ class DocumentationView(UpdateView):
             profileform.save()
             govtappform.save()
             messages.success(
-                self.request, f'Documentation successful for:{self.request.user.last_name}')
+                self.request, f'Documentation successful!{self.request.user.last_name}')
             return HttpResponseRedirect(self.get_success_url())
         else:
             messages.error(
@@ -981,9 +980,12 @@ class RetireCreateView(CreateView):
             username_from_url = self.kwargs.get('username')
             user = get_object_or_404(User, username=username_from_url)
             form.instance.user = user
+            
+            
         else:
             # If the current user is not a superuser, use the current user
             form.instance.user = self.request.user
+            
         return super().form_valid(form)
 
     def get_success_url(self):
