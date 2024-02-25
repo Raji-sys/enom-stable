@@ -3,9 +3,8 @@
 {% block title %}Create an account{% endblock %}
 {% block content %} 
 <div class="flex justify-center m-2 pb-6 ">
-  <div class="uppercase text-sm sm:max-w-lg px-16 shadow-2xl border-double border-cyan-800 overflow-hidden shadow-black rounded-xl bg-gray-200">
-    <section class="text-center border-b-2 border-cyan-700 p-2">
-      <h2 class="text-white bg-cyan-900 w-fit p-2 rounded-xl uppercase text-xs m-1">fill this form to register</h2>
+  <div class="mt-4 text-sm sm:max-w-lg px-16 shadow-2xl border-double border-cyan-800 overflow-hidden shadow-black rounded-xl bg-gray-200">
+    <section class="text-center border-cyan-700 p-4 m-1">
     </section>
       <div class="block text-sm text-rose-700">
         {% if form.errors %}
@@ -14,7 +13,7 @@
       </div>
     <form action="{% url 'register' %}" method="POST" class="text-xs">
       {% csrf_token %}
-      <div class="mb-1 uppercase text-cyan-900">
+      <div class="mb-1 text-cyan-900">
         <div class="flex justify-center">
           <label for="uname">username</label>
         </div>
@@ -95,7 +94,7 @@
             value="Register"
           />
         </div>
-        <div class="mt-4 p-2 flex items-center border-t-2 border-cyan-800">
+        <div class="m-4 p-4 flex items-center border-t-2 border-cyan-800">
           {% if request.user.is_authenticated == False %}
           <div class="text-cyan-800 text-xs">
             <a

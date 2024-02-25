@@ -210,15 +210,16 @@ class GovernmentAppointment(models.Model):
     ss = (('CONHESS', 'CONHESS'), ('CONMESS', 'CONMESS'), ('GIPMIS', 'GIPMIS'))
     salary_scale = models.CharField(
         choices=ss, null=True, max_length=300, blank=True)
-    gl = (('03', '03'), ('04', '04'), ('05', '05'), ('06', '06'), ('07', '07'), ('08', '08'), ('09', '09'),
-          ('11', '11'), ('12', '12'), ('13', '13'), ('14', '14'), ('15', '15'))
-    grade_level = models.CharField(
-        choices=gl, null=True, max_length=300, blank=True)
+    gl = ((3, 3), (3, 4), (5,5), (6,6), (7,7), (8,8), (9,9),
+          (11,11), (12,12), (13,13), (14,14), (15,15))
+    grade_level = models.IntegerField(
+        choices=gl, null=True, blank=True)
     step = models.IntegerField(null=True, blank=True)
     tc = (('JUNIOR', 'JUNIOR'), ('SENIOR', 'SENIOR'), ('EXECUTIVE', 'EXECUTIVE'))
     type_of_cadre = models.CharField(
         choices=tc, null=True, blank=True, max_length=100)
     exams_status = models.CharField(null=True, blank=True, max_length=100)
+    due = models.BooleanField(default=False)
     retire = models.BooleanField(default=False)
     cleared = models.BooleanField(default=False)
     rtb = models.CharField('retired by', null=True, blank=True, max_length=50)
@@ -242,44 +243,18 @@ class GovernmentAppointment(models.Model):
         if self.user:
             return f"{self.user.username} {self.user.last_name} {self.user.first_name}"
 
-
-PROMOTION_CONDITIONS = [
+    PROMOTION_CONDITIONS = [
     (3, 'SENIOR', 6),
     (2, 'JUNIOR', 5),
-    (4, 'EXECUTIVE', 13),
-]
-
-
-class Promotion(models.Model):
-    user = models.ForeignKey(
-        User, null=True, on_delete=models.CASCADE, related_name='promotion')
-    cpost = models.CharField('current post', null=True,
-                             max_length=300, blank=True)
-    govapp = models.ForeignKey(
-        GovernmentAppointment, on_delete=models.CASCADE, related_name='progovapp', null=True)
-    prom_date = models.DateField('promotion date', null=True, blank=True)
-    gl = models.PositiveIntegerField('grade level', null=True, blank=True)
-    step = models.PositiveIntegerField(null=True, blank=True)
-    inc_date = models.DateField('increment date', null=True, blank=True)
-    conf_date = models.DateField('confirmation date', null=True, blank=True)
-    due = models.BooleanField(default=False)
-    created = models.DateTimeField('date added', auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-
-    def get_absolute_url(self):
-        return reverse('prom_details', args=[self.user])
-
-    def __str__(self):
-        if self.user:
-            return f"{self.user.username} {self.user.last_name} {self.user.first_name}"
+    (4, 'EXECUTIVE', 13),]
 
     def calculate_promotion(self):
         today = date.today()
-        if self.govapp.date_capt:
-            cal = self.govapp.date_capt.year
-            ex = self.govapp.exams_status
-            gl = self.govapp.grade_level
-            tc = self.govapp.type_of_cadre
+        if self.date_capt:
+            cal = self.date_capt.year
+            ex = self.exams_status
+            gl = self.grade_level
+            tc = self.type_of_cadre
 
             # Performing checks using constants
             for years, cadre, level in PROMOTION_CONDITIONS:
@@ -295,6 +270,29 @@ class Promotion(models.Model):
         # Save changes
         self.save()
         return None
+
+
+class Promotion(models.Model):
+    user = models.ForeignKey(
+        User, null=True, on_delete=models.CASCADE, related_name='promotion')
+    cpost = models.CharField('current post', null=True,
+                             max_length=300, blank=True)
+    govapp = models.ForeignKey(
+        GovernmentAppointment, on_delete=models.CASCADE, related_name='progovapp', null=True)
+    prom_date = models.DateField('promotion date', null=True, blank=True)
+    gl = models.PositiveIntegerField('grade level', null=True, blank=True)
+    step = models.PositiveIntegerField(null=True, blank=True)
+    inc_date = models.DateField('increment date', null=True, blank=True)
+    conf_date = models.DateField('confirmation date', null=True, blank=True)
+    created = models.DateTimeField('date added', auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def get_absolute_url(self):
+        return reverse('prom_details', args=[self.user])
+
+    def __str__(self):
+        if self.user:
+            return f"{self.user.username} {self.user.last_name} {self.user.first_name}"
 
 
 class Discipline(models.Model):
