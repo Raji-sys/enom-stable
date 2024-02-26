@@ -34,17 +34,41 @@ def ret(sender, instance, **kwargs):
         instance.retire = False
 
 
-def update_govapp_on_retirement(sender, instance, **kwargs):
-    if instance.retire:
-        user = instance.user
-        gov_app = instance.user.governmentappointment
-        if gov_app:
-            gov_app.retire = False
-            gov_app.save()
-            print(gov_app.retire)
+@receiver(pre_save, sender=GovernmentAppointment)
+def calculate_promotion(sender, instance, **kwargs):
+    PROMOTION_CONDITIONS = [(3, 'SENIOR', 6),(2, 'JUNIOR', 3),(4, 'EXECUTIVE', 13),]
+    today = date.today()
+    if instance.due and instance.cleared:
+        instance.due = False
+        instance.dmsg = None
+        return
+    
+    if instance.cleared:
+        instance.due=False
+        instance.dmsg = None
+        return
+    
+    if instance.due:
+        instance.cleared=False
+        return
+    
+    if instance.date_capt and instance.exams_status and instance.grade_level and instance.type_of_cadre:
+        cal = instance.date_capt.year
+        ex = instance.exams_status
+        gl = instance.grade_level
+        tc = instance.type_of_cadre
+    
+        for years, cadre, level in PROMOTION_CONDITIONS:
+            if today.year - cal == years and gl >= level and ex == 'pass' and tc == cadre:
+                instance.due = True
+                instance.dmsg = 'DUE FOR PROMOTION'
+                return
+            else:
+                instance.due = False
+                instance.dmsg = None
+            
 
-
-@receiver(post_save, sender=GovernmentAppointment)
+@receiver(pre_save, sender=GovernmentAppointment)
 def increment_step(sender, instance, **kwargs):
     today = date.today()
     if today.month == 1 and today.day == 1 and instance.step is None:

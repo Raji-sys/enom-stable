@@ -220,6 +220,7 @@ class GovernmentAppointment(models.Model):
         choices=tc, null=True, blank=True, max_length=100)
     exams_status = models.CharField(null=True, blank=True, max_length=100)
     due = models.BooleanField(default=False)
+    dmsg = models.CharField(null=True, blank=True, max_length=100)
     retire = models.BooleanField(default=False)
     cleared = models.BooleanField(default=False)
     rtb = models.CharField('retired by', null=True, blank=True, max_length=50)
@@ -243,33 +244,6 @@ class GovernmentAppointment(models.Model):
         if self.user:
             return f"{self.user.username} {self.user.last_name} {self.user.first_name}"
 
-    PROMOTION_CONDITIONS = [
-    (3, 'SENIOR', 6),
-    (2, 'JUNIOR', 5),
-    (4, 'EXECUTIVE', 13),]
-
-    def calculate_promotion(self):
-        today = date.today()
-        if self.date_capt:
-            cal = self.date_capt.year
-            ex = self.exams_status
-            gl = self.grade_level
-            tc = self.type_of_cadre
-
-            # Performing checks using constants
-            for years, cadre, level in PROMOTION_CONDITIONS:
-                if today.year - cal == years and int(gl) >= level and ex == 'pass' and tc == cadre:
-                    # Make changes
-                    self.due = True
-                    # Save changes
-                    self.save()
-                    return 'DUE FOR PROMOTION'
-
-        # If not due, no need to send a message
-        self.due = False
-        # Save changes
-        self.save()
-        return None
 
 
 class Promotion(models.Model):
@@ -340,17 +314,18 @@ class Leave(models.Model):
     def __str__(self):
         if self.user:
             return f"{self.user.last_name} {self.user.first_name}"
-
+    
+    @property
     def remain(self):
-        if self.total_days is not None and self.granted is not None:
-            return max(0, self.total_days - self.granted)
+        if self.total_days is not None and self.granted_days is not None:
+            return max(0, self.total_days - self.granted_days)
 
     def validate_leave(self):
         r = self.remain()
         if r is not None:
             if r < 0:
                 raise ValidationError('Your leave is over.')
-            elif self.granted == 0:
+            elif self.granted_days == 0:
                 raise ValidationError('No days are granted.')
 
     def save(self, *args, **kwargs):
@@ -358,14 +333,16 @@ class Leave(models.Model):
         self.validate_leave()
         super().save(*args, **kwargs)
 
+    @property
     def return_on(self):
-        if self.granted is not None and self.granted > 0:
+        if self.granted_days is not None and self.granted_days > 0:
             if isinstance(self.start_date, datetime):
-                return (self.start_date + timedelta(days=self.granted)).date()
+                return (self.start_date + timedelta(days=self.granted_days)).date()
             else:
-                return self.start_date + timedelta(days=self.granted)
+                return self.start_date + timedelta(days=self.granted_days)
         return None
-
+   
+    @property
     def over(self):
         return self.return_on() is not None and self.return_on() < timezone.now().date()
 
@@ -391,10 +368,6 @@ class ExecutiveAppointment(models.Model):
 class Retirement(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     date = models.DateField(null=True, blank=True)
-    # govapp = models.ForeignKey(
-    #     GovernmentAppointment, on_delete=models.CASCADE, related_name='rtgovapp', null=True,blank=True)
-    # profile = models.ForeignKey(
-    #     Profile, on_delete=models.CASCADE, related_name='profile', null=True)
     status = models.CharField(null=True, max_length=300, blank=True)
     retire = models.BooleanField(default=False)
     created = models.DateTimeField('date added', auto_now_add=True)
