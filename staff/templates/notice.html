@@ -75,7 +75,7 @@
 {% for l in leave_st %}
         <tr class="p-2 text-md ">
         <td class="border-2 p-0 text-center">{{forloop.counter}}</td>            
-        <td class="border-2 p-2 text-center "><a href="{{l.get_absolute_url}}">{{ d.user.get_full_name|default_if_none:''|upper }} {{ l.middlename|default_if_none:''|upper }}</a></td>
+        <td class="border-2 p-2 text-center "><a href="{{l.user.profile.get_absolute_url}}">{{ l.user.get_full_name|default_if_none:''|upper }} {{ l.middlename|default_if_none:''|upper }}</a></td>
 {% empty %}
     <p>No data available</p>
 {% endfor %}

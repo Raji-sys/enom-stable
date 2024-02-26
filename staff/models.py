@@ -347,9 +347,9 @@ class Leave(models.Model):
         is_leave_over = self.return_on is not None and self.return_on < timezone.now().date()
         if is_leave_over:
             self.is_leave_over=True
-            self.save(update_fields['is_leave_over'])
+            self.save(update_fields=['is_leave_over'])
             return "your leave is over"
-        elif self.total_days is Not None and self.total_days > 0:
+        elif self.total_days is not None and self.total_days > 0:
             return "on leave"
         return None
 

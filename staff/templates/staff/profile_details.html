@@ -16,6 +16,9 @@
     {%if govapp.dmsg %}
     <p>{{govapp.dmsg}}</p>
     {% endif %}
+    {%for l in leave %}
+    <p>{{l.over}}</p>
+    {% endfor %}
 </div>
 
      <div class="flex justify-center text-md text-blue-500">
@@ -352,11 +355,11 @@
   <td class="border-2 border-amber-800 p-2 text-center">{{l.year|default_if_none:''}}</td>
   <td class="border-2 border-amber-800 p-2 text-center">{{l.start_date|date:'d-M-Y'|default_if_none:''}}</td>
   <td class="border-2 border-amber-800 p-2 text-center">{{l.total_days|default_if_none:''}}</td>
-  <td class="border-2 border-amber-800 p-2 text-center">{{l.number_of_days_granted|default_if_none:''}}</td>
-  <td class="border-2 border-amber-800 p-2 text-center">{{l.remaining_days|default_if_none:''}}</td>
-  <td class="border-2 border-amber-800 p-2 text-center">{{l.u_return_date|default_if_none:''}}</td>
+  <td class="border-2 border-amber-800 p-2 text-center">{{l.granted_days|default_if_none:''}}</td>
+  <td class="border-2 border-amber-800 p-2 text-center">{{l.remain|default_if_none:''}}</td>
+  <td class="border-2 border-amber-800 p-2 text-center">{{l.return_on|default_if_none:''}}</td>
   <td class="border-2 border-amber-800 p-2 text-center">{{l.status|default_if_none:''}}</td>
-  <td class="border-2 border-amber-800 p-2 text-center">{{l.comment_if_any|default_if_none:''}}</td>
+  <td class="border-2 border-amber-800 p-2 text-center">{{l.comment|default_if_none:''}}</td>
   <td class="border-2 border-amber-800 p-2 text-center">{{l.updated|default_if_none:''|date:'d-M-Y'}}<p>signed by: {{request.user}}</p></td>
   <td class="border-r-2 border-amber-800 border-b-2 flex flex-row justify-center p-9 gap-2"> 
   <a href="{%url 'leave_update' l.pk %}" class="justify-center text-cyan-900"><i class="fa-solid fa-square-pen fa-2xl"></i></a>

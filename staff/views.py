@@ -580,8 +580,7 @@ class ProfileDetailView(DetailView):
         execapp = ExecutiveAppointment.objects.filter(user=profile.user)
         retirement = Retirement.objects.filter(user=profile.user)
 
-        context['govapp'] = get_object_or_404(
-            GovernmentAppointment, user=profile.user)
+        context['govapp'] = get_object_or_404(GovernmentAppointment, user=profile.user)
         context['qualifications'] = qualifications
         context['pro_qualifications'] = pro_qualifications
         context['promotion'] = promotion
