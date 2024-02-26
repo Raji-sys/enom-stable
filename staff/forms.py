@@ -156,7 +156,7 @@ class LeaveForm(forms.ModelForm):
     class Meta:
         model = Leave
         fields = ['nature', 'year', 'start_date',
-                  'total_days', 'granted_days', 'status', 'comment']
+                  'total_days', 'granted_days', 'status', 'comment','is_leave_over']
 
         widgets = {
             'start_date': forms.DateInput(attrs={'type': 'date'}),

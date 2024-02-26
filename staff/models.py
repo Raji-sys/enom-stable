@@ -321,7 +321,7 @@ class Leave(models.Model):
             return max(0, self.total_days - self.granted_days)
 
     def validate_leave(self):
-        r = self.remain()
+        r = self.remain
         if r is not None:
             if r < 0:
                 raise ValidationError('Your leave is over.')
@@ -344,7 +344,15 @@ class Leave(models.Model):
    
     @property
     def over(self):
-        return self.return_on() is not None and self.return_on() < timezone.now().date()
+        is_leave_over = self.return_on is not None and self.return_on < timezone.now().date()
+        if is_leave_over:
+            self.is_leave_over=True
+            self.save(update_fields['is_leave_over'])
+            return "your leave is over"
+        elif self.total_days is Not None and self.total_days > 0:
+            return "on leave"
+        return None
+
 
 
 class ExecutiveAppointment(models.Model):
