@@ -327,6 +327,8 @@ class Leave(models.Model):
                 raise ValidationError('Your leave is over.')
             elif self.granted_days == 0:
                 raise ValidationError('No days are granted.')
+            elif self.granted_days > self.remain:
+                raise ValidationError('granted days cannot be greater than balance')
 
     def save(self, *args, **kwargs):
         self.clean()

@@ -169,6 +169,20 @@ class LeaveForm(forms.ModelForm):
             field.widget.attrs.update(
                 {'class': 'text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700'})
 
+    def clean(self):
+        cleaned_data=super().clean()
+        granted_days=cleaned_data.get('granted_days')
+        total_days=cleaned_data.get('total_days')
+        balance=cleaned_data.get('balance')
+
+        if granted_days and total_days and granted_days > total_days:
+            raise ValidationError("Granted days cannot be greater than total days")
+
+        if granted_days and total_days:
+            remain = total_days - granted_days
+            if granted_days > remain:
+                raise ValidationError("Granted days cannot be greater than balance")
+
 
 class ExecappForm(forms.ModelForm):
     class Meta:
