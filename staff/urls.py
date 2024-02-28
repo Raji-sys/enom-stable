@@ -31,12 +31,15 @@ urlpatterns = [
     path('rt_report/', views.rt_report, name='rt_report'),
 
     path('stats/', StatsView.as_view(), name='stats'),
+
     path('notice/', NoticeView.as_view(), name='notice'),
+    path('promotion_notice/'NoticePromotionView.as_view(), name='notice_promotion'),
+    path('leave_notice/',NoticeLeaveView.as_view(), name='notice_leave'),
+    path('retirement_notice/',NoticeRetirementView.as_view(), name='notice_retirement'),
 
     path('login/', CustomLoginView.as_view(), name='login'),
     path('register/', UserRegistrationView.as_view(), name='register'),
     path('reg/', UserRegView.as_view(), name='reg'),
-
     path('documentation/<int:pk>/', DocumentationView.as_view(), name='doc'),
 
     path('profile/<str:username>/',

@@ -5,10 +5,10 @@
 			body{
 				font-family: 'Poppins';
 			}
-/* @font-face{
+			@font-face{
 				font-family: 'Kode_Mono';
-				src: url('Kode_Mono/static/KodeMono-Bold.ttf')
+				src: url('Kode_Mono/static/KodeMono-Medium.ttf')
 			}
-			body{
+			.enom{
 				font-family: 'Kode_Mono';
-			} */
+			}

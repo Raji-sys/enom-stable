@@ -3,36 +3,43 @@
 {%block title%}directories{%endblock%}
 
 {%block content %}
-
-        <div class="mt-20 text-xs flex justify-center flex-row w-full max-sm:grid max-sm:grid-cols-2 max-sm:gap-8 gap-4">
+<div class="mt-24">
+    <div class="uppercase text-sm sm:max-w-fit shadow-2xl shadow-black rounded-2xl bg-gray-100 p-20 mx-auto">
+        <section class="text-center">
+            <h1 class="enom text-4xl text-cyan-800">DIRECTORIES</h1>
+        </section>
+        <div class="mt-10 text-xs flex justify-center flex-row w-full max-sm:grid max-sm:grid-cols-2 max-sm:gap-8 gap-4">
             <div class="">
-                <a href="{% url 'staff' %}"class="mb-2 focus:opacity-10 border-b-4 border-gray-500 focus:border-green-600 bg-gradient-to-r
-                from-green-900 via-green-600 to-green-900 text-white max-sm:p-2 p-4 rounded shadow-lg hover:shadow-xl text-center max-sm:w-1/2 w-full">
+                <a href="{% url 'staff' %}"class="mb-2 focus:opacity-10 border-b-4 border-white focus:border-green-600 bg-gradient-to-r
+                from-green-900 via-green-600 to-green-900 text-white max-sm:p-2 p-4 rounded-2xl shadow-lg hover:shadow-xl text-center max-sm:w-1/2 w-full">
                 <i class="fa-solid fa-rectangle-list fa-2xl"></i>
                 promotion</a>
             </div>
             <div class="">
-                <a href="{% url 'dept' %}"class="mb-2 focus:opacity-10 border-b-4 border-gray-500 focus:border-cyan-600 bg-gradient-to-r 
-                from-indigo-900 via-indigo-600 to-indigo-900 text-white max-sm:p-2 p-4 rounded shadow-lg hover:shadow-xl text-center max-sm:w-1/2 w-full">
+                <a href="{% url 'dept' %}"class="mb-2 focus:opacity-10 border-b-4 border-white focus:border-cyan-600 bg-gradient-to-r 
+                from-indigo-900 via-indigo-600 to-indigo-900 text-white max-sm:p-2 p-4 rounded-2xl shadow-lg hover:shadow-xl text-center max-sm:w-1/2 w-full">
                  <i class="fa-solid fa-print fa-2xl"></i>
                 leave</a>
             </div>
             <div class=" ">
-                <a href="{% url 'dirs' %}"class="mb-2 focus:opacity-10 border-b-4 border-gray-500 focus:border-cyan-600 bg-gradient-to-r
-                from-orange-700 via-orange-600 to-orange-900 text-white max-sm:p-2 p-4 rounded shadow-lg hover:shadow-xl text-center max-sm:w-1/2 w-full">
+                <a href="{% url 'dirs' %}"class="mb-2 focus:opacity-10 border-b-4 border-white focus:border-cyan-600 bg-gradient-to-r
+                from-orange-700 via-orange-600 to-orange-900 text-white max-sm:p-2 p-4 rounded-2xl shadow-lg hover:shadow-xl text-center max-sm:w-1/2 w-full">
                  <i class="fa-solid fa-list-ol fa-2xl"></i>
                  executive appointment</a>
             </div> 
             <div class=" ">
-                <a href="{% url 'dirs' %}"class="mb-2 focus:opacity-10 border-b-4 border-gray-500 focus:border-cyan-600 bg-gradient-to-r
-                from-orange-700 via-orange-600 to-orange-900 text-white max-sm:p-2 p-4 rounded shadow-lg hover:shadow-xl text-center max-sm:w-1/2 w-full">
+                <a href="{% url 'dirs' %}"class="mb-2 focus:opacity-10 border-b-4 border-white focus:border-cyan-600 bg-gradient-to-r
+                from-orange-700 via-orange-600 to-orange-900 text-white max-sm:p-2 p-4 rounded-2xl shadow-lg hover:shadow-xl text-center max-sm:w-1/2 w-full">
                  <i class="fa-solid fa-list-ol fa-2xl"></i>
                  discipline</a>
             </div> 
             <div class=" ">
-                <a href="{% url 'dirs' %}"class="mb-2 focus:opacity-10 border-b-4 border-gray-500 focus:border-cyan-600 bg-gradient-to-r
-                from-orange-700 via-orange-600 to-orange-900 text-white max-sm:p-2 p-4 rounded shadow-lg hover:shadow-xl text-center max-sm:w-1/2 w-full">
+                <a href="{% url 'dirs' %}"class="mb-2 focus:opacity-10 border-b-4 border-white focus:border-cyan-600 bg-gradient-to-r
+                from-orange-700 via-orange-600 to-orange-900 text-white max-sm:p-2 p-4 rounded-2xl shadow-lg hover:shadow-xl text-center max-sm:w-1/2 w-full">
                  <i class="fa-solid fa-list-ol fa-2xl"></i>
                  retirement</a>
             </div> 
+    </div> 
+    </div> 
+    </div> 
 {%endblock%}

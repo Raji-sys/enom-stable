@@ -1,0 +1,39 @@
+{%extends "base.html" %}
+{% block title %}promotion notice {%endblock%}
+{% block content %}
+<h1>prmotion notice</h1>
+<div class="grid grid-rows-1 gap-2 m-6 uppercase">
+<div class="max-sm:w-full w-1/2 mx-auto mt-1 md:p-8 shadow-2xl overflow-hidden rounded-lg backdrop-blur-sm border-2 text-green-700 border-green-700 ">
+        <section class=" text-center ">
+            <h1 class="text-2xl mt-4">
+                Total:{{due_count}}
+            </h1>
+            <p class="uppercase text-xl max-sm:text-md">promotion</p> 
+            <div class="max-sm:text-sm text-green-700 border-green-700 ">
+    <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex border-hidden">
+        <div class="rounded-xl">
+            <tbody class="uppercase text-sm rounded-lg  max-sm:p-8 p-2 overflow-x-auto mx-0 ">
+        </div>
+        <tr class=" text-sm">
+            <th scope="col" class="border-2 p-2 ">s/n</th>
+            <th scope="col" class="border-2 p-2 ">name</th>
+        </tr>
+
+{% for d in due_appts %}
+        <tr class="p-2 text-md ">
+        <td class="border-2 p-0 text-center ">{{forloop.counter}}</td>            
+        <td class="border-2 p-2 text-center "><a href="{{d.user.profile.get_absolute_url}}">{{ d.user.get_full_name|default_if_none:''|upper }} {{ d.middlename|default_if_none:''|upper }}</a></td>
+{% empty %}
+    <p>No data available</p>
+{% endfor %}
+    </tr>
+        </tbody>
+    </table>
+</div>
+</section>
+</div>
+
+
+
+</div>
+{% endblock %}

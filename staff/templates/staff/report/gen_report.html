@@ -1,15 +1,15 @@
 {%extends "base.html" %}
 {% block title %}general report{% endblock%}
 {% block content %}
-<div class="flex justify-start items-start mt-0 relative">
+<div class="grid grid-rows-2 mt-0 relative">
     <!-- start of first grid  -->
     <div class="center-2 h-full overflow-y-auto ">
-        <div class="flex flex-col justify-center items-center rounded-md bg-cyan-800 p-5 text-white m-2 ">
+        <div class="flex flex-row justify-center items-center rounded-md bg-cyan-800 p-2 text-white m-2">
             <form method="get" class="text-xs text-center">
                 {% for field in gen_filter.form %}
                 {{field.errors}}
                 {% endfor %}
-                <div class="flex flex-wrap flex-col gap-1 justify-center items-center text-center">
+                <div class="flex flex-wrap flex-row gap-1 justify-center items-center text-center">
                     {% for field in gen_filter.form %}
                     <div class="flex justify-center items-start flex-col">
                         <label class="form-label">{{ field.label_tag }}</label>
@@ -20,22 +20,27 @@
                     {% endfor %}
                 </div>
                 <div class="mt-2 flex justify-center align-middle ">
-             <button type="submit" class="text-cyan-900 w-fit p-2 focus:opacity-10  bg-white  rounded ">
+             <button type="submit" class="text-cyan-900 w-fit p-2 focus:opacity-10  bg-white rounded ">
                       <i class="fa-solid fa-search fa-xl "></i>
                     </button>                     
-        </div>
+                </div>
+                {% if request.GET.urlencode %}
+                <div class="m-2">
+                    <a href="?" class="m-1 p-1 focus:opacity-10 bg-orange-500 text-white rounded w-fit"><i class="fa-solid fa-rotate fa-2xl"></i></a>
+                    <a class="text-xl text-white focus:opacity-10  bg-green-600 m-1 p-1 rounded w-fit" href="{% url 'gen_pdf' %}?{{request.GET.urlencode}}">
+                        <i class="fa-solid fa-file-pdf fa-xl"></i></a>
+                        <a class="text-xl text-black focus:opacity-10 m-1 p-1 rounded w-fit" href="{% url 'gov_csv' %}?{{request.GET.urlencode}}">
+                            <i class="fa-solid fa-table fa-xl"></i></a>
+                        </div>
+            {%endif%}
             </form>
         </div>
     </div>
     <!-- end of first grid -->
 
     {% if request.GET.urlencode %}
-    <a href="?" class="m-1 p-1 focus:opacity-10 bg-orange-500 text-white rounded w-fit"><i class="fa-solid fa-rotate fa-2xl"></i></a>
-    <a class="text-xl text-white focus:opacity-10  bg-green-600 m-1 p-1 rounded w-fit" href="{% url 'gen_pdf' %}?{{request.GET.urlencode}}">
-        <i class="fa-solid fa-file-pdf fa-xl"></i></a>
-    <a class="text-xl text-black focus:opacity-10 m-1 p-1 rounded w-fit" href="{% url 'gov_csv' %}?{{request.GET.urlencode}}">
-    <i class="fa-solid fa-table fa-xl"></i></a>
-    <table class="table-auto mt-2 max-sm:flex flex shadow-2xl shadow-black rounded-xl mb-10 items-center justify-center mx-auto">
+    <div>
+    <table class="w-fit table-auto mt-2 max-sm:flex flex shadow-2xl shadow-black rounded-xl mb-10 items-center justify-center mx-auto">
         {% for message in messages %}
       <div class="mt-4">
         {%if message.success %}
@@ -51,7 +56,7 @@
         {% endif %}
       </div>
       {% endfor %}
-        <tbody class="text-cyan-800 border-2 shadow-2xl shadow-black rounded-xl max-sm:p-4 p-1 overflow-x-auto border-cyan-600 bg-white">            
+        <tbody class="text-cyan-800 border-2 shadow-2xl shadow-black rounded-xl max-sm:p-4 p-1 overflow-x-auto border-cyan-600">            
             <tr class="text-xs bg-cyan-900 rounded-xl text-white">
                 <th scope="col" class="border-l-2 border-b-2 border-b-white border-cyan-800 border-t-2 border-t-white ">S/N</th>
                 <th scope="col" class="border-2  p-2">SURNAME</th>
@@ -132,6 +137,7 @@
         </tr>
 </tbody>
 </table>
+</div>
 </div>
 {% endif %}
 

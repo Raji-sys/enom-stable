@@ -352,25 +352,48 @@ class StatsView(TemplateView):
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class NoticeView(TemplateView):
-    template_name='notice.html'
-
+class NoticePromotionView(TemplateView):
+    template_name ="notice_promtion.html"
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
-
         due_appts=GovernmentAppointment.objects.filter(due=True).select_related('user__profile')
-        retire_st= GovernmentAppointment.objects.filter(retire=True).select_related('user__profile') 
-        leave_st=Leave.objects.filter(is_leave_over=True).select_related('user__profile')
-
         context.update({
             'due_count':due_appts.count(),
-            'retire_count':retire_st.count(),
-            'leave_count':leave_st.count(),
             'due_appts':due_appts,
-            'retire_st':retire_st,
+        })
+        return context
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class NoticeLeaveView(TemplateView):
+    template_name="notice_leave.html"
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        leave_st=Leave.objects.filter(is_leave_over=True).select_related('user__profile')
+        context.update({
+            'leave_count':leave_st.count(),
             'leave_st':leave_st
         })
         return context
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class NoticeRetirementView(TemplateView):
+    template_name="notice_retirement.html"
+    
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        retire_st= GovernmentAppointment.objects.filter(retire=True).select_related('user__profile') 
+        context.update({
+            'retire_count':retire_st.count(),
+            'retire_st':retire_st,
+        })
+        return context
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class NoticeView(TemplateView):
+    template_name='notice.html'
+
 
 @method_decorator(log_anonymous_required, name='dispatch')
 class CustomLoginView(LoginView):
