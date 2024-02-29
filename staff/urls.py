@@ -33,7 +33,7 @@ urlpatterns = [
     path('stats/', StatsView.as_view(), name='stats'),
 
     path('notice/', NoticeView.as_view(), name='notice'),
-    path('promotion_notice/'NoticePromotionView.as_view(), name='notice_promotion'),
+    path('promotion_notice/',NoticePromotionView.as_view(), name='notice_promotion'),
     path('leave_notice/',NoticeLeaveView.as_view(), name='notice_leave'),
     path('retirement_notice/',NoticeRetirementView.as_view(), name='notice_retirement'),
 
