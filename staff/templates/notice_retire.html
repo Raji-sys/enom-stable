@@ -1,28 +1,28 @@
 {%extends "base.html" %}
 {% block title %}notice{%endblock%}
 {% block content %}
-<h1>retirement notice</h1>
 <div class="grid grid-rows-1 gap-2 m-6 uppercase">
     <div class="max-sm:w-full w-1/2 mx-auto mt-1 md:p-8 shadow-2xl overflow-hidden rounded-lg backdrop-blur-sm border-2 text-green-700 border-green-700 ">
-        <div class="max-sm:w-full w-1/2 mx-auto mt-1 md:p-8 shadow-2xl overflow-hidden rounded-lg backdrop-blur-sm border-2 border-orange-700 text-orange-700">
             <section class=" text-center">
                 <p class="text-2xl mt-4">
                     Total:{{retire_count}}
                 </p>
-            
-                <p class="uppercase max-sm:text-md text-xl">retirement</p> 
-                <div class="max-sm:text-sm text-orange-700 border-orange-700 rounded-lg">
+                <div class="max-sm:text-sm text-green-700 border-green-700 rounded-lg">
         <table class="justify-center table-auto mt-0 max-sm:flex p-2 flex ">
             <tbody class="uppercase text-sm max-sm:p-8 p-2 overflow-x-auto mx-0 ">         
                 <tr class=" text-sm ">
                 <th scope="col" class="border-2 p-2">s/n</th>
                 <th scope="col" class="border-2 p-2">name</th>
+                <th scope="col" class="border-2 p-2">phone</th>
+                <th scope="col" class="border-2 p-2">department</th>
             </tr>
             
     {% for r in retire_st %}
             <tr class="p-2 text-md ">
             <td class="border-2 p-0 text-center  ">{{forloop.counter}}</td>            
             <td class="border-2 p-2 text-center "><a href="{{r.user.profile.get_absolute_url}}">{{ r.user.get_full_name|default_if_none:''|upper }} {{ r.middlename|default_if_none:''|upper }}</a></td>
+            <td class="border-2 p-2 text-center ">{{l.user.profile.phone|default_if_none:''}}</td>
+            <td class="border-2 p-2 text-center ">{{l.user.governmentappointment.department|default_if_none:''}}</td>
     {% empty %}
         <p>No data available</p>
     {% endfor %}
@@ -34,3 +34,4 @@
     </div>
     </div>
     </div>
+    {%endblock%}

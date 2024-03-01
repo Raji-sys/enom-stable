@@ -353,7 +353,7 @@ class StatsView(TemplateView):
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class NoticePromotionView(TemplateView):
-    template_name ="notice_promtion.html"
+    template_name ="notice_promotion.html"
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
         due_appts=GovernmentAppointment.objects.filter(due=True).select_related('user__profile')
@@ -372,13 +372,13 @@ class NoticeLeaveView(TemplateView):
         leave_st=Leave.objects.filter(is_leave_over=True).select_related('user__profile')
         context.update({
             'leave_count':leave_st.count(),
-            'leave_st':leave_st
+            'leave_st':leave_st,
         })
         return context
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class NoticeRetirementView(TemplateView):
-    template_name="notice_retirement.html"
+    template_name="notice_retire.html"
     
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
