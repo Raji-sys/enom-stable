@@ -43,8 +43,8 @@ class GenFilter(django_filters.FilterSet):
 
     type_of_cadre = django_filters.CharFilter(
         label="TYPE OF CADRE", field_name="governmentappointment__type_of_cadre", lookup_expr='iexact')
-    due = django_filters.CharFilter(
-        label="DUE", field_name="governmentappointment__due", lookup_expr='iexact')
+    due = django_filters.BooleanFilter(
+        label="DUE", field_name="governmentappointment__due", lookup_expr='exact')
     GL = django_filters.CharFilter(
         label="GL", field_name="governmentappointment__grade_level", lookup_expr='iexact')
     step = django_filters.NumberFilter(
@@ -52,8 +52,11 @@ class GenFilter(django_filters.FilterSet):
     exam = django_filters.CharFilter(
         label="EXAMS", field_name="governmentappointment__exam_status", lookup_expr='iexact')
 
-    rt = django_filters.CharFilter(
-        label="RETIRE", field_name="governmentappointment__retire", lookup_expr="iexact")
+    rt = django_filters.BooleanFilter(
+        label="RETIRE", field_name="governmentappointment__retire", lookup_expr="exact")
+
+    lv = django_filters.BooleanFilter(
+        label="LEAVE", field_name="leave__is_leave_over", lookup_expr="exact")
 
     class Meta:
         model = User

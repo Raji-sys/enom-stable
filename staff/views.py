@@ -190,106 +190,6 @@ def Gen_csv(request):
     return response
 
 
-@method_decorator(login_required(login_url='login'), name='dispatch')
-class GovReportView(ListView):
-    model = GovernmentAppointment
-    template_name = 'staff/report/gov_report.html'
-    paginate_by = 10
-    context_object_name = 'gov'
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        # total = queryset.filter(is_active=True, is_superuser=False).count()
-
-        gov_filter = GovFilter(self.request.GET, queryset=queryset)
-        gov = gov_filter.qs.order_by('department')
-
-        # self.total = total
-        return gov
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['gov_filter'] = GovFilter(
-            self.request.GET, queryset=self.get_queryset())
-        # context['total'] = self.total
-        return context
-
-
-@login_required
-def Gov_pdf(request):
-    ndate = datetime.datetime.now()
-    filename = ndate.strftime('on_%d/%m/%Y_at_%I.%M%p.pdf')
-    f = GovFilter(request.GET, queryset=GovernmentAppointment.objects.all()).qs
-
-    result = ""
-    for key, value in request.GET.items():
-        if value:
-            result += f" {value.upper()}<br>Generated on: {ndate.strftime('%d-%B-%Y at %I:%M %p')}</br>By: {request.user.username.upper()}"
-
-    context = {'f': f, 'pagesize': 'A4',
-               'orientation': 'potrait', 'result': result}
-    response = HttpResponse(content_type='application/pdf',
-                            headers={'Content-Disposition': f'filename="Report__{filename}"'})
-
-    buffer = BytesIO()
-
-    pisa_status = pisa.CreatePDF(get_template('staff/report/gov_pdf.html').render(
-        context), dest=buffer, encoding='utf-8', link_callback=fetch_resources)
-
-    if not pisa_status.err:
-        pdf = buffer.getvalue()
-        buffer.close()
-        response.write(pdf)
-        return response
-    return HttpResponse('Error generating PDF', status=500)
-
-
-@login_required
-def Gov_csv(request):
-    ndate = datetime.datetime.now()
-    filename = ndate.strftime('on_%d/%m/%Y_at_%I.%M%p.csv')
-    response = HttpResponse(content_type='text/csv', headers={
-                            'Content-Disposition': f'attachment; filename="generated_by_{request.user}_{filename}"'})
-    gov = GovernmentAppointment.objects.all()
-    govFilter = GovFilter(request.GET, queryset=gov)
-    gov = genFilter.qs
-    # result=request.GET['date_of_first_appointment']
-    writer = csv.writer(response)
-    # csv headers
-    # writer.writerow(['','','','','','','Data of {} staff'.format(result) ])
-    writer.writerow([
-                    'S/N', 'FULLNAME', 'FILE NO', 'IPPIS NUMBER', 'DEPARTMENT', 'CURRENT POST', 'DATE OF FIRST APPOINTMENT', 'DATE OF CURRENT APPOINTMENT'])
-
-    # generate csv body data with variables using foor loop
-    for i, u in enumerate(user, start=1):
-
-        writer.writerow([
-            i,
-            str(u.first_name).upper()+str(' ') +
-            str(u.profile.middle_name).upper() +
-            str(' ')+str(u.last_name).upper(),
-            u.profile.file_no,
-            u.governmentappointment.ippis_no,
-            str(u.profile.gender).upper(),
-            str(u.governmentappointment.department).upper(),
-            str(u.governmentappointment.cpost).upper(),
-            u.governmentappointment.date_fapt,
-        ])
-    return response
-
-
-@login_required
-def pro_report(request):
-    pass
-    # return render(request, 'pro_report.html')
-
-
-@login_required
-def lv_report(request):
-    pass
-    # return render(request, 'lv_report.html')
-
-
 @login_required
 def dis_report(request):
     pass
@@ -306,12 +206,6 @@ def qual_report(request):
 def pro_qual_report(request):
     pass
     # return render(request, 'pro_qual_report.html')
-
-
-@login_required
-def rt_report(request):
-    pass
-    # return render(request, 'rt_report.html')
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
