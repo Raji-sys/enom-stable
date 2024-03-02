@@ -156,7 +156,7 @@ class LeaveForm(forms.ModelForm):
     class Meta:
         model = Leave
         fields = ['nature', 'year', 'start_date',
-                  'total_days', 'granted_days', 'status', 'comment','is_leave_over']
+                  'total_days', 'granted_days', 'status', 'comment']
 
         widgets = {
             'start_date': forms.DateInput(attrs={'type': 'date'}),
@@ -173,14 +173,11 @@ class LeaveForm(forms.ModelForm):
         cleaned_data=super().clean()
         granted_days=cleaned_data.get('granted_days')
         total_days=cleaned_data.get('total_days')
-        balance=cleaned_data.get('balance')
-
         if granted_days and total_days and granted_days > total_days:
             raise ValidationError("Granted days cannot be greater than total days")
-
         if granted_days and total_days:
             remain = total_days - granted_days
-            if granted_days > remain:
+            if remain < granted_days:
                 raise ValidationError("Granted days cannot be greater than balance")
 
 
