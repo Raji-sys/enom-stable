@@ -292,16 +292,17 @@ class Discipline(models.Model):
 
 
 class Leave(models.Model):
-    user = models.ForeignKey(
-        User, null=True, on_delete=models.CASCADE, related_name='leave')
-    nature = models.CharField(
-        'nature of leave', null=True, max_length=300, blank=True)
+    LEAVE_TYPES = (
+        ('CASUAL', 'CASUAL'),
+        ('ANNUAL', 'ANNUAL'),
+    )
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='leave')
+    nature = models.CharField('nature of leave', null=True, max_length=7, blank=True, choices=LEAVE_TYPES)
     year = models.PositiveIntegerField(null=True, blank=True)
     start_date = models.DateField(null=True, blank=False)
     total_days = models.PositiveIntegerField(null=True, blank=True)
     balance = models.PositiveIntegerField(null=True, blank=True)
-    granted_days = models.PositiveIntegerField(
-        'number of days granted', null=True, blank=False)
+    granted_days = models.PositiveIntegerField('number of days granted', null=True, blank=False)
     status = models.CharField(null=True, max_length=300, blank=True)
     is_leave_over = models.BooleanField(default=False)
     comment = models.TextField('comments if any', null=True, blank=True)
@@ -315,25 +316,36 @@ class Leave(models.Model):
         if self.user:
             return f"{self.user.last_name} {self.user.first_name}"
     
-    @property
-    def remain(self):
-        if self.total_days is not None and self.granted_days is not None:
-            return max(0, self.total_days - self.granted_days)
-
     def validate_leave(self):
-        r = self.remain
-        if r is not None:
-            if r < 0:
+        if self.balance is not None and self.granted_days is not None:
+            if self.balance < 0:
                 raise ValidationError('Your leave is over.')
             elif self.granted_days == 0:
                 raise ValidationError('No days are granted.')
-            elif self.granted_days > self.remain:
+            elif self.granted_days > self.balance:
                 raise ValidationError('granted days cannot be greater than balance')
 
     def save(self, *args, **kwargs):
-        self.clean()
-        self.validate_leave()
+        if not self.pk:
+            if self.nature == 'ANNUAL':
+                annual_lv_count=Leave.objects.filter(user=self.user,year=self.year).exclude(pk=self.pk).count()
+                if annual_lv_count >= 2:
+                    raise ValidationError('Only two leave instances per year')
+            
+            existing_leave = Leave.objects.filter(user=self.user, year=self.year).exclude(pk=self.pk).first()
+            if existing_leave:
+                self.total_days = existing_leave.balance
+
+        if self.nature == 'ANNUAL':
+            if self.total_days - self.granted_days != self.balance:
+                raise ValidationError('Total days minus granted days should be equal to balance.')
+        
         super().save(*args, **kwargs)
+        self.validate_leave()
+
+        # Call the clear_leave_over method if leave is no longer considered over
+        if self.over != "your leave is over":
+            self.clear_leave_over()
 
     @property
     def return_on(self):
@@ -354,6 +366,11 @@ class Leave(models.Model):
         elif self.total_days is not None and self.total_days > 0:
             return "on leave"
         return None
+    
+    def clear_leave_over(self):
+        if self.is_leave_over:
+            self.is_leave_over = False
+            self.save(update_fields=['is_leave_over'])
 
 
 
