@@ -324,7 +324,7 @@ class Leave(models.Model):
     def validate_leave(self):
         r = self.remain
         if r is not None:
-            if r < 0:
+            if r <= 0:
                 raise ValidationError('Your leave is over.')
             elif self.granted_days == 0:
                 raise ValidationError('No days are granted.')
