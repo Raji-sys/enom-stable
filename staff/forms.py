@@ -170,16 +170,18 @@ class LeaveForm(forms.ModelForm):
                 {'class': 'text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700'})
 
     def clean(self):
-        cleaned_data=super().clean()
-        granted_days=cleaned_data.get('granted_days')
-        total_days=cleaned_data.get('total_days')
-        if granted_days and total_days and granted_days > total_days:
-            raise ValidationError("Granted days cannot be greater than total days")
-        if granted_days and total_days:
-            remain = total_days - granted_days
-            if remain < granted_days:
-                raise ValidationError("Granted days cannot be greater than balance")
+        cleaned_data = super().clean()
+        granted_days = cleaned_data.get('granted_days')
+        total_days = cleaned_data.get('total_days')
 
+        if granted_days and total_days and granted_days > total_days:
+            raise forms.ValidationError("Granted days cannot be greater than total days")
+
+        if granted_days and total_days:
+            remain = self.instance.remain
+            if remain is not None and remain < granted_days:
+                raise forms.ValidationError(f"Granted days ({granted_days}) cannot be greater than remaining days ({remain}).")
+        return cleaned_data
 
 class ExecappForm(forms.ModelForm):
     class Meta:

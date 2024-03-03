@@ -776,15 +776,31 @@ class LeaveCreateView(CreateView):
 
     def form_valid(self, form):
         if self.request.user.is_superuser:
-            # If the current user is a superuser, use the username from the URL
             username_from_url = self.kwargs.get('username')
             user = get_object_or_404(User, username=username_from_url)
-            form.instance.user = user
+            # form.instance.user = user
         else:
-            # If the current user is not a superuser, use the current user
-            form.instance.user = self.request.user
-        return super().form_valid(form)
+            # form.instance.user = self.request.user
+            user=self.request.user
+        
+        form.instance.user = user
+        nature=form.cleaned_data.get('nature')
+        year=form.cleaned_data.get('year')
+        
+        if nature == 'ANNUAL':
+            existing_leave_count = Leave.objects.filter(user=user, year=year).count()
+            if existing_leave_count >= 2:
+                form.add_error('year', 'Only two leaves are allowed per year')
+                return self.form_invalid(form)
 
+            previous_leave = Leave.objects.filter(user=user, year=year).first()
+            if previous_leave:
+                remaining_days = previous_leave.total_days - previous_leave.granted_days
+                form.instance.total_days = remaining_days
+                form.add_error('total_days', f'You have {remaining_days} days remaining.')
+
+        return super().form_valid(form)
+    
     def get_success_url(self):
         messages.success(self.request, 'Leave Added Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.kwargs['username']})

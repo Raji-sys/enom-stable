@@ -323,39 +323,16 @@ class Leave(models.Model):
 
     def validate_leave(self):
         r = self.remain
-        print(r)
         if r is not None:
             if r < 0:
                 raise ValidationError('Your leave is over.')
             elif self.granted_days == 0:
                 raise ValidationError('No days are granted.')
-            elif self.remain < self.granted_days:
-                raise ValidationError('granted cannot be bigger the remaining')
 
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            if self.nature == 'ANNUAL':
-                annual_lv_count=Leave.objects.filter(user=self.user, year=self.year).exclude(pk=self.pk).count()
-                if annual_lv_count >= 2:
-                    raise ValidationError('Only two leave instances per year')
-            
-            existing_leave = Leave.objects.filter(user=self.user, year=self.year).exclude(pk=self.pk).first()
-            if existing_leave:
-                # Set the total_days of the new leave instance to the balance of the previous leave instance
-                self.total_days = existing_leave.remain
-
-        if self.nature == 'ANNUAL':
-            if self.total_days - self.granted_days != self.remain:
-                raise ValidationError('Total days minus granted days should be equal to balance.')
-        
-        # Calculate remain if not provided
-        if self.total_days is not None and self.granted_days is not None and self.remain is None:
-            self.remain = max(0, self.total_days - self.granted_days)
-
+    def save(self, *args, **kwargs): 
         super().save(*args, **kwargs)
         self.validate_leave()
 
-        # Call the clear_leave_over method if leave is no longer considered over
         if self.over != "your leave is over":
             self.clear_leave_over()
 
@@ -383,8 +360,6 @@ class Leave(models.Model):
         if self.is_leave_over:
             self.is_leave_over = False
             self.save(update_fields=['is_leave_over'])
-
-
 
 class ExecutiveAppointment(models.Model):
     user = models.ForeignKey(
