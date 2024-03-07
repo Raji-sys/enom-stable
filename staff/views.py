@@ -25,6 +25,7 @@ from django.db.models import Count
 User = get_user_model()
 
 
+
 def log_anonymous_required(view_function, redirect_to=None):
     if redirect_to is None:
         redirect_to = '/'
