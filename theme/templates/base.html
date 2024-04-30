@@ -20,18 +20,18 @@
 		<style>
 
 		</style>		
-			<header class="bg-cyan-800 p-2">
+			<header class="bg-indigo-800 p-2">
 					<nav class="flex flex-row max-xs:flex-wrap max-sm:flex-col justify-between mt-0 max-sm:gap-4 gap-10 p-1 rounded-sm">
 						{% if request.user.is_authenticated %}
 						  <div class="">
 							<a href="{% url 'index' %}" class="focus:opacity-10 border-b-2 border-gray-500 focus:border-green-600 
-							bg-white text-cyan-900 p-2 px-4 rounded shadow-lg hover:shadow-xl 
+							bg-white text-indigo-900 p-2 px-4 rounded shadow-lg hover:shadow-xl 
 							text-center w-full"><i class="fa-solid fa-house fa-lg"></i></a>
 						</div> 
 					
 						<div class="">
 						<a href="#"><i class="text-white fa-solid fa-circle-user fa-lg"></i>
-						<span class="border-b-2 border-cyan-800 text-white text-lg uppercase"> {{request.user}}</span></span></a>
+						<span class="border-b-2 border-indigo-800 text-white text-lg uppercase"> {{request.user}}</span></span></a>
 						</div>
 
 						<div class="">									
@@ -46,7 +46,7 @@
 		<a href="{%url 'staff'%}" class="focus:opacity-10 bg-green-600 p-2 px-4 rounded-2xl ml-2"><i class="text-white fa-solid fa-rectangle-list fa-xl"></i></a>
         <a href="{%url 'report' %}" class="focus:opacity-10 bg-indigo-600 p-2 px-4 rounded-2xl ml-2"><i class="text-white fa-solid fa-file fa-xl"></i></a>
         <a href="{%url 'stats' %}" class="focus:opacity-10 bg-orange-600 p-2 px-4 rounded-2xl ml-2"><i class="text-white fa-solid fa-list-ol fa-xl"></i></a>
-        <a href="{%url 'notice' %}" class="focus:opacity-10 bg-cyan-600 p-2 px-4 rounded-2xl ml-2"><i class="text-white fa-solid fa-bell fa-xl"></i></a>
+        <a href="{%url 'notice' %}" class="focus:opacity-10 bg-indigo-600 p-2 px-4 rounded-2xl ml-2"><i class="text-white fa-solid fa-bell fa-xl"></i></a>
 	</div>
 	{% endif %}
 					{% block content %}
