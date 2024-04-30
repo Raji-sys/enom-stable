@@ -1,5 +1,6 @@
 /Include
-/Lib
-/manage.py
+/lib
+/lib64
+manage.py
 /pyvenv.cfg
-/Scripts
+/bin

@@ -98,14 +98,14 @@
 <td scope="col" class="border-2 border-cyan-800 p-2">{{profile.file_no|default_if_none:''|upper}}</td>
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.gender|default_if_none:''|upper}}</td>
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.dob|date:'d-M-Y'|default_if_none:''|upper}}</td>
-<td class="border-2 p-2 border-cyan-800 text-center">{{profile.phone_number|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-cyan-800 text-center">{{profile.phone|default_if_none:''|upper}}</td>
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.marital_status|default_if_none:''|upper}}</td>
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.state|default_if_none:''|upper}}</td>
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.lga|default_if_none:''|upper}}</td>
-<td class="border-2 p-2 border-cyan-800 text-center">{{profile.senatorial_district|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-cyan-800 text-center">{{profile.sen_dist|default_if_none:''|upper}}</td>
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.religion|default_if_none:''|upper}}</td>
-<td class="border-2 p-2 border-cyan-800 text-center">{{profile.residential_address|default_if_none:''|upper}}</td>
-<td class="border-2 p-2 border-cyan-800 text-center">{{profile.permanent_home_address|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-cyan-800 text-center">{{profile.res_add|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-cyan-800 text-center">{{profile.per_res_addr|default_if_none:''|upper}}</td>
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.zone|default_if_none:''|upper}}</td>
 <td class="border-r-2 border-cyan-800 border-b-2 flex flex-row justify-center p-7 gap-2"> 
   <a class="justify-center text-cyan-900 " href ="{% url 'update_profile' profile.pk %}"><i class="fa-solid fa-square-pen fa-2xl"></i></a>

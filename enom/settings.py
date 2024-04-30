@@ -67,7 +67,7 @@ WSGI_APPLICATION = 'enom.wsgi.application'
 
 TAILWIND_APP_NAME='theme'
 INTERNAL_IPS=['127.0.0.1']
-NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
+NPM_BIN_PATH = "/snap/bin/npm"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
