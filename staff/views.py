@@ -78,14 +78,18 @@ class StaffListView(ListView):
         return context
 
 
-@login_required
-def dept(request):
-    return render(request, 'dept.html')
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class DepartmmentList(ListView):
+    model=Department
+    template_name='dept.html'
+    context_object_name='departments'
 
+    
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class DepartmentDetail(DetailView):
+    model=Department
+    template_name='dept_details.html'
 
-@login_required
-def dept_details(request):
-    pass
 
 
 @login_required

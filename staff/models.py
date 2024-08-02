@@ -10,6 +10,21 @@ from django.utils import timezone
 from datetime import datetime
 
 
+class Department(models.Model):
+    name = models.CharField(max_length=200, unique=True,null=True, blank=True)
+    head = models.CharField(max_length=200, unique=True,null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    
+    def staff_count(self):
+        return self.staff_set.count()
+    
+    def get_absolute_url(self):
+        return reverse('department_details', args=[self.pk])
+
+    def __str__(self):
+        return self.name
+
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     middle_name = models.CharField(max_length=300, blank=True, null=True)
@@ -161,38 +176,7 @@ class ProfessionalQualification(models.Model):
 
 class GovernmentAppointment(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
-    dep = (
-        ('ADMINISTRATION', 'ADMINISTRATION'),
-        ('ACCOUNT', 'ACCOUNT'),
-        ('BIO-MEDICAL ENGR', 'BIO-MEDICAL ENGR'),
-        ('CLINICAL SERVICES', 'CLINICAL SERVICES'),
-        ('CATERING', 'CATERING'),
-        ('DISCIPLINE', 'DISCIPLINE'),
-        ('ENGINEERING', 'ENGINEERING'),
-        ('INFORMATION TECH', 'INFORMATION TECH'),
-        ('INTERNAL AUDIT', 'INTERNAL AUDIT'),
-        ('LEGAL', 'LEGAL'),
-        ('LIBRARY', 'LIBRARY'),
-        ('MEDICAL RECORD', 'MEDICAL RECORD'),
-        ('MEDICAL ILLUSTRATION', 'MEDICAL ILLUSTRATION'),
-        ('NURSING EDUCATION', 'NURSING EDUCATION'),
-        ('NURSING SERVICES', 'NURSING SERVICES'),
-        ('PATHOLOGY', 'PATHOLOGY'),
-        ('PHARMACY', 'PHARMACY'),
-        ('PHYSIOTHERAPHY', 'PHYSIOTHERAPHY'),
-        ('PROSTHETIC AND ORTHOTICS', 'PROSTHETIC AND ORTHOTICS'),
-        ('PROCUMENT', 'PROCUMENT'),
-        ('PUBLIC HEALTH', 'PUBLIC HEALTH'),
-        ('OCCUPATIONAL THERAPHY', 'OCCUPATIONAL THERAPHY'),
-        ('RADIOLOGY', 'RADIOLOGY'),
-        ('SERVICOM', 'SERVICOM'),
-        ('SOCIAL WELFARE', 'SOCIAL WELFARE'),
-        ('STORE', 'STORE'),
-        ('TELEPHONE', 'TELEPHONE'),
-        ('TRANSPORT', 'TRANSPORT'),
-    )
-    department = models.CharField(
-        choices=dep, blank=True, max_length=300, null=True)
+    department = models.ForeignKey(Department,blank=True, max_length=300, null=True,on_delete=models.CASCADE)
     cpost = models.CharField('current post', blank=True,
                              max_length=300, null=True)
     ippis_no = models.DecimalField(

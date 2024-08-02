@@ -11,6 +11,13 @@ admin.site.index_title="ENOM"
 admin.site.site_title="ENOM"
 
 
+@admin.register(Department)
+class DepartmentAdmin(admin.ModelAdmin):
+    list_display = ['name','created']
+    list_filter = ['name']
+    search_fields = ['name']
+    list_per_page = 10
+
 # class ProfileForm(forms.ModelForm):
 #     pass
     # class Meta:

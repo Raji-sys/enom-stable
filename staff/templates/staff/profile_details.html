@@ -18,18 +18,6 @@
     {% endif %}
 </div>
 
-     <div class="flex justify-center text-sm text-blue-500">
-        {% for message in messages %}
-      <div class="mt-4">
-        {%if message %}
-           <div class="uk-alert-success rounded-2xl text-xs" uk-alert>
-            <a href class="uk-alert-close" uk-close></a>
-            <p class="text-green-700">{{ message }}</p>
-            </div>
-        {% endif %}
-      </div>
-      {% endfor %}
-            </div>
       <ul class="uk-flex-center mt-8 text-xs text-white rounded-xl" uk-tab>
 
       <li>

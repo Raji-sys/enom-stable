@@ -7,8 +7,8 @@ urlpatterns = [
     path('manage/', views.manage, name='manage'),
     path('staff/', StaffListView.as_view(), name='staff'),
 
-    path('dept/', views.dept, name='dept'),
-    path('dept_details/<str:name>/', views.dept_details, name='dept_details'),
+    path('dept/', DepartmmentList.as_view(), name='dept'),
+    path('dept_details/<int:pk>/', DepartmentDetail.as_view(), name='department_details'),
 
     path('dirs/', views.dirs, name='dirs'),
     path('dirs_detail/<str:name>/', views.dirs_details, name='dirs_details'),

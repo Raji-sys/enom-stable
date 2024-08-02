@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ department.name }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <div class="bg-white shadow-2xl rounded-2xl p-8 md:p-12 max-w-6xl mx-auto">
+        <h1 class="text-4xl font-bold text-cyan-800 mb-8">{{ department.name }}</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+            <!-- Head of Department -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-semibold text-cyan-700 mb-4">Head of Department</h2>
+                <div class="flex items-center space-x-4">
+                    <img src="#" alt="Head of Department" class="w-20 h-20 rounded-full object-cover">
+                    <div>
+                        <h3 class="text-xl font-medium">department.head</h3>
+                        <p class="text-gray-600">department.head_position</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Duties and Responsibilities -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-semibold text-cyan-700 mb-4">Duties and Responsibilities</h2>
+                <ul class="list-disc pl-6 space-y-2">
+                        <li>duty</li>
+                </ul>
+            </section>
+        </div>
+
+        <!-- Staff Table -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-cyan-700 mb-4">Department Staff</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="py-3 px-4 text-left">Name</th>
+                            <th class="py-3 px-4 text-left">Position</th>
+                            <th class="py-3 px-4 text-left">Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b">
+                            <td class="py-3 px-4">staff.name</td>
+                            <td class="py-3 px-4">staff.position</td>
+                            <td class="py-3 px-4">staff.email</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Staff Hierarchy -->
+        <section>
+            <h2 class="text-2xl font-semibold text-cyan-700 mb-4">Staff Hierarchy</h2>
+            <div class="bg-gray-100 p-6 rounded-lg">
+                <ul class="space-y-4">
+                        <li>
+                            <h3 class="font-medium text-lg">level.title</h3>
+                            <ul class="pl-6 mt-2 space-y-1">
+                                    <li>lorem1</li>
+                            </ul>
+                        </li>
+                </ul>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}
