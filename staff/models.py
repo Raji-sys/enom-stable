@@ -4,7 +4,6 @@ from django.core.exceptions import ValidationError
 from datetime import timedelta, date
 from django.db import models
 from django.urls import reverse
-from django.contrib import messages
 from django.utils.translation import gettext as _
 from django.utils import timezone
 from datetime import datetime
@@ -24,6 +23,97 @@ class Department(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Post(models.Model):
+    name = models.CharField(max_length=200, unique=True,null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    
+    def post_count(self):
+        return self.staff_set.count()
+    
+    def get_absolute_url(self):
+        return reverse('post_details', args=[self.pk])
+
+    def __str__(self):
+        return self.name
+
+
+class SalaryScale(models.Model):
+    name = models.CharField(max_length=200, unique=True,null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    
+    def salary_scale_count(self):
+        return self.staff_set.count()
+    
+    def get_absolute_url(self):
+        return reverse('salary_scale_details', args=[self.pk])
+
+    def __str__(self):
+        return self.name
+
+
+class GradeLevel(models.Model):
+    name = models.CharField(max_length=200, unique=True,null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    
+    def grade_level_count(self):
+        return self.staff_set.count()
+    
+    def get_absolute_url(self):
+        return reverse('grade_level_details', args=[self.pk])
+
+    def __str__(self):
+        return self.name
+
+
+class TypeOfCadre(models.Model):
+    name = models.CharField(max_length=200, unique=True,null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    
+    def type_of_cadre_count(self):
+        return self.staff_set.count()
+    
+    def get_absolute_url(self):
+        return reverse('type_of_cadre_details', args=[self.pk])
+
+    def __str__(self):
+        return self.name
+
+
+class TypeOfAppt(models.Model):
+    name = models.CharField(max_length=200, unique=True,null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    
+    def type_appt_count(self):
+        return self.staff_set.count()
+    
+    def get_absolute_url(self):
+        return reverse('type_of_appt_details', args=[self.pk])
+
+    def __str__(self):
+        return self.name
+
+
+class NatureLeave(models.Model):
+    name = models.CharField(max_length=200, unique=True,null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    
+    def type_appt_count(self):
+        return self.staff_set.count()
+    
+    def get_absolute_url(self):
+        return reverse('nature_details', args=[self.pk])
+
+    def __str__(self):
+        return self.name
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
@@ -148,10 +238,7 @@ class Qualification(models.Model):
         return reverse('qual_details', args=[self.user])
 
     def __str__(self):
-        if self.user:
-            return f"{self.user.username} {self.user.get_full_name()} - {self.qual}"
-        else:
-            return f"Unknown User - {self.qual}"
+        return f"{self.user.last_name} {self.user.first_name}" if self.user else ""
 
 
 class ProfessionalQualification(models.Model):
@@ -170,47 +257,36 @@ class ProfessionalQualification(models.Model):
         return reverse('pro_qual_details', args=[self.user])
 
     def __str__(self):
-        if self.user:
-            return f"{self.user.username} {self.user.first_name} {self.user.last_name} - {self.qual_obtained}"
+        return f"{self.user.last_name} {self.user.first_name} {self.qual_obtained}" if self.user else ""
 
 
 class GovernmentAppointment(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     department = models.ForeignKey(Department,blank=True, max_length=300, null=True,on_delete=models.CASCADE)
-    cpost = models.CharField('current post', blank=True,
-                             max_length=300, null=True)
-    ippis_no = models.DecimalField(
-        'IPPIS number', max_digits=6, decimal_places=0, null=True, unique=True, blank=True)
-    date_fapt = models.DateField(
-        'date of first appointment', null=True, blank=True)
-    date_capt = models.DateField(
-        'date of current appointment', null=True, blank=True)
-    tp = (('CASUAL', 'CASUAL'), ('LOCUM', 'LOCUM'),
-          ('PERMANENT', 'PERMANENT'), ('PROBATION', 'PROBATION'))
-    type_of_appt = models.CharField(
-        'type of appointment', choices=tp, null=True, max_length=300, blank=True)
-    sfapt = models.FloatField(
-        'salary per annum at date of first appointment', null=True, max_length=300, blank=True)
-    ss = (('CONHESS', 'CONHESS'), ('CONMESS', 'CONMESS'), ('GIPMIS', 'GIPMIS'))
-    salary_scale = models.CharField(
-        choices=ss, null=True, max_length=300, blank=True)
-    gl = ((3, 3), (3, 4), (5,5), (6,6), (7,7), (8,8), (9,9),
-          (11,11), (12,12), (13,13), (14,14), (15,15))
-    grade_level = models.IntegerField(
-        choices=gl, null=True, blank=True)
+    cpost = models.ForeignKey(Post,blank=True, max_length=300, null=True,on_delete=models.CASCADE)
+    salary_scale = models.ForeignKey(SalaryScale,blank=True, max_length=300, null=True,on_delete=models.CASCADE)
+    grade_level = models.ForeignKey(GradeLevel,blank=True, max_length=300, null=True,on_delete=models.CASCADE)
+    type_of_cadre = models.ForeignKey(TypeOfCadre,blank=True, max_length=300, null=True,on_delete=models.CASCADE)
+    ippis_no = models.DecimalField('IPPIS number', max_digits=6, decimal_places=0, null=True, unique=True, blank=True)
+    date_fapt = models.DateField('date of first appointment', null=True, blank=True)
+    date_capt = models.DateField('date of current appointment', null=True, blank=True)
+    sfapt = models.FloatField('salary per annum at date of first appointment', null=True, max_length=300, blank=True)  
     step = models.IntegerField(null=True, blank=True)
-    tc = (('JUNIOR', 'JUNIOR'), ('SENIOR', 'SENIOR'), ('EXECUTIVE', 'EXECUTIVE'))
-    type_of_cadre = models.CharField(
-        choices=tc, null=True, blank=True, max_length=100)
-    exams_status = models.CharField(null=True, blank=True, max_length=100)
+    ex_status=(('PASS','PASS'),('FAILED','FAILED'))
+    exams_status = models.CharField(null=True, blank=True, max_length=100, choices=ex_status)
     due = models.BooleanField(default=False)
-    dmsg = models.CharField(null=True, blank=True, max_length=100)
-    retire = models.BooleanField(default=False)
+    retired = models.BooleanField(default=False)
     cleared = models.BooleanField(default=False)
-    rtb = models.CharField('retired by', null=True, blank=True, max_length=50)
+    rtb=(('DATE OF BIRTH','DATE OF BIRTH'),('DATE OF FIRST APPOINTMENT','DATE OF FIRST APPOINTMENT'))
+    retire_by = models.CharField(null=True, blank=True, max_length=100, choices=rtb)
     created = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        if self.step is not None:
+            self.step = min(self.step, 15)  # Assuming maximum step is 15
+        super().save(*args, **kwargs)
+    
     def get_absolute_url(self):
         return reverse('govapp_details', args=[self.user])
 
@@ -218,25 +294,13 @@ class GovernmentAppointment(models.Model):
         return f"{self.user.get_full_name()}, {self.cpost}"
 
     def __str__(self):
-        if self.user:
-            return f"{self.user.last_name} {self.user.first_name}"
-
-    def get_absolute_url(self):
-        return reverse('prom_details', args=[self.user])
-
-    def __str__(self):
-        if self.user:
-            return f"{self.user.username} {self.user.last_name} {self.user.first_name}"
-
+        return f"{self.user.last_name} {self.user.first_name}" if self.user else ""
 
 
 class Promotion(models.Model):
-    user = models.ForeignKey(
-        User, null=True, on_delete=models.CASCADE, related_name='promotion')
-    cpost = models.CharField('current post', null=True,
-                             max_length=300, blank=True)
-    govapp = models.ForeignKey(
-        GovernmentAppointment, on_delete=models.CASCADE, related_name='progovapp', null=True)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='promotion')
+    cpost = models.ForeignKey(Post,blank=True, max_length=300, null=True,on_delete=models.CASCADE)
+    govapp = models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='progovapp', null=True)
     prom_date = models.DateField('promotion date', null=True, blank=True)
     gl = models.PositiveIntegerField('grade level', null=True, blank=True)
     step = models.PositiveIntegerField(null=True, blank=True)
@@ -249,17 +313,14 @@ class Promotion(models.Model):
         return reverse('prom_details', args=[self.user])
 
     def __str__(self):
-        if self.user:
-            return f"{self.user.username} {self.user.last_name} {self.user.first_name}"
+        return f"{self.user.last_name} {self.user.first_name}" if self.user else ""
 
 
 class Discipline(models.Model):
-    user = models.ForeignKey(
-        User, null=True, on_delete=models.CASCADE, related_name='discipline')
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='discipline')
     offense = models.TextField(null=True, blank=True)
     decision = models.TextField(null=True, blank=True)
-    action_date = models.DateField(
-        'date of disciplinary action', null=True, blank=True)
+    action_date = models.DateField('date of disciplinary action', null=True, blank=True)
     comment = models.TextField(null=True, blank=True)
     created = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -268,44 +329,42 @@ class Discipline(models.Model):
         return reverse('dis_details', args=[self.user])
 
     class Meta:
-        verbose_name_plural = 'Disciplinaries'
+        verbose_name_plural = 'Disciplinaries record'
 
     def __str__(self):
-        if self.user:
-            return f"{self.user.username} {self.user.last_name} {self.user.first_name}"
+        return f"{self.user.last_name} {self.user.first_name}" if self.user else ""
+
+
 
 
 class Leave(models.Model):
-    LEAVE_TYPES = (
-        ('CASUAL', 'CASUAL'),
-        ('ANNUAL', 'ANNUAL'),
-    )
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='leave')
-    nature = models.CharField('nature of leave', null=True, max_length=7, blank=True, choices=LEAVE_TYPES)
-    year = models.PositiveIntegerField(null=True, blank=True)
-    start_date = models.DateField(null=True, blank=False)
-    total_days = models.PositiveIntegerField(null=True, blank=True)
-    balance = models.PositiveIntegerField(null=True, blank=True)
-    granted_days = models.PositiveIntegerField('number of days granted', null=True, blank=False)
-    status = models.CharField(null=True, max_length=300, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='leave',null=True)
+    nature_of_leave = models.ForeignKey(NatureLeave, on_delete=models.CASCADE,null=True)
+    year = models.PositiveIntegerField(blank=True, null=True)
+    start_date = models.DateField(null=True)
+    total_days = models.PositiveIntegerField(blank=True, null=True)
+    balance = models.PositiveIntegerField(blank=True, null=True)
+    granted_days = models.PositiveIntegerField('number of days granted',null=True)
+    status = models.CharField(max_length=300, blank=True,null=True)
     is_leave_over = models.BooleanField(default=False)
-    comment = models.TextField('comments if any', null=True, blank=True)
+    comment = models.TextField('comments if any', blank=True,null=True)
     created = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        return reverse('lv_details', args=[self.user])
+        return reverse('lv_details', args=[self.user_id])
 
     def __str__(self):
-        if self.user:
-            return f"{self.user.last_name} {self.user.first_name}"
-    
+        return f"{self.user.last_name} {self.user.first_name}" if self.user else ""
+
     @property
     def remain(self):
         if self.total_days is not None and self.granted_days is not None:
             return max(0, self.total_days - self.granted_days)
+        return None
 
-    def validate_leave(self):
+    def clean(self):
+        super().clean()
         r = self.remain
         if r is not None:
             if r <= 0:
@@ -313,44 +372,39 @@ class Leave(models.Model):
             elif self.granted_days == 0:
                 raise ValidationError('No days are granted.')
 
-    def save(self, *args, **kwargs): 
+    def save(self, *args, **kwargs):
+        self.full_clean()
         super().save(*args, **kwargs)
-        self.validate_leave()
-
         if self.over != "your leave is over":
             self.clear_leave_over()
 
     @property
     def return_on(self):
-        if self.granted_days is not None and self.granted_days > 0:
-            if isinstance(self.start_date, datetime):
-                return (self.start_date + timedelta(days=self.granted_days)).date()
-            else:
-                return self.start_date + timedelta(days=self.granted_days)
+        if self.granted_days and self.granted_days > 0:
+            return self.start_date + timedelta(days=self.granted_days)
         return None
-   
+
     @property
     def over(self):
-        is_leave_over = self.return_on is not None and self.return_on < timezone.now().date()
-        if is_leave_over:
-            self.is_leave_over=True
+        if self.return_on and self.return_on < timezone.now().date():
+            self.is_leave_over = True
             self.save(update_fields=['is_leave_over'])
             return "your leave is over"
-        elif self.total_days is not None and self.total_days > 0:
+        elif self.total_days and self.total_days > 0:
             return "on leave"
         return None
-    
+
     def clear_leave_over(self):
         if self.is_leave_over:
             self.is_leave_over = False
             self.save(update_fields=['is_leave_over'])
 
+
+
 class ExecutiveAppointment(models.Model):
-    user = models.ForeignKey(
-        User, null=True, on_delete=models.CASCADE, related_name='execapp')
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='execapp')
     designation = models.CharField(null=True, max_length=300, blank=True)
-    govapp = models.ForeignKey(
-        GovernmentAppointment, on_delete=models.CASCADE, related_name='execgovapp', null=True)
+    govapp = models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='execgovapp', null=True)
     date = models.DateField(null=True, blank=True)
     status = models.CharField(null=True, max_length=300, blank=True)
     created = models.DateTimeField('date added', auto_now_add=True)
@@ -360,8 +414,9 @@ class ExecutiveAppointment(models.Model):
         return reverse('exeapp_details', args=[self.user])
 
     def __str__(self):
-        if self.user:
-            return f"{self.user.username} {self.user.last_name} {self.user.first_name}"
+        return f"{self.user.last_name} {self.user.first_name}" if self.user else ""
+
+
 
 class Retirement(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
@@ -375,5 +430,4 @@ class Retirement(models.Model):
         return reverse('rt_details', args=[self.user])
 
     def __str__(self):
-        if self.user:
-            return f"{self.user.username} {self.user.last_name} {self.user.first_name}"
+        return f"{self.user.last_name} {self.user.first_name}" if self.user else ""

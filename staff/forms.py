@@ -155,7 +155,7 @@ class DisciplineForm(forms.ModelForm):
 class LeaveForm(forms.ModelForm):
     class Meta:
         model = Leave
-        fields = ['nature', 'year', 'start_date',
+        fields = ['nature_of_leave', 'year', 'start_date',
                   'total_days', 'granted_days', 'status', 'comment']
 
         widgets = {

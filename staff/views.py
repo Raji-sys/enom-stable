@@ -23,6 +23,7 @@ import os
 import csv
 from django.db.models import Count
 User = get_user_model()
+from django.db.models import Prefetch
 
 
 
@@ -34,15 +35,10 @@ def log_anonymous_required(view_function, redirect_to=None):
 
 @login_required
 def fetch_resources(uri, rel):
-    """
-    Handles fetching static and media resources when generating the PDF.
-    """
     if uri.startswith(settings.STATIC_URL):
-        path = os.path.join(settings.STATIC_ROOT,
-                            uri.replace(settings.STATIC_URL, ""))
+        path = os.path.join(settings.STATIC_ROOT,uri.replace(settings.STATIC_URL, ""))
     else:
-        path = os.path.join(settings.MEDIA_ROOT,
-                            uri.replace(settings.MEDIA_URL, ""))
+        path = os.path.join(settings.MEDIA_ROOT,uri.replace(settings.MEDIA_URL, ""))
     return path
 
 
@@ -91,7 +87,6 @@ class DepartmentDetail(DetailView):
     template_name='dept_details.html'
 
 
-
 @login_required
 def dirs(request):
     return render(request, 'dirs.html')
@@ -100,7 +95,6 @@ def dirs(request):
 @login_required
 def dirs_details(request):
     pass
-
 
 @login_required
 def report(request):
@@ -483,40 +477,44 @@ class ProfileDetailView(DetailView):
 
     def get_object(self, queryset=None):
         if self.request.user.is_superuser:
-            username_from_url = self.kwargs.get('username')
-            user = get_object_or_404(User, username=username_from_url)
+            username = self.kwargs.get('username')
+            user = get_object_or_404(User, username=username)
         else:
             user = self.request.user
-        return get_object_or_404(Profile, user=user)
+        return get_object_or_404(Profile.objects.select_related('user'), user=user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         profile = context['object']
+        user = profile.user
 
-        qualifications = Qualification.objects.filter(user=profile.user)
-        pro_qualifications = ProfessionalQualification.objects.filter(
-            user=profile.user)
-        promotion = Promotion.objects.filter(user=profile.user)
-        discipline = Discipline.objects.filter(user=profile.user)
-        leave = Leave.objects.filter(user=profile.user)
-        execapp = ExecutiveAppointment.objects.filter(user=profile.user)
-        retirement = Retirement.objects.filter(user=profile.user)
+        related_models = [
+            ('qualifications', Qualification),
+            ('pro_qualifications', ProfessionalQualification),
+            ('promotion', Promotion),
+            ('discipline', Discipline),
+            ('leave', Leave),
+            ('execapp', ExecutiveAppointment),
+            ('retirement', Retirement),
+        ]
 
-        context['govapp'] = get_object_or_404(GovernmentAppointment, user=profile.user)
-        context['qualifications'] = qualifications
-        context['pro_qualifications'] = pro_qualifications
-        context['promotion'] = promotion
-        context['discipline'] = discipline
-        context['leave'] = leave
-        context['execapp'] = execapp
-        context['retirement'] = retirement
-        context['Qualform'] = QualForm()
-        context['ProQualform'] = ProQualForm()
-        context['Promotionform'] = PromotionForm()
-        context['Leaveform'] = LeaveForm()
-        context['Disciplineform'] = DisciplineForm()
-        context['Execappform'] = ExecappForm()
-        context['Retireform'] = RetireForm()
+        for context_key, model in related_models:
+            context[context_key] = model.objects.filter(user=user)
+
+        context['govapp'] = get_object_or_404(GovernmentAppointment, user=user)
+
+        form_classes = {
+            'Qualform': QualForm,
+            'ProQualform': ProQualForm,
+            'Promotionform': PromotionForm,
+            'Leaveform': LeaveForm,
+            'Disciplineform': DisciplineForm,
+            'Execappform': ExecappForm,
+            'Retireform': RetireForm,
+        }
+
+        context.update({form_name: form_class() for form_name, form_class in form_classes.items()})
+
         return context
 
 
