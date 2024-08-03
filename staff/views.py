@@ -21,7 +21,9 @@ import datetime
 from django.conf import settings
 import os
 import csv
-from django.db.models import Count
+from django.db.models import Sum, Count
+from django.db.models import Q
+
 User = get_user_model()
 from django.db.models import Prefetch
 
@@ -60,19 +62,24 @@ class StaffListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        profiles = super().get_queryset().order_by(
-            'user__governmentappointment__department')
-        staff_filter = StaffFilter(self.request.GET, queryset=profiles)
-        return staff_filter.qs
+        queryset = Profile.objects.all()
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(user__first_name__icontains=query) |
+                Q(user__last_name__icontains=query) |
+                Q(middle_name__icontains=query) |
+                Q(file_no__icontains=query) |
+                Q(user__govapp__department__name__icontains=query)
+            )
+        return queryset.order_by('user__govapp__department__name')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         total_profiles = self.get_queryset().count()
-        context['staffFilter'] = StaffFilter(
-            self.request.GET, queryset=self.get_queryset())
         context['total_profiles'] = total_profiles
+        context['query'] = self.request.GET.get('q', '')
         return context
-
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class DepartmmentList(ListView):
@@ -85,6 +92,19 @@ class DepartmmentList(ListView):
 class DepartmentDetail(DetailView):
     model=Department
     template_name='dept_details.html'
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class PostList(ListView):
+    model=Post
+    template_name='post.html'
+    context_object_name='posts'
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class PostDetail(DetailView):
+    model=Post
+    template_name='post_details.html'
 
 
 @login_required

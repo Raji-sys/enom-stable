@@ -3,83 +3,97 @@
 {% block title %}Enom HR Dashboard{% endblock %}
 
 {% block content %}
-<div class="bg-gray-100">
-  <div class="container mx-auto px-4 py-1">
-    <div class="text-center mb-2">
+  <div class="mx-auto px-4 py-2 container shadow-sm rounded-sm">
+    <div class="text-center">
       <h1 class="text-2xl font-light text-blue-900 tracking-wide">
         <span class="font-bold">Enom</span> 
         <span class="font-normal text-blue-700">HR</span>
       </h1>
-      <p class="text-gray-600 mt-1 text-xs">Employee Management System</p>
+      <p class="text-gray-600 text-xs">Employee Management System</p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
       <!-- Existing Modules -->
-      <a href="{% url 'manage' %}" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 flex flex-col items-center">
-        <div class="bg-green-100 p-3 rounded-full mb-4">
-          <i class="fa-solid fa-rectangle-list fa-2xl text-green-600"></i>
+      <a href="{% url 'staff' %}" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 flex flex-col items-center">
+        <div class="bg-green-100 p-1 rounded-full ">
+          <i class="fa-solid fa-users fa-2xl text-green-600"></i>
         </div>
-        <h2 class="text-sm font-semibold text-gray-800 mb-2">Manage</h2>
-        <p class="text-gray-600 text-xs text-center">Manage employee records and information</p>
+        <h2 class="text-sm font-semibold text-gray-800 ">Manage Staff</h2>
+        <p class="text-gray-600 text-xs text-center">Manage staff records and information</p>
       </a>
 
       <a href="{% url 'report' %}" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 flex flex-col items-center">
-        <div class="bg-indigo-100 p-3 rounded-full mb-4">
+        <div class="bg-indigo-100 p-1 rounded-full">
           <i class="fa-solid fa-print fa-2xl text-indigo-600"></i>
         </div>
-        <h2 class="text-sm font-semibold text-gray-800 mb-2">Report</h2>
+        <h2 class="text-sm font-semibold text-gray-800 ">Report</h2>
         <p class="text-gray-600 text-xs text-center">Generate and view various HR reports</p>
       </a>
 
       <a href="{% url 'stats' %}" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 flex flex-col items-center">
-        <div class="bg-orange-100 p-3 rounded-full mb-4">
+        <div class="bg-orange-100 p-1 rounded-full">
           <i class="fa-solid fa-list-ol fa-2xl text-orange-600"></i>
         </div>
-        <h2 class="text-sm font-semibold text-gray-800 mb-2">Statistics</h2>
+        <h2 class="text-sm font-semibold text-gray-800 ">Statistics</h2>
         <p class="text-gray-600 text-xs text-center">View HR analytics and statistics</p>
       </a>
 
       <a href="{% url 'notice' %}" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 flex flex-col items-center">
-        <div class="bg-blue-100 p-3 rounded-full mb-4">
+        <div class="bg-blue-100 p-1 rounded-full">
           <i class="fa-solid fa-bell fa-2xl text-blue-600"></i>
         </div>
-        <h2 class="text-sm font-semibold text-gray-800 mb-2">Notices</h2>
-        <p class="text-gray-600 text-xs text-center">Manage and view company notices</p>
+        <h2 class="text-sm font-semibold text-gray-800 ">Notices</h2>
+        <p class="text-gray-600 text-xs text-center">Manage and view staff notices</p>
       </a>
 
-      <!-- Suggested Additional Modules -->
+      <a href="{%url 'dept_list'%}" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 flex flex-col items-center">
+        <div class="bg-red-100 p-1 rounded-full">
+          <i class="fa-solid fa-building fa-2xl text-cyan-600"></i>
+        </div>
+        <h2 class="text-sm font-semibold text-gray-800 ">Departments</h2>
+        <p class="text-gray-600 text-xs text-center">Manage departments</p>
+      </a>
+
       <a href="#" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 flex flex-col items-center">
-        <div class="bg-purple-100 p-3 rounded-full mb-4">
+        <div class="bg-purple-100 p-1 rounded-full">
           <i class="fa-solid fa-calendar-alt fa-2xl text-purple-600"></i>
         </div>
-        <h2 class="text-sm font-semibold text-gray-800 mb-2">Leave Management</h2>
-        <p class="text-gray-600 text-xs text-center">Manage employee leave requests and balances</p>
+        <h2 class="text-sm font-semibold text-gray-800 ">Leave Management</h2>
+        <p class="text-gray-600 text-xs text-center">Manage staff leave requests and balances</p>
       </a>
 
       <a href="#" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 flex flex-col items-center">
-        <div class="bg-yellow-100 p-3 rounded-full mb-4">
-          <i class="fa-solid fa-clock fa-2xl text-yellow-600"></i>
+        <div class="bg-yellow-100 p-1 rounded-full">
+          <i class="fa-solid fa-person-arrow-up-from-line fa-2xl text-yellow-600"></i>
         </div>
-        <h2 class="text-sm font-semibold text-gray-800 mb-2">Time Tracking</h2>
-        <p class="text-gray-600 text-xs text-center">Monitor employee work hours and attendance</p>
+        <h2 class="text-sm font-semibold text-gray-800 ">Promotion</h2>
+        <p class="text-gray-600 text-xs text-center">Manage staff promotions</p>
       </a>
 
       <a href="#" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 flex flex-col items-center">
-        <div class="bg-red-100 p-3 rounded-full mb-4">
-          <i class="fa-solid fa-chart-line fa-2xl text-red-600"></i>
-        </div>
-        <h2 class="text-sm font-semibold text-gray-800 mb-2">Performance</h2>
-        <p class="text-gray-600 text-xs text-center">Manage employee performance reviews</p>
-      </a>
-
-      <a href="#" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 flex flex-col items-center">
-        <div class="bg-teal-100 p-3 rounded-full mb-4">
+        <div class="bg-teal-100 p-1 rounded-full">
           <i class="fa-solid fa-graduation-cap fa-2xl text-teal-600"></i>
         </div>
-        <h2 class="text-sm font-semibold text-gray-800 mb-2">Training</h2>
-        <p class="text-gray-600 text-xs text-center">Manage employee training and development</p>
+        <h2 class="text-sm font-semibold text-gray-800 ">Executive Appointment</h2>
+        <p class="text-gray-600 text-xs text-center">Manage staff training and development</p>
       </a>
+
+      <a href="#" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 flex flex-col items-center">
+        <div class="bg-teal-100 p-1 rounded-full">
+          <i class="fa-solid fa-circle-exclamation fa-2xl text-rose-600"></i>
+        </div>
+        <h2 class="text-sm font-semibold text-gray-800 ">Discipline</h2>
+        <p class="text-gray-600 text-xs text-center">Manage staff training and development</p>
+      </a>
+
+      <a href="#" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 flex flex-col items-center">
+        <div class="bg-teal-100 p-1 rounded-full">
+          <i class="fa-solid fa-person-walking-with-cane fa-2xl text-teal-600"></i>
+        </div>
+        <h2 class="text-sm font-semibold text-gray-800 ">Retirement</h2>
+        <p class="text-gray-600 text-xs text-center">Manage staff training and development</p>
+      </a>
+
     </div>
   </div>
-</div>
 {% endblock %}

@@ -3,84 +3,80 @@
 {% block title %}Register | Enom HR{% endblock %}
 
 {% block content %}
-<div class="flex items-center justify-center min-h-screen bg-gray-100 py-12">
-  <div class="w-full max-w-md px-6 py-8 bg-white shadow-2xl rounded-lg">
-    <div class="text-center mb-6">
-      <h1 class="text-3xl font-light text-blue-900 tracking-wide">
+<div class="flex items-center justify-center bg-gray-100 py-1">
+  <div class="w-full max-w-md px-6 py-3 bg-white shadow-2xl rounded-lg">
+    <div class="text-center mb-1">
+      <h1 class="text-xl font-light text-blue-900 tracking-wide">
         <span class="font-bold">Enom</span> 
         <span class="font-normal text-blue-700">HR</span>
       </h1>
-      <p class="text-sm text-gray-600 mt-1">Create an Account</p>
+      <p class="text-xs text-gray-600">Create an Account</p>
     </div>
     
     <form action="{% url 'register' %}" method="POST">
       {% csrf_token %}
       
       {% if form.errors %}
-      <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4 text-sm" role="alert">
+      <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4 text-xs" role="alert">
         <p class="font-bold">Please correct the errors:</p>
         {{ form.errors }}
       </div>
       {% endif %}
 
-      <div class="space-y-4">
+      <div class="space-y-1">
         <div>
-          <label for="uname" class="block text-gray-700 text-sm font-bold mb-2">Username</label>
+          <label for="uname" class="block text-gray-700 text-xs font-bold mb-1">Username</label>
           <input id="uname" name="username" type="text" required 
                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
         <div>
-          <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+          <label for="email" class="block text-gray-700 text-xs font-bold mb-1">Email</label>
           <input id="email" name="email" type="email" required 
                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
         <div>
-          <label for="fname" class="block text-gray-700 text-sm font-bold mb-2">First Name</label>
+          <label for="fname" class="block text-gray-700 text-xs font-bold mb-1">First Name</label>
           <input id="fname" name="first_name" type="text" required 
                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
         <div>
-          <label for="lname" class="block text-gray-700 text-sm font-bold mb-2">Last Name</label>
+          <label for="lname" class="block text-gray-700 text-xs font-bold mb-1">Last Name</label>
           <input id="lname" name="last_name" type="text" required 
                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
         <div>
-          <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+          <label for="password" class="block text-gray-700 text-xs font-bold mb-1">Password</label>
           <input id="password" name="password1" type="password" required 
                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
         <div>
-          <label for="conpassword" class="block text-gray-700 text-sm font-bold mb-2">Confirm Password</label>
+          <label for="conpassword" class="block text-gray-700 text-xs font-bold mb-1">Confirm Password</label>
           <input id="conpassword" name="password2" type="password" required 
                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
       </div>
 
-      <div class="mt-6">
+      <div class="mt-2">
         <button type="submit" 
-                class="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+                class="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 text-xs">
           Register
         </button>
       </div>
     </form>
     
-    <div class="mt-6 text-center">
-      <p class="text-sm text-gray-600">
+    <div class="mt-2 text-center">
+      <p class="text-xs text-gray-600">
         Already have an account? 
         <a href="{% url 'login' %}" class="font-medium text-blue-600 hover:text-blue-500">
           Sign in
         </a>
       </p>
     </div>
-
-    <p class="text-center text-gray-500 text-xs mt-8">
-      &copy;{% now "Y" %} Enom HR. All rights reserved.
-    </p>
   </div>
 </div>
 {% endblock %}

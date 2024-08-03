@@ -7,9 +7,12 @@ urlpatterns = [
     path('manage/', views.manage, name='manage'),
     path('staff/', StaffListView.as_view(), name='staff'),
 
-    path('dept/', DepartmmentList.as_view(), name='dept'),
+    path('dept/', DepartmmentList.as_view(), name='dept_list'),
     path('dept_details/<int:pk>/', DepartmentDetail.as_view(), name='department_details'),
-
+    
+    path('posts/', PostList.as_view(), name='post_list'),
+    path('posts/<int:pk>/', PostDetail.as_view(), name='post_details'),
+    
     path('dirs/', views.dirs, name='dirs'),
     path('dirs_detail/<str:name>/', views.dirs_details, name='dirs_details'),
 

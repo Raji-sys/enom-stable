@@ -1,79 +1,183 @@
 {% load static %}
 {% load static tailwind_tags %}
 <!DOCTYPE html>
-<html>
+<html class="h-full">
 <head>
-  {% tailwind_css %}
-  <title>{% block title %}{% endblock %}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  		<link rel="stylesheet" href="{% static 'fonts/fontstyle.css' %}" type='text/css'>
-  		<link rel="stylesheet" href="{% static 'fontawesomefree/css/fontawesome.css' %}" type='text/css'>
-		<link rel="stylesheet" href="{% static 'fontawesomefree/css/solid.css' %}" type='text/css'>
-		<link rel="stylesheet" href="{% static 'uikit/css/uikit.min.css' %}" type="text/css">
-		<script src="{%static '_hyperscript.js' %}"></script>
-		<script src="{%static 'htmx.min.js'%}"></script>
-		<script src="{% static 'uikit/js/uikit.min.js' %}"></script>
-		<script src="{% static 'uikit/js/uikit-icons.js' %}"></script>
-
+    {% tailwind_css %}
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'fonts/fontstyle.css' %}" type='text/css'>
+    <link rel="stylesheet" href="{% static 'fontawesomefree/css/fontawesome.css' %}" type='text/css'>
+    <link rel="stylesheet" href="{% static 'fontawesomefree/css/solid.css' %}" type='text/css'>
+    <link rel="stylesheet" href="{% static 'uikit/css/uikit.min.css' %}" type="text/css">
+    <script src="{%static '_hyperscript.js' %}"></script>
+    <script src="{%static 'htmx.min.js'%}"></script>
+    <script src="{% static 'uikit/js/uikit.min.js' %}"></script>
+    <script src="{% static 'uikit/js/uikit-icons.js' %}"></script>
 </head>
-	<body class="uppercase min-h-screen flex flex-col">
-		<style>
+<style>
+	a{
+		text-decoration: none;
+	}
+	a:hover{
+		text-decoration: none;
+	}	
+/* For WebKit browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+	width: 10px;
+}
 
-		</style>		
-			<header class="bg-cyan-700 p-2">
-					<nav class="flex flex-row max-xs:flex-wrap max-sm:flex-col justify-between mt-0 max-sm:gap-4 gap-10 p-1 rounded-sm">
-						{% if request.user.is_authenticated %}
-						  <div class="">
-							<a href="{% url 'index' %}" class="focus:opacity-10 border-b-2 border-gray-500 focus:border-green-600 
-							bg-white text-indigo-900 p-2 px-4 rounded shadow-lg hover:shadow-xl 
-							text-center w-full"><i class="fa-solid fa-house fa-lg"></i></a>
-						</div> 
-					
-						<div class="">
-						<a href="#"><i class="text-white fa-solid fa-circle-user fa-lg"></i>
-						<span class="border-b-2 border-indigo-800 text-white text-lg uppercase"> {{request.user}}</span></span></a>
-						</div>
+::-webkit-scrollbar-thumb {
+	background: #4a90e2;
+	border-radius: 5px;
+}
 
-						<div class="">
-							<form method="POST" action="{% url 'logout' %}" >
-								{% csrf_token %}
-								<button type="submit" class="focus:opacity-10 p-2 px-4 border-b-4 border-white focus:border-green-600 bg-gradient-to-l from-red-900 via-red-700 to-red-900 text-white rounded shadow-lg hover:shadow-xl text-center text-xs max-sm:w-1/2 w-full">
-														<i class="fa-solid fa-arrow-right-from-bracket fa-lg"></i>
-								</button>
-							</form>									
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+/* For Firefox */
+* {
+	scrollbar-width: auto;
+	scrollbar-color: #4a90e2 #f1f1f1;
+}
+
+  </style>
+<body class="uppercase flex flex-col min-h-full bg-blue-50">
+	<header class="bg-cyan-600 ">
+		<nav class="relative">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<div class="flex items-center justify-between h-16">
+					<!-- Logo / Home link -->
+					<div class="flex-shrink-0">
+						<a href="{% url 'index' %}" class="focus:opacity-10 border-b-2 border-gray-500 focus:border-green-600 bg-white text-indigo-900 p-2 px-4 rounded shadow-lg hover:shadow-xl text-center">
+							<i class="fa-solid fa-house fa-lg"></i>
+						</a>
+					</div>
+	
+					<!-- Desktop menu -->
+					<div class="hidden md:block">
+						<div class="ml-10 flex items-baseline space-x-4">
+							{% if request.user.is_authenticated %}
+								<a href="#" class="text-white hover:bg-cyan-900 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+									<i class="fa-solid fa-circle-user fa-lg mr-2"></i>
+									<span class="border-b-2 border-indigo-800 uppercase">{{request.user}}</span>
+								</a>
+								<form method="POST" action="{% url 'logout' %}" class="inline-block">
+									{% csrf_token %}
+									<button type="submit" class="focus:opacity-10 p-2 px-4 border-b-4 border-white focus:border-green-600 bg-gradient-to-l from-red-900 via-red-700 to-red-900 text-white rounded shadow-lg hover:shadow-xl text-center text-xs">
+										<i class="fa-solid fa-arrow-right-from-bracket fa-lg"></i>
+									</button>
+								</form>
+							{% endif %}
 						</div>
-						{% endif %}
-					</nav>
-				</header>
-	{%if request.user.is_authenticated and request.path != '/' %}
-	<div class="flex justify-center text-center text-gray-800 font-medium text-sm align-middle items-center p-3 m-auto bg-gray-200 gap-4 mx-auto">
-		<a href="{%url 'staff'%}" class="focus:opacity-10 bg-green-600 p-2 px-4 rounded-2xl ml-2"><i class="text-white fa-solid fa-rectangle-list fa-xl"></i></a>
-        <a href="{%url 'report' %}" class="focus:opacity-10 bg-orange-600 p-2 px-4 rounded-2xl ml-2"><i class="text-white fa-solid fa-file fa-xl"></i></a>
-        <a href="{%url 'stats' %}" class="focus:opacity-10 bg-slate-600 p-2 px-4 rounded-2xl ml-2"><i class="text-white fa-solid fa-list-ol fa-xl"></i></a>
-        <a href="{%url 'notice' %}" class="focus:opacity-10 bg-blue-600 p-2 px-4 rounded-2xl ml-2"><i class="text-white fa-solid fa-bell fa-xl"></i></a>
-	</div>
-	{% endif %}
-    <main class=" px-4 py-8">
-        {% if messages %}
-            <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-6" uk-alert>
-				<a href class="uk-alert-close " uk-close></a>
-				{% for message in messages %}
-				<p class="flex items-center" role="alert">
-                        <i class="fas fa-check-circle mr-2"></i>
-                        {{ message }}
-                    </p>
-                {% endfor %}
+					</div>
+	
+					<!-- Mobile menu button -->
+					<div class="md:hidden flex items-center">
+						<button type="button" class="mobile-menu-button bg-cyan-900 inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white hover:bg-cyan-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-cyan-600 focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+							<span class="sr-only">Open main menu</span>
+							<!-- Icon when menu is closed -->
+							<svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+							</svg>
+							<!-- Icon when menu is open -->
+							<svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+							</svg>
+						</button>
+					</div>
+				</div>
+			</div>
+	
+			<!-- Mobile menu, show/hide based on menu state -->
+			<div class="md:hidden hidden" id="mobile-menu">
+				<div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+					{% if request.user.is_authenticated %}
+						<a href="#" class="text-white hover:bg-cyan-600 block px-3 py-2 rounded-md text-base font-medium">
+							<i class="fa-solid fa-circle-user fa-lg mr-2"></i>
+							<span class="border-b-2 border-indigo-800 uppercase">{{request.user}}</span>
+						</a>
+						<form method="POST" action="{% url 'logout' %}" class="block">
+							{% csrf_token %}
+							<button type="submit" class="w-full focus:opacity-10 p-2 px-4 border-b-4 border-white focus:border-green-600 bg-gradient-to-l from-red-900 via-red-700 to-red-900 text-white rounded shadow-lg hover:shadow-xl text-center text-xs">
+								<i class="fa-solid fa-arrow-right-from-bracket fa-lg mr-2"></i> Logout
+							</button>
+						</form>
+					{% endif %}
+				</div>
+			</div>
+		</nav>
+	</header>
+    
+    {% if request.user.is_authenticated and request.path != '/' %}
+        <div class="flex justify-center text-center text-gray-800 font-medium text-xs align-middle items-center p-3  bg-cyan-100 gap-4">
+            <a href="{%url 'staff'%}" class="focus:opacity-10 bg-green-600 p-2 px-4 rounded-2xl ml-2"><i class="text-white fa-solid fa-rectangle-list fa-xl"></i></a>
+            <a href="{%url 'report' %}" class="focus:opacity-10 bg-orange-600 p-2 px-4 rounded-2xl ml-2"><i class="text-white fa-solid fa-file fa-xl"></i></a>
+            <a href="{%url 'stats' %}" class="focus:opacity-10 bg-slate-600 p-2 px-4 rounded-2xl ml-2"><i class="text-white fa-solid fa-list-ol fa-xl"></i></a>
+            <a href="{%url 'notice' %}" class="focus:opacity-10 bg-blue-600 p-2 px-4 rounded-2xl ml-2"><i class="text-white fa-solid fa-bell fa-xl"></i></a>
             </div>
-        {% endif %}
+    {% endif %}
+    
+    <main class="flex-grow flex flex-col px-4 py-2 ">
+        {% if messages %}
+    {% for message in messages %}
+        <div class="w-fit mx-auto mb-4 p-4 rounded-lg flex items-center 
+                    {% if message.tags == 'success' %}
+                        bg-green-100 border-l-4 border-green-500 text-green-700
+                    {% elif message.tags == 'error' %}
+                        bg-red-100 border-l-4 border-red-500 text-red-700
+                    {% elif message.tags == 'warning' %}
+                        bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700
+                    {% else %}
+                        bg-blue-100 border-l-4 border-blue-500 text-blue-700
+                    {% endif %}">
+            {% if message.tags == 'success' %}
+                <i class="fas fa-check-circle mr-2 text-green-500"></i>
+            {% elif message.tags == 'error' %}
+                <i class="fas fa-exclamation-circle mr-2 text-red-500"></i>
+            {% elif message.tags == 'warning' %}
+                <i class="fas fa-exclamation-triangle mr-2 text-yellow-500"></i>
+            {% else %}
+                <i class="fas fa-info-circle mr-2 text-blue-500"></i>
+            {% endif %}
+            <span class="flex-1">{{ message }}</span>
+            <button type="button" class="text-gray-400 hover:text-gray-500" onclick="this.parentElement.style.display='none';">
+                <span class="sr-only">Close</span>
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </div>
+    {% endfor %}
+{% endif %}
 
         {% block content %}
         {% endblock %}
     </main>
-
-    <footer class="bg-gray-800 text-white py-4 mt-8">
+    
+    <footer class="bg-gray-800 text-white py-4 mt-auto">
         <div class="container mx-auto text-center">
-            <p>&copy; {% now "Y" %} HR Software. All rights reserved.</p>
+            <p class="text-xs">&copy; {% now "Y" %} HeedAudax. All rights reserved.</p>
         </div>
     </footer>
-	</body>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			// Mobile menu toggle
+			const mobileMenuButton = document.querySelector('.mobile-menu-button');
+			const mobileMenu = document.getElementById('mobile-menu');
+	
+			mobileMenuButton.addEventListener('click', function() {
+				mobileMenu.classList.toggle('hidden');
+				mobileMenuButton.setAttribute('aria-expanded', 
+					mobileMenuButton.getAttribute('aria-expanded') === 'false' ? 'true' : 'false'
+				);
+				
+				// Toggle menu icons
+				mobileMenuButton.querySelector('svg:nth-child(1)').classList.toggle('hidden');
+				mobileMenuButton.querySelector('svg:nth-child(2)').classList.toggle('hidden');
+			});
+		});
+	</script>
+</body>
 </html>

@@ -15,8 +15,8 @@ class Department(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     
-    def staff_count(self):
-        return self.staff_set.count()
+    def user_count(self):
+        return self.governmentappointment_set.count()
     
     def get_absolute_url(self):
         return reverse('department_details', args=[self.pk])
@@ -30,8 +30,8 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     
-    def post_count(self):
-        return self.staff_set.count()
+    def user_count(self):
+        return self.governmentappointment_set.count()
     
     def get_absolute_url(self):
         return reverse('post_details', args=[self.pk])
@@ -45,8 +45,8 @@ class SalaryScale(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     
-    def salary_scale_count(self):
-        return self.staff_set.count()
+    def user_count(self):
+        return self.governmentappointment_set.count()
     
     def get_absolute_url(self):
         return reverse('salary_scale_details', args=[self.pk])
@@ -60,8 +60,9 @@ class GradeLevel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     
-    def grade_level_count(self):
-        return self.staff_set.count()
+    def user_count(self):
+        return self.governmentappointment_set.count()
+
     
     def get_absolute_url(self):
         return reverse('grade_level_details', args=[self.pk])
@@ -75,8 +76,9 @@ class TypeOfCadre(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     
-    def type_of_cadre_count(self):
-        return self.staff_set.count()
+    def user_count(self):
+        return self.governmentappointment_set.count()
+
     
     def get_absolute_url(self):
         return reverse('type_of_cadre_details', args=[self.pk])
@@ -90,8 +92,9 @@ class TypeOfAppt(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     
-    def type_appt_count(self):
-        return self.staff_set.count()
+    def user_count(self):
+        return self.governmentappointment_set.count()
+
     
     def get_absolute_url(self):
         return reverse('type_of_appt_details', args=[self.pk])
@@ -105,8 +108,9 @@ class NatureLeave(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     
-    def type_appt_count(self):
-        return self.staff_set.count()
+    def user_count(self):
+        return self.governmentappointment_set.count()
+
     
     def get_absolute_url(self):
         return reverse('nature_details', args=[self.pk])
@@ -261,7 +265,7 @@ class ProfessionalQualification(models.Model):
 
 
 class GovernmentAppointment(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE,related_name='govapp')
     department = models.ForeignKey(Department,blank=True, max_length=300, null=True,on_delete=models.CASCADE)
     cpost = models.ForeignKey(Post,blank=True, max_length=300, null=True,on_delete=models.CASCADE)
     salary_scale = models.ForeignKey(SalaryScale,blank=True, max_length=300, null=True,on_delete=models.CASCADE)

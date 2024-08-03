@@ -4,22 +4,22 @@
 {% block title %}Staff List{% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-8">
+<div class="container mx-auto px-4 py-2">
     {% if form.errors %}
     <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
         {{ form.errors }}
     </div>
     {% endif %}
 
-    <div class="flex flex-col md:flex-row justify-between items-center mb-6">
-        <div class="mb-4 md:mb-0">
-            <span class="inline-flex items-center px-4 py-2 bg-cyan-700 text-white text-sm font-medium rounded-xl shadow-sm">
+    <div class="flex flex-col md:flex-row justify-between items-center mb-2">
+        <div class="mb-2 md:mb-0 text-xs">
+            <span class="text-xs inline-flex items-center p-2 bg-cyan-700 text-white  rounded-xl shadow-sm">
                 Total Staff
-                <span class="ml-2 px-2 py-1 bg-white text-cyan-700 rounded-full">{{ total_profiles }}</span>
+                <span class="text-xs ml-2 px-2 py-1 bg-white text-cyan-700 rounded-full">{{ total_profiles }}</span>
             </span>
-            <button class="ml-2 px-3 py-2 bg-cyan-700 text-white rounded-xl shadow-sm hover:bg-cyan-600 transition-colors duration-200"
+            <button class="uppercase px-4 py-2 bg-green-600 text-white text-xs rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                     id="showButton" hx-get="{% url 'reg' %}" hx-target="#modals-here" _="on htmx:afterOnLoad wait 10ms then add .uk-open to #modal">
-                <i class="fa-solid fa-plus"></i>
+                <i class="fa-solid fa-plus"></i> add new staff
             </button>
             {% if request.GET.urlencode %}
             <a href="?" class="ml-2 px-3 py-2 bg-orange-500 text-white rounded-xl shadow-sm hover:bg-orange-400 transition-colors duration-200">
@@ -29,32 +29,27 @@
         </div>
 
         <form method="get" class="w-full md:w-auto">
-            <div class="flex flex-wrap gap-4">
-                {% for field in staffFilter.form %}
-                <div class="flex-grow">
-                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-                        {{ field.label }}
-                    </label>
-                    <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
-                           {% if field.value %} value="{{ field.value }}" {% endif %}>
+            <div class="flex gap-2">
+                    <input type="text" name="q"
+                           class="w-full px-1 py-2 border border-gray-300 rounded-md shadow-sm text-xs focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
+                           value="{{query}}" placeholder="search: by name, file no, department">
+                           <div class="flex-shrink-0 self-end">
+                               <button type="submit" class="uppercase text-xs w-full px-4 py-2 bg-cyan-600 text-white rounded-md shadow-sm hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500">
+                                   <i class="fa-solid fa-search mr-2"></i>Search
+                                </button>
+                            </div>
                 </div>
-                {% endfor %}
-                <div class="flex-shrink-0 self-end">
-                    <button type="submit" class="w-full px-4 py-2 bg-cyan-600 text-white rounded-md shadow-sm hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500">
-                        <i class="fa-solid fa-search mr-2"></i>Search
-                    </button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
+    
 
     <div id="modals-here"></div>
 
     <div class="overflow-x-auto shadow-lg rounded-lg mb-8">
-        <table class="w-full text-sm">
+        <table class="w-full text-xs">
             <thead>
-                <tr class="bg-cyan-700 text-white">
+                <tr class="bg-cyan-700 text-white text-xs">
                     <th class="px-4 py-3 text-left">S/N</th>
                     <th class="px-4 py-3 text-left">Surname</th>
                     <th class="px-4 py-3 text-left">Middle Name</th>
@@ -70,17 +65,17 @@
             </thead>
             <tbody class="bg-white">
                 {% for p in profiles %}
-                <tr class="border-b border-gray-200 hover:bg-gray-100 transition-colors duration-200">
+                <tr class="border-b border-gray-200 hover:bg-gray-100 transition-colors duration-200 text-xs">
                     <td class="px-4 py-3">{{ forloop.counter }}</td>
                     <td class="px-4 py-3">{{ p.user.last_name|default_if_none:''|upper }}</td>
                     <td class="px-4 py-3">{{ p.middle_name|default_if_none:''|upper }}</td>
                     <td class="px-4 py-3">{{ p.user.first_name|default_if_none:''|upper }}</td>
                     <td class="px-4 py-3">{{ p.file_no|default_if_none:'' }}</td>
-                    <td class="px-4 py-3">{{ p.user.governmentappointment.ippis_no|default_if_none:'' }}</td>
+                    <td class="px-4 py-3">{{ p.user.govapp.ippis_no|default_if_none:'' }}</td>
                     <td class="px-4 py-3">{{ p.gender|default_if_none:''|upper }}</td>
-                    <td class="px-4 py-3">{{ p.user.governmentappointment.department|default_if_none:''|upper }}</td>
-                    <td class="px-4 py-3">{{ p.user.governmentappointment.cpost|default_if_none:''|upper }}</td>
-                    <td class="px-4 py-3">{{ p.user.governmentappointment.date_fapt|date:'d-M-Y'|default_if_none:''|upper }}</td>
+                    <td class="px-4 py-3">{{ p.user.govapp.department|default_if_none:''|upper }}</td>
+                    <td class="px-4 py-3">{{ p.user.govapp.cpost|default_if_none:''|upper }}</td>
+                    <td class="px-4 py-3">{{ p.user.govapp.date_fapt|date:'d-M-Y'|default_if_none:''|upper }}</td>
                     <td class="px-4 py-3">
                         <a href="{{ p.get_absolute_url }}" class="text-orange-800 hover:text-orange-600 transition-colors duration-200">
                             <i class="fa-solid fa-folder-open fa-lg"></i>
@@ -95,28 +90,28 @@
     <nav class="flex items-center justify-between border-t border-gray-200 px-4 sm:px-0">
         <div class="hidden md:-mt-px md:flex">
             {% if page_obj.has_previous %}
-            <a href="?page=1{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium">
+            <a href="?page=1{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-xs font-medium">
                 <i class="fa-solid fa-angle-double-left fa-lg mr-2"></i>
                 First
             </a>
-            <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium">
+            <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-xs font-medium">
                 <i class="fa-solid fa-angle-left fa-lg mr-2"></i>
                 Previous
             </a>
             {% endif %}
         </div>
         <div class="flex items-center">
-            <p class="text-sm text-gray-700">
+            <p class="text-xs text-gray-700">
                 Page <span class="font-medium">{{ page_obj.number }}</span> of <span class="font-medium">{{ page_obj.paginator.num_pages }}</span>
             </p>
         </div>
         <div class="hidden md:-mt-px md:flex">
             {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium">
+            <a href="?page={{ page_obj.next_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-xs font-medium">
                 Next
                 <i class="fa-solid fa-angle-right fa-lg ml-2"></i>
             </a>
-            <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium">
+            <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-xs font-medium">
                 Last
                 <i class="fa-solid fa-angle-double-right fa-lg ml-2"></i>
             </a>

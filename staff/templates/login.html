@@ -3,27 +3,27 @@
 {% block title %}Login | Enom HR{% endblock %}
 
 {% block content %}
-<div class=" flex items-center justify-center  py-8 px-4 sm:px-6 lg:px-8 rounded-xl mt-4">
+<div class="flex-grow flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
   <div class="w-full max-w-md px-6 py-8 bg-white shadow-2xl rounded-lg">
-    <div class="text-center mb-6">
-      <h1 class="text-3xl font-light text-blue-900 tracking-wide">
+        <div class="text-center mb-6">
+      <h1 class="text-2xl font-light text-blue-900 tracking-wide">
         <span class="font-bold">Enom</span> 
         <span class="font-normal text-blue-700">HR</span>
       </h1>
-      <p class="text-sm text-gray-600 mt-1">Employee Management System</p>
+      <p class="text-xs text-gray-600 mt-1">Employee Management System</p>
     </div>
     
-    <form action="" method="POST">
+    <form action="" method="POST" class="text-xs">
       {% csrf_token %}   
       {% if form.errors %}
-      <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4 text-sm" role="alert">
+      <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4 text-xs" role="alert">
         <p class="font-bold">Please correct the errors:</p>
         {{ form.errors }}
       </div>
       {% endif %}
 
       <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="uname">
+        <label class="block text-gray-700 text-xs font-bold mb-2" for="uname">
           Username
         </label>
         <input
@@ -35,7 +35,7 @@
         />
       </div>
       <div class="mb-6">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+        <label class="block text-gray-700 font-bold mb-2 text-xs" for="password">
           Password
         </label>
         <input
@@ -48,20 +48,17 @@
       </div>
       <div class="flex items-center justify-between">
         <button
-          class="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
+          class="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 text-xs"
           type="submit"
         >
           Sign In
         </button>
-        <a class="inline-block align-baseline font-bold text-sm text-blue-600 hover:text-blue-800" href="{% url 'register' %}">
+        <a class="inline-block align-baseline font-bold text-xs text-blue-600 hover:text-blue-800" href="{% url 'register' %}">
           Register
         </a>
       </div>
     </form>
     
-    <p class="text-center text-gray-500 text-xs mt-8">
-      &copy;{% now "Y" %} Enom HR. All rights reserved.
-    </p>
   </div>
 </div>
 {% endblock %}
