@@ -25,6 +25,18 @@ class Department(models.Model):
         return self.name
 
 
+class Duties(models.Model):
+    name = models.CharField(max_length=200, unique=True,null=True, blank=True)
+    department = models.ForeignKey(Department,blank=True, max_length=300, null=True,on_delete=models.CASCADE,related_name='dept_duties')
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    class Meta:
+        verbose_name_plural = 'Duties and responsibilities'
+    
+    def __str__(self):
+        return self.name
+
+
 class Post(models.Model):
     name = models.CharField(max_length=200, unique=True,null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -202,7 +214,12 @@ class Profile(models.Model):
         return reverse('profile_details', args=[self.user])
 
     def full_name(self):
-        return f"{self.user.get_full_name()} {self.middle_name} {self.file_no}, {self.user.id}"
+        parts = [
+            self.user.get_full_name() or ' ',
+            self.middle_name or ' ',
+            self.file_no or ' '
+        ]
+        return ' '.join(part for part in parts if part).strip() + ''
 
     def __str__(self):
         if self.user:

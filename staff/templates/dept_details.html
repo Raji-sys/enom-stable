@@ -1,77 +1,85 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block title %}{{ department.name }}{% endblock %}
-
 {% block content %}
-<div class="container mx-auto px-4 py-12">
-    <div class="bg-white shadow-2xl rounded-2xl p-8 md:p-12 max-w-6xl mx-auto">
-        <h1 class="text-4xl font-bold text-cyan-800 mb-8">{{ department.name }}</h1>
-        <p>Head: {{ department.head }}</p>
-        <p>Total Users: {{ department.user_count }}</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-            <!-- Head of Department -->
-            <section class="mb-12">
-                <h2 class="text-2xl font-semibold text-cyan-700 mb-4">Head of Department</h2>
-                <div class="flex items-center space-x-4">
-                    <img src="#" alt="Head of Department" class="w-20 h-20 rounded-full object-cover">
-                    <div>
-                        <h3 class="text-xl font-medium">department.head</h3>
-                        <p class="text-gray-600">department.head_position</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Duties and Responsibilities -->
-            <section class="mb-12">
-                <h2 class="text-2xl font-semibold text-cyan-700 mb-4">Duties and Responsibilities</h2>
-                <ul class="list-disc pl-6 space-y-2">
-                        <li>duty</li>
-                </ul>
-            </section>
-        </div>
-
+<div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6 container p-3">
+    <div class="bg-white p-3 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300 ">
+        <h1 class="text-sm font-bold text-cyan-800 mb-4 text-center border-b">{{ department.name }}</h1>
+        <!-- Head of Department -->
+        <p class="text-xs mb-2">
+            <span class="font-semibold text-cyan-600">Head:</span> 
+            {{ department.head|default_if_none:'N/A' }}
+        </p>
+        <p class="text-xs">
+            <span class="font-semibold text-cyan-600">Total staff:</span> 
+            {{ department.user_count }}
+        </p>
+    </div>
+    
+    <div class="col-span-1 sm:col-span-2 lg:col-span-3">
         <!-- Staff Table -->
-        <section class="mb-12">
-            <h2 class="text-2xl font-semibold text-cyan-700 mb-4">Department Staff</h2>
-            <div class="overflow-x-auto">
-                <table class="min-w-full bg-white">
-                    <thead class="bg-gray-100">
-                        <tr>
-                            
-                            <th class="py-3 px-4 text-left">Name</th>
-                            <th class="py-3 px-4 text-left">Position</th>
-                            <th class="py-3 px-4 text-left">Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-b">
+        <section class="bg-white p-3 rounded-lg shadow-md">
+            <h2 class="text-sm font-semibold text-cyan-700 mb-1 text-center">Staff List</h2>
+            <div class="border border-cyan-200 rounded-lg overflow-hidden">
+                <div class="overflow-auto max-h-[300px] md:max-h-[400px] lg:max-h-[500px]" style="max-width: 100%;">
+                    <table class="min-w-full bg-white">
+                        <thead class="bg-cyan-100 sticky top-0">
+                            <tr class="text-xs text-center">
+                                <th class="py-3 px-4 ">#</th>
+                                <th class="py-3 px-4 ">Name</th>
+                                <th class="py-3 px-4 ">Designation</th>
+                                <th class="py-3 px-4 ">Phone</th>
+                                <th class="py-3 px-4 ">File</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             {% for appointment in department.governmentappointment_set.all %}
-                            <li>{{ appointment.user.username }} - {{ appointment.cpost.name }}</li>
-                            {% empty %}
-                                <li>No staff in this department.</li>
-                            {% endfor %}
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
+                            <tr class="text-xs hover:bg-cyan-50 transition-colors duration-150 even:bg-gray-50 text-center">
+                                <td class="py-2 px-4 md:py-3 md:px-6 border-b">{{ forloop.counter }}</td>
+                                <td class="py-2 px-4 md:py-3 md:px-6 border-b">{{ appointment.user.profile.full_name }}</td>
+                                <td class="py-2 px-4 md:py-3 md:px-6 border-b">{{ appointment.cpost.name|default_if_none:'' }}</td>
+                                <td class="py-2 px-4 md:py-3 md:px-6 border-b">{{ appointment.user.profile.phone|default_if_none:'' }}</td>
+                                <td class="py-2 px-4 md:py-3 md:px-6 border-b"><a href="{{appointment.user.profile.get_absolute_url}}">
+                            <i class="fa-solid fa-folder-open fa-lg"></i>
 
-        <!-- Staff Hierarchy -->
-        <section>
-            <h2 class="text-2xl font-semibold text-cyan-700 mb-4">Staff Hierarchy</h2>
-            <div class="bg-gray-100 p-6 rounded-lg">
-                <ul class="space-y-4">
-                        <li>
-                            <h3 class="font-medium text-lg">level.title</h3>
-                            <ul class="pl-6 mt-2 space-y-1">
-                                    <li>lorem1</li>
-                            </ul>
-                        </li>
-                </ul>
+                                </a></td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="py-4 px-4 text-center text-gray-500">
+                                    No staff in this department.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
     </div>
+    
+    <div class="bg-white p-3 rounded-lg shadow-md col-span-1 sm:col-span-1 lg:col-span-2">
+        <!-- Duties and Responsibilities -->
+        <section>
+            <h2 class="text-sm font-semibold text-cyan-700 mb-4 text-center border-b">Duties and Responsibilities</h2>
+            <ul class="list-decimal pl-6 space-y-2">
+                {% for d in department.dept_duties.all %}
+                <li class="text-xs hover:text-cyan-600 transition-colors duration-150">{{d.name}}</li>
+                {% empty %}
+                <li class="text-xs text-gray-500">No duties assigned to this department</li>
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
 </div>
+
+<style>
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+        animation: fadeIn 0.5s ease-out;
+    }
+</style>
 {% endblock %}

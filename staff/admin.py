@@ -18,6 +18,22 @@ class DepartmentAdmin(admin.ModelAdmin):
     search_fields = ['name']
     list_per_page = 10
 
+
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['name','created']
+    list_filter = ['name']
+    search_fields = ['name']
+    list_per_page = 10
+
+
+@admin.register(Duties)
+class DepartmentDutiesAdmin(admin.ModelAdmin):
+    list_display = ['name','department']
+    list_filter = ['name','department']
+    search_fields = ['name','department']
+    list_per_page = 10
+
 # class ProfileForm(forms.ModelForm):
 #     pass
     # class Meta:
