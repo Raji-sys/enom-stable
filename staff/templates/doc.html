@@ -1,26 +1,11 @@
 {%extends "base.html" %}
 {% block title %}documentation form{% endblock%}
 {% block content %}
-<div class="shadow-2xl shadow-cyan-900 text-sm m-4 rounded-lg">
-  <div class="font-semibold uppercase text-sm shadow-cyan-900 rounded-xl bg-white p-4">
+<div class="shadow-2xl shadow-cyan-900 text-xs rounded-lg">
+  <div class="font-semibold uppercase text-xs shadow-cyan-900 rounded-xl bg-white p-4">
 
-    <section class=" text-center  border-cyan-700 text-sm">
-        <h2 class="bg-cyan-800 text-white uppercase max-sm:text-lg text-xl  text-center border-b-2 border-t-2 border-cyan-900 p-2 rounded-3xl">documentation form</h2> 
-            {% for message in messages %}
-      <div class="mt-4">
-        {%if message.success %}
-           <div class="uk-alert-success rounded-2xl text-sm" uk-alert>
-            <a href class="uk-alert-close font-bold" uk-close></a>
-            <p class="text-green-700 font-semibold">{{ message }}</p>
-            </div>
-            {%else%}
-            <div class="uk-alert-success rounded-2xl text-sm" uk-alert>
-            <a href class="uk-alert-close font-bold" uk-close></a>
-            <p class="text-rose-700 font-semibold">{{ message }}</p>
-            </div> 
-        {% endif %}
-      </div>
-      {% endfor %}
+    <section class=" text-center  border-cyan-700 text-xs">
+        <h2 class="bg-cyan-800 w-fit mx-auto text-white uppercase text-sm text-center border-b-2 border-t-2 border-cyan-900 p-2 rounded-3xl">documentation form</h2> 
       <div class="flex justify-center text-md text-red-500">
           {% if form.errors %}
           {{form.errors}}
@@ -29,17 +14,17 @@
   </section>
 <form method="post" enctype="multipart/form-data" class="flex flex-col">
   {% csrf_token %}
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto p-2">  
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-3 mx-auto  border-cyan-600">  
     <!-- User Form -->
     {% for field in form %}
-    <div class="m-4 text-center">
+    <div class="m-2 text-center">
      <label for="{{field.id_for_label}}" class="block">{{ field.label_tag }}</label>
       {{ field }}
     </div>
     {%endfor%}
   </div>
-  <h1 class="text-white bg-cyan-900 text-lg text-center border-b-2 border-t-2 border-cyan-900 p-2 rounded-3xl">personal information</h1>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-auto p-2 m-2">  
+  <h1 class="text-white bg-cyan-800 text-sm w-fit mx-auto uppercase text-center p-2 rounded-3xl">personal information</h1>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mx-auto border-t-2 p-2 border-b-2  border-cyan-600">  
   <!-- Profile Form -->
       {% for field in profileform %}
     <div class="mb-4">
@@ -48,8 +33,8 @@
     </div>
     {%endfor%}
   </div>
-  <h1 class="text-white bg-cyan-900 text-lg text-center border-b-2 border-t-2 border-cyan-900 p-2 rounded-3xl">government appointment</h1>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-auto p-2 m-2">  
+  <h1 class="text-white bg-cyan-900 text-sm mx-auto w-fit uppercase text-center p-2 rounded-3xl">government appointment</h1>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mx-auto ">  
   <!-- GovtApp Form -->
       {% for field in govtappform %}
     <div class="mb-4">

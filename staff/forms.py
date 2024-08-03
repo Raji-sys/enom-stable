@@ -24,7 +24,7 @@ class UserForm(forms.ModelForm):
         for field in self.fields.values():
             # field.required=True
             field.widget.attrs.update(
-                {'class': 'text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700'})
+                {'class': 'text-center mt-2 text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
 
 
 class ProfileForm(forms.ModelForm):
@@ -42,7 +42,9 @@ class ProfileForm(forms.ModelForm):
             'zone': forms.Select(attrs={'id': 'id_zone'}),
             'state': forms.Select(attrs={'id': 'id_state'}),
             'lga': forms.Select(attrs={'id': 'id_lga'}),
-            'dob': forms.DateInput(attrs={'type': 'date'})
+            'dob': forms.DateInput(attrs={'type': 'date'}),
+            'nameoc': forms.Textarea(attrs={'rows': 3,'cols':10}),  # Adjust rows as needed
+            'doboc': forms.Textarea(attrs={'rows': 3,'cols':10}),
         }
         exclude = ['user', 'created', 'updated']
 
@@ -51,7 +53,7 @@ class ProfileForm(forms.ModelForm):
         for field in self.fields.values():
             # field.required=True
             field.widget.attrs.update(
-                {'class': 'text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700'})
+                {'class': 'text-center mt-2 text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
 
 
 class GovtAppForm(forms.ModelForm):
@@ -78,7 +80,7 @@ class GovtAppForm(forms.ModelForm):
         for field in self.fields.values():
             # field.required=True
             field.widget.attrs.update(
-                {'class': 'text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700'})
+                {'class': 'text-center  text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black  hover:border-cyan-700 focus:border-cyan-700'})
 
 
 class QualForm(forms.ModelForm):
@@ -95,7 +97,7 @@ class QualForm(forms.ModelForm):
         for field in self.fields.values():
             # field.required=True
             field.widget.attrs.update(
-                {'class': 'text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700'})
+                {'class': 'text-center mt-2 text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
 
 
 class ProQualForm(forms.ModelForm):
@@ -113,7 +115,7 @@ class ProQualForm(forms.ModelForm):
         for field in self.fields.values():
             # field.required=True
             field.widget.attrs.update(
-                {'class': 'text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700'})
+                {'class': 'text-center mt-2 text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
 
 
 class PromotionForm(forms.ModelForm):
@@ -132,7 +134,7 @@ class PromotionForm(forms.ModelForm):
         for field in self.fields.values():
             # field.required=True
             field.widget.attrs.update(
-                {'class': 'text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700'})
+                {'class': 'text-center mt-2 text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
 
 
 class DisciplineForm(forms.ModelForm):
@@ -149,7 +151,7 @@ class DisciplineForm(forms.ModelForm):
         for field in self.fields.values():
             # field.required=True
             field.widget.attrs.update(
-                {'class': 'text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700'})
+                {'class': 'text-center mt-2 text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
 
 
 class LeaveForm(forms.ModelForm):
@@ -167,7 +169,7 @@ class LeaveForm(forms.ModelForm):
         for field in self.fields.values():
             # field.required=True
             field.widget.attrs.update(
-                {'class': 'text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700'})
+                {'class': 'text-center mt-2 text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
 
     def clean(self):
         cleaned_data = super().clean()
@@ -197,7 +199,7 @@ class ExecappForm(forms.ModelForm):
         for field in self.fields.values():
             # field.required=True
             field.widget.attrs.update(
-                {'class': 'text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700'})
+                {'class': 'text-center mt-2 text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
 
 
 class RetireForm(forms.ModelForm):
@@ -214,4 +216,4 @@ class RetireForm(forms.ModelForm):
         for field in self.fields.values():
             # field.required=True
             field.widget.attrs.update(
-                {'class': 'text-center mt-2 text-sm focus:outline-none border-b-4 border-cyan-900 text-cyan-950 py-2 rounded shadow-lg hover:border-cyan-700 focus:border-cyan-700'})
+                {'class': 'text-center mt-2 text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})

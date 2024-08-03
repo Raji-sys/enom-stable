@@ -4,7 +4,6 @@ from . import views
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
-    path('manage/', views.manage, name='manage'),
     path('staff/', StaffListView.as_view(), name='staff'),
 
     path('dept/', DepartmmentList.as_view(), name='dept_list'),
@@ -13,18 +12,11 @@ urlpatterns = [
     path('posts/', PostList.as_view(), name='post_list'),
     path('posts/<int:pk>/', PostDetail.as_view(), name='post_details'),
     
-    path('dirs/', views.dirs, name='dirs'),
-    path('dirs_detail/<str:name>/', views.dirs_details, name='dirs_details'),
-
     path('report/', views.report, name='report'),
 
     path('gen_report/', GenReportView.as_view(), name='gen_report'),
     path('gen_pdf/', views.Gen_pdf, name='gen_pdf'),
     path('gen_csvFile/', views.Gen_csv, name='gen_csv'),
-
-    path('qual_report/', views.qual_report, name='qual_report'),
-    path('pro_qual_report/', views.pro_qual_report, name='pro_qual_report'),
-    path('dis_report/', views.dis_report, name='dis_report'),
 
     path('stats/', StatsView.as_view(), name='stats'),
 

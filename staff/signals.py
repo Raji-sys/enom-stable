@@ -9,29 +9,29 @@ def ret(sender, instance, **kwargs):
     age_at_retirement = instance.user.profile.age()
     years_of_service = today.year - instance.date_fapt.year if instance.date_fapt else None
 
-    if instance.retire and instance.cleared:
-        instance.retire = False
+    if instance.retired and instance.cleared:
+        instance.retired = False
         instance.rtb = None
         return
     
     if instance.cleared:
-        instance.retire=False
+        instance.retired=False
         instance.rtb = None
         return
     
-    if instance.retire:
+    if instance.retired:
         instance.cleared=False
         return
 
     if age_at_retirement is not None and age_at_retirement >= 65:
-        instance.retire = True
+        instance.retired = True
         instance.rtb = "RETIRE BY DATE OF BIRTH"
 
     elif years_of_service is not None and years_of_service >= 35:
-        instance.retire = True
+        instance.retired = True
         instance.rtb = "RETIRE BY DATE OF APPOINTMENT"
     else:
-        instance.retire = False
+        instance.retired = False
 
 
 @receiver(pre_save, sender=GovernmentAppointment)

@@ -217,9 +217,9 @@ class Profile(models.Model):
         parts = [
             self.user.get_full_name() or ' ',
             self.middle_name or ' ',
-            self.file_no or ' '
+            str(self.file_no) if self.file_no is not None else ' '
         ]
-        return ' '.join(part for part in parts if part).strip() + ''
+        return ' '.join(part for part in parts if part.strip()).strip()
 
     def __str__(self):
         if self.user:

@@ -49,11 +49,6 @@ class IndexView(TemplateView):
     template_name = "index.html"
 
 
-@login_required
-def manage(request):
-    return render(request, 'manage.html')
-
-
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class StaffListView(ListView):
     model = Profile
@@ -81,6 +76,7 @@ class StaffListView(ListView):
         context['query'] = self.request.GET.get('q', '')
         return context
 
+
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class DepartmmentList(ListView):
     model=Department
@@ -106,15 +102,6 @@ class PostDetail(DetailView):
     model=Post
     template_name='post_details.html'
 
-
-@login_required
-def dirs(request):
-    return render(request, 'dirs.html')
-
-
-@login_required
-def dirs_details(request):
-    pass
 
 @login_required
 def report(request):
@@ -207,24 +194,6 @@ def Gen_csv(request):
             u.governmentappointment.date_fapt,
         ])
     return response
-
-
-@login_required
-def dis_report(request):
-    pass
-    # return render(request, 'dis_report.html')
-
-
-@login_required
-def qual_report(request):
-    pass
-    # return render(request, 'qual_report.html')
-
-
-@login_required
-def pro_qual_report(request):
-    pass
-    # return render(request, 'pro_qual_report.html')
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
@@ -350,7 +319,7 @@ class UserRegistrationView(CreateView):
             govapp_instance = GovernmentAppointment(user=user)
             govapp_instance.save()
             messages.success(
-                self.request, f"Registration for: {user.get_full_name()} was successful")
+                self.request, f"Registration successful: {user.get_full_name()} can now login")
             return response
         else:
             print("Form errors:", form.errors)
@@ -401,16 +370,13 @@ class DocumentationView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['profileform'] = ProfileForm(instance=self.object.profile)
-        context['govtappform'] = GovtAppForm(
-            instance=self.object.governmentappointment)
+        context['govtappform'] = GovtAppForm(instance=self.object.govapp)
         return context
 
     def form_valid(self, form):
         userform = UserForm(self.request.POST, instance=self.object)
-        profileform = ProfileForm(
-            self.request.POST, instance=self.object.profile)
-        govtappform = GovtAppForm(
-            self.request.POST, instance=self.object.governmentappointment)
+        profileform = ProfileForm(self.request.POST, instance=self.object.profile)
+        govtappform = GovtAppForm(self.request.POST, instance=self.object.govapp)
 
         if userform.is_valid() and profileform.is_valid() and govtappform.is_valid():
             userform.save()
