@@ -31,29 +31,57 @@ class ProfileForm(forms.ModelForm):
     def clean_dob(self):
         dob = self.cleaned_data.get('dob')
         if self.instance.dob and dob != self.instance.dob:
-            raise forms.ValidationError('this action is forbidden, {} is the default'.format(
-                self.instance.dob.strftime("%m-%d-%Y")))
+            raise forms.ValidationError('this action is forbidden, {} is the default'.format(self.instance.dob.strftime("%m-%d-%Y")))
         return dob
 
     class Meta:
         model = Profile
         fields = '__all__'
         widgets = {
-            'zone': forms.Select(attrs={'id': 'id_zone'}),
-            'state': forms.Select(attrs={'id': 'id_state'}),
-            'lga': forms.Select(attrs={'id': 'id_lga'}),
             'dob': forms.DateInput(attrs={'type': 'date'}),
-            'nameoc': forms.Textarea(attrs={'rows': 3,'cols':10}),  # Adjust rows as needed
+            'nameoc': forms.Textarea(attrs={'rows': 3,'cols':10}),
             'doboc': forms.Textarea(attrs={'rows': 3,'cols':10}),
         }
         exclude = ['user', 'created', 'updated']
 
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
+        self.fields['state'].queryset = State.objects.none()
+        self.fields['lga'].queryset = LGA.objects.none()
+        self.fields['senate_district'].queryset = SenateDistrict.objects.none()
         for field in self.fields.values():
             # field.required=True
             field.widget.attrs.update(
                 {'class': 'text-center mt-2 text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
+
+        if 'zone' in self.data:
+            try:
+                zone_id = int(self.data.get('zone'))
+                self.fields['state'].queryset = State.objects.filter(zone_id=zone_id)
+            except (ValueError, TypeError):
+                pass
+
+        if 'state' in self.data:
+            try:
+                state_id = int(self.data.get('state'))
+                self.fields['lga'].queryset = LGA.objects.filter(state_id=state_id)
+            except (ValueError, TypeError):
+                pass
+
+        if 'lga' in self.data:
+            try:
+                lga_id = int(self.data.get('lga'))
+                self.fields['senate_district'].queryset = SenateDistrict.objects.filter(lga_id=lga_id)
+            except (ValueError, TypeError):
+                pass
+
+        elif self.instance.pk:
+            if self.instance.zone:
+                self.fields['state'].queryset = self.instance.zone.state_set.order_by('name')
+            if self.instance.state:
+                self.fields['lga'].queryset = self.instance.state.lga_set.order_by('name')
+            if self.instance.lga:
+                self.fields['senate_district'].queryset = self.instance.lga.senatedistrict_set.order_by('name')
 
 
 class GovtAppForm(forms.ModelForm):
@@ -69,18 +97,18 @@ class GovtAppForm(forms.ModelForm):
         fields = ['department', 'cpost', 'ippis_no', 'date_fapt', 'date_capt', 'sfapt',
                   'salary_scale', 'grade_level', 'step', 'type_of_cadre', 'exams_status','cleared']
         widgets = {
-            'department': forms.Select(attrs={'id': 'id_department'}),
-            'current_post': forms.Select(attrs={'id': 'id_current_post'}),
             'date_fapt': forms.DateInput(attrs={'type': 'date'}),
             'date_capt': forms.DateInput(attrs={'type': 'date'}),
         }
 
     def __init__(self, *args, **kwargs):
         super(GovtAppForm, self).__init__(*args, **kwargs)
+        self.fields['department'].widget.attrs.update({'id': 'id_department', 'onchange': 'load_posts()'})
         for field in self.fields.values():
-            # field.required=True
-            field.widget.attrs.update(
-                {'class': 'text-center  text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black  hover:border-cyan-700 focus:border-cyan-700'})
+            # field.required = True
+            field.widget.attrs.update({
+            'class': 'text-center text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'
+        })
 
 
 class QualForm(forms.ModelForm):

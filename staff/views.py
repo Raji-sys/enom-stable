@@ -23,7 +23,7 @@ import os
 import csv
 from django.db.models import Sum, Count
 from django.db.models import Q
-
+from django.http import JsonResponse
 User = get_user_model()
 from django.db.models import Prefetch
 
@@ -215,7 +215,7 @@ class StatsView(TemplateView):
         cpost_counts = GovernmentAppointment.objects.values('cpost').annotate(pc=Count('id'))
         ss_counts = GovernmentAppointment.objects.values('salary_scale').annotate(pc=Count('id'))
         gl_counts = GovernmentAppointment.objects.values('grade_level').annotate(pc=Count('id'))
-        sc_counts = Qualification.objects.values('school_category').annotate(pc=Count('id'))
+        sc_counts = Qualification.objects.values('school_department').annotate(pc=Count('id'))
         context['pc'] = pc
         context['gender_counts'] = gender_counts
         context['geo_counts'] = geo_counts
@@ -382,8 +382,7 @@ class DocumentationView(UpdateView):
             userform.save()
             profileform.save()
             govtappform.save()
-            messages.success(
-                self.request, f'Documentation successful!{self.request.user.last_name}')
+            messages.success(self.request, f'Documentation successful!{self.request.user.last_name}')
             return HttpResponseRedirect(self.get_success_url())
         else:
             messages.error(
@@ -413,6 +412,36 @@ class UpdateUserView(UpdateView):
     def form_invalid(self, form):
         messages.error(self.request, 'error updating staff information')
         return self.render_to_response(self.get_context_data(form=form))
+
+
+# def get_senate_lga_state_zone(request, lga_id,state_id,zone_id):
+#     senates = SenateDistrict.objects.filter(lga_id=lga_id)
+#     lgas = LGA.objects.filter(state_id=state_id)
+#     states = State.objects.filter(zone_id=zone_id)
+#     senate_list = [{'id': senate.id, 'name': senate.name} for senate in senates]
+#     lga_list = [{'id': lga.id, 'name': lga.name} for lga in lgas]
+#     state_list = [{'id': state.id, 'name': state.name} for state in states]
+#     return JsonResponse({'senates': senate_list},{'lgas':lga_list},{'states':state_list})
+
+def get_states_by_zone(request, zone_id):
+    states = State.objects.filter(zone_id=zone_id)
+    state_list = [{'id': state.id, 'name': state.name} for state in states]
+    return JsonResponse({'states': state_list})
+
+def get_lgas_by_state(request, state_id):
+    lgas = LGA.objects.filter(state_id=state_id)
+    lga_list = [{'id': lga.id, 'name': lga.name} for lga in lgas]
+    return JsonResponse({'lgas': lga_list})
+
+def get_senate_districts_by_lga(request, lga_id):
+    senate_districts = SenateDistrict.objects.filter(lga_id=lga_id)
+    senate_district_list = [{'id': sd.id, 'name': sd.name} for sd in senate_districts]
+    return JsonResponse({'senate_districts': senate_district_list})
+
+def get_post_by_department(request, department_id):
+    posts = Post.objects.filter(department_id=department_id)
+    post_list = [{'id': post.id, 'name': post.name} for post in posts]
+    return JsonResponse({'posts': post_list})
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')

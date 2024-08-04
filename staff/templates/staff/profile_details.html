@@ -92,7 +92,7 @@
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.marital_status|default_if_none:''|upper}}</td>
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.state|default_if_none:''|upper}}</td>
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.lga|default_if_none:''|upper}}</td>
-<td class="border-2 p-2 border-cyan-800 text-center">{{profile.sen_dist|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-cyan-800 text-center">{{profile.senate_district|default_if_none:''|upper}}</td>
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.religion|default_if_none:''|upper}}</td>
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.res_add|default_if_none:''|upper}}</td>
 <td class="border-2 p-2 border-cyan-800 text-center">{{profile.per_res_addr|default_if_none:''|upper}}</td>
@@ -234,7 +234,7 @@
     <div class="text-center">
       <a href="{% url 'promotion' username=profile.user.username %}" 
       class="inline-block p-2 text-green-700">
-        <i class="fa-solid fa-plus-circle fa-xl text-green-600"></i>
+        <i class="fa-solid fa-plus-circle fa-xl text-cyan-800"></i>
       </a>
     </div>
     <table class="w-full mt-0 bg-white shadow-sm overflow-hidden">

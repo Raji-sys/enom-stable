@@ -39,6 +39,7 @@ class Duties(models.Model):
 
 class Post(models.Model):
     name = models.CharField(max_length=200, unique=True,null=True, blank=True)
+    department = models.ForeignKey(Department,blank=True, max_length=300, null=True,on_delete=models.CASCADE,related_name='post_dept')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     
@@ -47,6 +48,65 @@ class Post(models.Model):
     
     def get_absolute_url(self):
         return reverse('post_details', args=[self.pk])
+
+    def __str__(self):
+        return self.name
+
+
+class Zone(models.Model):
+    name = models.CharField(max_length=200, unique=True,null=True, blank=True)
+    updated = models.DateTimeField(auto_now=True)
+    
+    def user_count(self):
+        return self.governmentappointment_set.count()
+    
+    def get_absolute_url(self):
+        return reverse('zone_details', args=[self.pk])
+
+    def __str__(self):
+        return self.name
+    
+
+class State(models.Model):
+    name = models.CharField(max_length=200, unique=True,null=True, blank=True)
+    zone = models.ForeignKey(Zone, on_delete=models.CASCADE)
+    updated = models.DateTimeField(auto_now=True)
+    
+    def user_count(self):
+        return self.governmentappointment_set.count()
+    
+    def get_absolute_url(self):
+        return reverse('state_details', args=[self.pk])
+
+    def __str__(self):
+        return self.name
+
+
+class LGA(models.Model):
+    name = models.CharField(max_length=200, unique=True,null=True, blank=True)
+    state = models.ForeignKey(State,blank=True, max_length=300, null=True,on_delete=models.CASCADE,related_name='lga_state')
+    updated = models.DateTimeField(auto_now=True)
+    
+    def user_count(self):
+        return self.governmentappointment_set.count()
+    
+    def get_absolute_url(self):
+        return reverse('lga_details', args=[self.pk])
+
+    def __str__(self):
+        return self.name
+
+
+class SenateDistrict(models.Model):
+    name = models.CharField(max_length=200, unique=True,null=True, blank=True)
+    lga = models.ForeignKey(LGA,blank=True, max_length=300, null=True,on_delete=models.CASCADE,related_name='senate_district_lga')
+    updated = models.DateTimeField(auto_now=True)
+    
+    def user_count(self):
+        return self.governmentappointment_set.count()
+    
+    def get_absolute_url(self):
+        return reverse('senate_district_details', args=[self.pk])
 
     def __str__(self):
         return self.name
@@ -134,74 +194,47 @@ class NatureLeave(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     middle_name = models.CharField(max_length=300, blank=True, null=True)
-    email = models.EmailField(blank=True, null=True,
-                              max_length=100, unique=True)
+    email = models.EmailField(blank=True, null=True,max_length=100, unique=True)
     photo = models.ImageField(null=True, blank=True)
-    file_no = models.DecimalField(
-        'file number', max_digits=6, decimal_places=0, null=True, unique=True, blank=True)
+    file_no = models.DecimalField('file number', max_digits=6, decimal_places=0, null=True, unique=True, blank=True)
     title = models.CharField(max_length=300, null=True, blank=True)
     sex = (('MALE', 'MALE'), ('FEMALE', 'FEMALE'))
-    gender = models.CharField(
-        choices=sex, max_length=10, null=True, blank=True)
+    gender = models.CharField(choices=sex, max_length=10, null=True, blank=True)
     dob = models.DateField('date of birth', null=True, blank=True)
     phone = models.PositiveIntegerField(null=True, blank=True, unique=True)
-    m_status = (('MARRIED', 'MARRIED'), ('SINGLE', 'SINGLE'), ('DIVORCED', 'DIVORCED'),
-                ('DIVORCEE', 'DIVORCEE'), ('WIDOW', 'WIDOW'), ('WIDOWER', 'WIDOWER'))
-    marital_status = models.CharField(
-        choices=m_status, max_length=100, null=True, blank=True)
+    m_status = (('MARRIED', 'MARRIED'), ('SINGLE', 'SINGLE'), ('DIVORCED', 'DIVORCED'),('DIVORCEE', 'DIVORCEE'), ('WIDOW', 'WIDOW'), ('WIDOWER', 'WIDOWER'))
+    marital_status = models.CharField(choices=m_status, max_length=100, null=True, blank=True)
     place_of_birth = models.CharField(max_length=150, null=True, blank=True)
     ns = (('NIGERIAN', 'NIGERIAN'), ('NON-CITIZEN', 'NON-CITIZEN'))
-    nationality = models.CharField(
-        choices=ns, max_length=200, null=True, blank=True)
-    geo_political_zone = (('NORTH-EAST', 'NORTH-EAST'), ('NORTH-WEST', 'NORTH-WEST'), ('NORTH-CENTRAL', 'NORTH-CENTRAL'),
-                          ('SOUTH-EAST', 'SOUTH-EAST'), ('SOUTH-WEST', 'SOUTH-WEST'), ('SOUTH-SOUTH', 'SOUTH-SOUTH'))
-    zone = models.CharField(
-        blank=True, choices=geo_political_zone, max_length=300, null=True)
-    state = models.CharField(blank=True, max_length=300, null=True)
-    lga = models.CharField(blank=True, max_length=300, null=True)
-    sen_dist = models.CharField(
-        'senatorial district', max_length=300, null=True, blank=True)
-    res_add = models.CharField(
-        'residential address', max_length=300, null=True, blank=True)
-    per_res_addr = models.CharField(
-        'permanent residential address', max_length=300, null=True, blank=True)
+    nationality = models.CharField(choices=ns,null=True, blank=True, max_length=300)
+
+    zone = models.ForeignKey(Zone,blank=True, null=True,on_delete=models.CASCADE)
+    state = models.ForeignKey(State,blank=True,null=True, on_delete=models.CASCADE)
+    lga = models.ForeignKey(LGA,blank=True, null=True, on_delete=models.CASCADE)
+    senate_district = models.ForeignKey(SenateDistrict, null=True, blank=True, on_delete=models.CASCADE)
+
+    res_add = models.CharField('residential address', max_length=300, null=True, blank=True)
+    per_res_addr = models.CharField('permanent residential address', max_length=300, null=True, blank=True)
     spouse = models.CharField(max_length=300, null=True, blank=True)
     hobbies = models.CharField(max_length=300, null=True, blank=True)
-    faith = (('ISLAM', 'ISLAM'), ('CHRISTIANITY', 'CHRISTIANITY'),
-             ('TRADITIONAL', 'TRADITIONAL'))
-    religion = models.CharField(
-        choices=faith, max_length=100, null=True, blank=True)
+    faith = (('ISLAM', 'ISLAM'), ('CHRISTIANITY', 'CHRISTIANITY'),('TRADITIONAL', 'TRADITIONAL'))
+    religion = models.CharField(choices=faith, max_length=100, null=True, blank=True)
     qual = models.CharField(max_length=150, null=True, blank=True)
-    nofc = models.PositiveIntegerField(
-        'number of children', null=True, blank=True)
-    nameoc = models.TextField(
-        'name of children', max_length=400, null=True, blank=True)
-    doboc = models.TextField('date of birth of children',
-                             max_length=300, null=True, blank=True)
-    fnok_name = models.CharField(
-        'first next of kin name', max_length=300, null=True, blank=True)
-    fnok_phone = models.PositiveIntegerField(
-        'first next of kin phone', null=True, blank=True)
-    fnok_email = models.EmailField(
-        'first next of kin email', max_length=300, null=True, blank=True)
-    fnok_addr = models.CharField(
-        'first next of kin address', max_length=300, null=True, blank=True)
-    fnok_rel = models.CharField(
-        'relationship with first next of kin', max_length=300, null=True, blank=True)
-    fnok_photo = models.ImageField(
-        'first next of kin photo', null=True, blank=True)
-    snok_name = models.CharField(
-        'second next of kin name', max_length=300, null=True, blank=True)
-    snok_phone = models.PositiveIntegerField(
-        'second next of kin phone', null=True, blank=True)
-    snok_email = models.EmailField(
-        'second next of kin email', max_length=300, null=True, blank=True)
-    snok_addr = models.CharField(
-        'second next of address', max_length=300, null=True, blank=True)
-    snok_rel = models.CharField(
-        'second next of kin', max_length=300, null=True, blank=True)
-    snok_photo = models.ImageField(
-        'second next of kin photo', null=True, blank=True)
+    nofc = models.PositiveIntegerField('number of children', null=True, blank=True)
+    nameoc = models.TextField('name of children', max_length=400, null=True, blank=True)
+    doboc = models.TextField('date of birth of children',max_length=300, null=True, blank=True)
+    fnok_name = models.CharField('first next of kin name', max_length=300, null=True, blank=True)
+    fnok_phone = models.PositiveIntegerField('first next of kin phone', null=True, blank=True)
+    fnok_email = models.EmailField('first next of kin email', max_length=300, null=True, blank=True)
+    fnok_addr = models.CharField('first next of kin address', max_length=300, null=True, blank=True)
+    fnok_rel = models.CharField('relationship with first next of kin', max_length=300, null=True, blank=True)
+    fnok_photo = models.ImageField('first next of kin photo', null=True, blank=True)
+    snok_name = models.CharField('second next of kin name', max_length=300, null=True, blank=True)
+    snok_phone = models.PositiveIntegerField('second next of kin phone', null=True, blank=True)
+    snok_email = models.EmailField('second next of kin email', max_length=300, null=True, blank=True)
+    snok_addr = models.CharField('second next of address', max_length=300, null=True, blank=True)
+    snok_rel = models.CharField('second next of kin', max_length=300, null=True, blank=True)
+    snok_photo = models.ImageField('second next of kin photo', null=True, blank=True)
     created = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

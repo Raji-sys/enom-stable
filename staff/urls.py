@@ -86,4 +86,11 @@ urlpatterns = [
 
     path('logout/', CustomLogoutView.as_view(), name='logout'),
     path('', include('django.contrib.auth.urls')),
+    
+    path('get_posts_by_department/<int:department_id>/', views.get_post_by_department, name='get_posts_by_department'),
+    
+    path('get_states_by_zone/<int:zone_id>/', views.get_states_by_zone, name='get_states_by_zone'),
+    path('get_lgas_by_state/<int:state_id>/', views.get_lgas_by_state, name='get_lgas_by_state'),
+    path('get_senate_districts_by_lga/<int:lga_id>/', views.get_senate_districts_by_lga, name='get_senate_districts_by_lga'),
+
 ]

@@ -21,9 +21,9 @@ class DepartmentAdmin(admin.ModelAdmin):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['name','created']
-    list_filter = ['name']
-    search_fields = ['name']
+    list_display = ['name','department','created']
+    list_filter = ['name','department']
+    search_fields = ['name','department']
     list_per_page = 10
 
 
@@ -34,11 +34,50 @@ class DepartmentDutiesAdmin(admin.ModelAdmin):
     search_fields = ['name','department']
     list_per_page = 10
 
-# class ProfileForm(forms.ModelForm):
-#     pass
-    # class Meta:
-    #     model = Profile
-    #     fields = []  
+
+@admin.register(Zone)
+class ZoneAdmin(admin.ModelAdmin):
+    list_display = ['name']
+    list_filter = ['name']
+    search_fields = ['name']
+    list_per_page = 10
+
+@admin.register(State)
+class StateAdmin(admin.ModelAdmin):
+    list_display = ['name', 'zone']
+    list_filter = ['zone', 'name']
+    search_fields = ['name', 'zone__name']
+    list_per_page = 10
+
+@admin.register(LGA)
+class LGAAdmin(admin.ModelAdmin):
+    list_display = ['name', 'state', 'get_zone']
+    list_filter = ['state', 'state__zone']
+    search_fields = ['name', 'state__name', 'state__zone__name']
+    list_per_page = 10
+
+    def get_zone(self, obj):
+        return obj.state.zone
+    get_zone.short_description = 'Zone'
+    get_zone.admin_order_field = 'state__zone'
+
+@admin.register(SenateDistrict)
+class SenateDistrictAdmin(admin.ModelAdmin):
+    list_display = ['name', 'lga', 'get_state', 'get_zone']
+    list_filter = ['lga__state__zone', 'lga__state', 'lga']
+    search_fields = ['name', 'lga__name', 'lga__state__name', 'lga__state__zone__name']
+    list_per_page = 10
+
+    def get_state(self, obj):
+        return obj.lga.state
+    get_state.short_description = 'State'
+    get_state.admin_order_field = 'lga__state'
+
+    def get_zone(self, obj):
+        return obj.lga.state.zone
+    get_zone.short_description = 'Zone'
+    get_zone.admin_order_field = 'lga__state__zone'
+
 
 @admin.register(Profile)
 class ProfileAdmin(ImportMixin,admin.ModelAdmin):
