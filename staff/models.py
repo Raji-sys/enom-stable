@@ -9,6 +9,7 @@ from django.utils import timezone
 from datetime import datetime
 
 
+
 class Department(models.Model):
     name = models.CharField(max_length=200, unique=True,null=True, blank=True)
     head = models.CharField(max_length=200, unique=True,null=True, blank=True)
@@ -175,17 +176,19 @@ class TypeOfAppt(models.Model):
         return self.name
 
 
-class NatureLeave(models.Model):
+class LeaveTypes(models.Model):
     name = models.CharField(max_length=200, unique=True,null=True, blank=True)
-    created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    
+
+    class Meta:
+        verbose_name_plural='type of leaves'
+
     def user_count(self):
         return self.governmentappointment_set.count()
 
     
     def get_absolute_url(self):
-        return reverse('nature_details', args=[self.pk])
+        return reverse('nature_of_leave_details', args=[self.pk])
 
     def __str__(self):
         return self.name
@@ -202,39 +205,45 @@ class Profile(models.Model):
     gender = models.CharField(choices=sex, max_length=10, null=True, blank=True)
     dob = models.DateField('date of birth', null=True, blank=True)
     phone = models.PositiveIntegerField(null=True, blank=True, unique=True)
+
     m_status = (('MARRIED', 'MARRIED'), ('SINGLE', 'SINGLE'), ('DIVORCED', 'DIVORCED'),('DIVORCEE', 'DIVORCEE'), ('WIDOW', 'WIDOW'), ('WIDOWER', 'WIDOWER'))
     marital_status = models.CharField(choices=m_status, max_length=100, null=True, blank=True)
     place_of_birth = models.CharField(max_length=150, null=True, blank=True)
     ns = (('NIGERIAN', 'NIGERIAN'), ('NON-CITIZEN', 'NON-CITIZEN'))
     nationality = models.CharField(choices=ns,null=True, blank=True, max_length=300)
 
-    zone = models.ForeignKey(Zone,blank=True, null=True,on_delete=models.CASCADE)
-    state = models.ForeignKey(State,blank=True,null=True, on_delete=models.CASCADE)
-    lga = models.ForeignKey(LGA,blank=True, null=True, on_delete=models.CASCADE)
+    zone = models.ForeignKey(Zone, blank=True, null=True,on_delete=models.CASCADE)
+    state = models.ForeignKey(State, blank=True,null=True, on_delete=models.CASCADE)
+    lga = models.ForeignKey(LGA, blank=True, null=True, on_delete=models.CASCADE)
     senate_district = models.ForeignKey(SenateDistrict, null=True, blank=True, on_delete=models.CASCADE)
 
     res_add = models.CharField('residential address', max_length=300, null=True, blank=True)
     per_res_addr = models.CharField('permanent residential address', max_length=300, null=True, blank=True)
     spouse = models.CharField(max_length=300, null=True, blank=True)
     hobbies = models.CharField(max_length=300, null=True, blank=True)
+
     faith = (('ISLAM', 'ISLAM'), ('CHRISTIANITY', 'CHRISTIANITY'),('TRADITIONAL', 'TRADITIONAL'))
     religion = models.CharField(choices=faith, max_length=100, null=True, blank=True)
     qual = models.CharField(max_length=150, null=True, blank=True)
+
     nofc = models.PositiveIntegerField('number of children', null=True, blank=True)
     nameoc = models.TextField('name of children', max_length=400, null=True, blank=True)
     doboc = models.TextField('date of birth of children',max_length=300, null=True, blank=True)
+
     fnok_name = models.CharField('first next of kin name', max_length=300, null=True, blank=True)
     fnok_phone = models.PositiveIntegerField('first next of kin phone', null=True, blank=True)
     fnok_email = models.EmailField('first next of kin email', max_length=300, null=True, blank=True)
     fnok_addr = models.CharField('first next of kin address', max_length=300, null=True, blank=True)
     fnok_rel = models.CharField('relationship with first next of kin', max_length=300, null=True, blank=True)
     fnok_photo = models.ImageField('first next of kin photo', null=True, blank=True)
+
     snok_name = models.CharField('second next of kin name', max_length=300, null=True, blank=True)
     snok_phone = models.PositiveIntegerField('second next of kin phone', null=True, blank=True)
     snok_email = models.EmailField('second next of kin email', max_length=300, null=True, blank=True)
     snok_addr = models.CharField('second next of address', max_length=300, null=True, blank=True)
     snok_rel = models.CharField('second next of kin', max_length=300, null=True, blank=True)
     snok_photo = models.ImageField('second next of kin photo', null=True, blank=True)
+
     created = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -296,13 +305,10 @@ class Qualification(models.Model):
 
 
 class ProfessionalQualification(models.Model):
-    user = models.ForeignKey(
-        User, null=True, on_delete=models.CASCADE, related_name='pro_qual')
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='pro_qual')
     institute = models.CharField(max_length=300, null=True, blank=True)
-    inst_address = models.CharField(
-        'institute address', null=True, max_length=300, blank=True)
-    qual_obtained = models.CharField(
-        'qualification obtained', null=True, max_length=300, blank=True)
+    inst_address = models.CharField('institute address', null=True, max_length=300, blank=True)
+    qual_obtained = models.CharField('qualification obtained', null=True, max_length=300, blank=True)
     date_obtained = models.DateField(null=True, blank=True)
     created = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -353,6 +359,7 @@ class GovernmentAppointment(models.Model):
 
 class Promotion(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='promotion')
+    department = models.ForeignKey(Department,blank=True, max_length=300, null=True,on_delete=models.CASCADE)
     cpost = models.ForeignKey(Post,blank=True, max_length=300, null=True,on_delete=models.CASCADE)
     govapp = models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='progovapp', null=True)
     prom_date = models.DateField('promotion date', null=True, blank=True)
@@ -390,47 +397,69 @@ class Discipline(models.Model):
 
 
 
-
 class Leave(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='leave',null=True)
-    nature_of_leave = models.ForeignKey(NatureLeave, on_delete=models.CASCADE,null=True)
-    year = models.PositiveIntegerField(blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='leave', null=True)
+    nature_of_leave = models.ForeignKey(LeaveTypes, on_delete=models.CASCADE, null=True)
+    year = models.PositiveIntegerField(default=timezone.now().year)
     start_date = models.DateField(null=True)
     total_days = models.PositiveIntegerField(blank=True, null=True)
     balance = models.PositiveIntegerField(blank=True, null=True)
-    granted_days = models.PositiveIntegerField('number of days granted',null=True)
-    status = models.CharField(max_length=300, blank=True,null=True)
+    granted_days = models.PositiveIntegerField('number of days granted', null=True)
+    status = models.CharField(max_length=300, blank=True, null=True)
     is_leave_over = models.BooleanField(default=False)
-    comment = models.TextField('comments if any', blank=True,null=True)
+    comment = models.TextField('comments if any', blank=True, null=True)
     created = models.DateTimeField('date added', auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        return reverse('lv_details', args=[self.user_id])
+        return reverse('profile_details', kwargs={'username': self.user.username})
 
     def __str__(self):
         return f"{self.user.last_name} {self.user.first_name}" if self.user else ""
 
-    @property
-    def remain(self):
-        if self.total_days is not None and self.granted_days is not None:
-            return max(0, self.total_days - self.granted_days)
-        return None
-
     def clean(self):
         super().clean()
-        r = self.remain
-        if r is not None:
-            if r <= 0:
-                raise ValidationError('Your leave is over.')
-            elif self.granted_days == 0:
-                raise ValidationError('No days are granted.')
+        
+        if self.start_date and self.start_date < timezone.now().date():
+            raise ValidationError({'start_date': 'Start date cannot be in the past.'})
+
+        if self.nature_of_leave.name.upper() == 'Annual':
+            annual_leaves = Leave.objects.filter(
+                user=self.user,
+                year=self.year,
+                nature_of_leave__name__iexact='annual'
+            )
+            if not self.pk and annual_leaves.count() >= 2:
+                raise ValidationError('You cannot take annual leave more than twice a year.')
+
+        if self.granted_days is not None:
+            if self.granted_days <= 0:
+                raise ValidationError({'granted_days': 'Granted days must be greater than 0.'})
+            if self.balance is not None and self.granted_days > self.balance:
+                raise ValidationError({'granted_days': 'Granted days cannot exceed the available balance.'})
 
     def save(self, *args, **kwargs):
+        if not self.pk:  # New instance
+            last_leave = Leave.objects.filter(
+                user=self.user,
+                year=self.year,
+                nature_of_leave=self.nature_of_leave
+            ).order_by('-created').first()
+
+            if last_leave:
+                self.balance = last_leave.remain
+                self.total_days = last_leave.remain
+            else:
+                self.balance = self.total_days
+
         self.full_clean()
         super().save(*args, **kwargs)
-        if self.over != "your leave is over":
-            self.clear_leave_over()
+
+    @property
+    def remain(self):
+        if self.balance is not None and self.granted_days is not None:
+            return max(0, self.balance - self.granted_days)
+        return None
 
     @property
     def return_on(self):
@@ -453,11 +482,35 @@ class Leave(models.Model):
             self.is_leave_over = False
             self.save(update_fields=['is_leave_over'])
 
+    @property
+    def leave_status(self):
+        if self.nature_of_leave.name == 'Annual':
+            annual_leaves = Leave.objects.filter(
+                user=self.user,
+                year=self.year,
+                nature_of_leave__name__iexact='annual'
+            ).count()
+            
+            if annual_leaves >= 2:
+                return "You have already taken the maximum annual leaves for this year."
+        
+        if self.is_leave_over:
+            return "Your leave is over."
+        elif self.over == "on leave":
+            days_left = (self.return_on - timezone.now().date()).days
+            if days_left <= 3:
+                return f"Your leave is about to finish in {days_left} day{'s' if days_left > 1 else ''}."
+            return f"You are currently on leave. {days_left} days remaining."
+        elif self.nature_of_leave.name== 'Annual':
+            return f"Your leave balance is {self.remain} days."
+        elif not self.nature_of_leave.name== 'Annual':
+            return f" "
 
 
 class ExecutiveAppointment(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='execapp')
-    designation = models.CharField(null=True, max_length=300, blank=True)
+    department = models.ForeignKey(Department,blank=True, max_length=300, null=True,on_delete=models.CASCADE)
+    cpost = models.ForeignKey(Post,blank=True, max_length=300, null=True,on_delete=models.CASCADE)
     govapp = models.ForeignKey(GovernmentAppointment, on_delete=models.CASCADE, related_name='execgovapp', null=True)
     date = models.DateField(null=True, blank=True)
     status = models.CharField(null=True, max_length=300, blank=True)

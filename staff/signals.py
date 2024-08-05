@@ -77,14 +77,14 @@ def increment_step(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Promotion)
 def update_govapp(sender, instance, **kwargs):
-    gov_appointment = instance.user.governmentappointment
+    gov_appointment = instance.user.govapp
     gov_appointment.cpost = instance.cpost
     gov_appointment.save()
 
 
 @receiver(post_save, sender=ExecutiveAppointment)
 def update_govapp(sender, instance, **kwargs):
-    gov_app = instance.user.governmentappointment if instance.user else None
+    gov_app = instance.user.govapp if instance.user else None
     if gov_app:
-        gov_app.cpost = instance.designation
+        gov_app.cpost = instance.cpost
         gov_app.save()

@@ -24,7 +24,7 @@ class UserForm(forms.ModelForm):
         for field in self.fields.values():
             # field.required=True
             field.widget.attrs.update(
-                {'class': 'text-center mt-2 text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
+                {'class': 'text-center mt-1 text-xs focus:outline-none border-b-2 border-cyan-700 text-cyan-800 p-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
 
 
 class ProfileForm(forms.ModelForm):
@@ -52,7 +52,7 @@ class ProfileForm(forms.ModelForm):
         for field in self.fields.values():
             # field.required=True
             field.widget.attrs.update(
-                {'class': 'text-center mt-2 text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
+                {'class': 'text-center mt-1 text-xs focus:outline-none border-b-2 border-cyan-700 text-cyan-800 p-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
 
         if 'zone' in self.data:
             try:
@@ -107,7 +107,7 @@ class GovtAppForm(forms.ModelForm):
         for field in self.fields.values():
             # field.required = True
             field.widget.attrs.update({
-            'class': 'text-center text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'
+            'class': 'text-center text-xs focus:outline-none border-b-2 border-cyan-700 text-cyan-800 p-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'
         })
 
 
@@ -125,7 +125,7 @@ class QualForm(forms.ModelForm):
         for field in self.fields.values():
             # field.required=True
             field.widget.attrs.update(
-                {'class': 'text-center mt-2 text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
+                {'class': 'text-center mt-1 text-xs focus:outline-none border-b-2 border-cyan-700 text-cyan-800 p-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
 
 
 class ProQualForm(forms.ModelForm):
@@ -143,13 +143,13 @@ class ProQualForm(forms.ModelForm):
         for field in self.fields.values():
             # field.required=True
             field.widget.attrs.update(
-                {'class': 'text-center mt-2 text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
+                {'class': 'text-center mt-1 text-xs focus:outline-none border-b-2 border-cyan-700 text-cyan-800 p-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
 
 
 class PromotionForm(forms.ModelForm):
     class Meta:
         model = Promotion
-        fields = ['cpost', 'prom_date', 'gl', 'step', 'inc_date', 'conf_date']
+        fields = ['department','cpost', 'prom_date', 'gl', 'step', 'inc_date', 'conf_date']
 
         widgets = {
             'prom_date': forms.DateInput(attrs={'type': 'date'}),
@@ -162,7 +162,7 @@ class PromotionForm(forms.ModelForm):
         for field in self.fields.values():
             # field.required=True
             field.widget.attrs.update(
-                {'class': 'text-center mt-2 text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
+                {'class': 'text-center mt-1 text-xs focus:outline-none border-b-2 border-cyan-700 text-cyan-800 p-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
 
 
 class DisciplineForm(forms.ModelForm):
@@ -179,7 +179,7 @@ class DisciplineForm(forms.ModelForm):
         for field in self.fields.values():
             # field.required=True
             field.widget.attrs.update(
-                {'class': 'text-center mt-2 text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
+                {'class': 'text-center mt-1 text-xs focus:outline-none border-b-2 border-cyan-700 text-cyan-800 p-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
 
 
 class LeaveForm(forms.ModelForm):
@@ -187,36 +187,46 @@ class LeaveForm(forms.ModelForm):
         model = Leave
         fields = ['nature_of_leave', 'year', 'start_date',
                   'total_days', 'granted_days', 'status', 'comment']
-
         widgets = {
             'start_date': forms.DateInput(attrs={'type': 'date'}),
         }
 
     def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
         super(LeaveForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
-            # field.required=True
-            field.widget.attrs.update(
-                {'class': 'text-center mt-2 text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
+            field.widget.attrs.update({
+                'class': 'text-center mt-1 text-xs focus:outline-none border-b-2 border-cyan-700 text-cyan-800 p-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'
+            })
 
     def clean(self):
         cleaned_data = super().clean()
+        nature_of_leave = cleaned_data.get('nature_of_leave')
+        year = cleaned_data.get('year')
         granted_days = cleaned_data.get('granted_days')
-        total_days = cleaned_data.get('total_days')
 
-        if granted_days and total_days and granted_days > total_days:
-            raise forms.ValidationError("Granted days cannot be greater than total days")
+        if nature_of_leave and nature_of_leave.name.upper() == 'ANNUAL':
+            existing_leaves = Leave.objects.filter(
+                user=self.user,
+                year=year,
+                nature_of_leave__name__iexact='annual'
+            )
+            if existing_leaves.count() >= 2:
+                raise ValidationError('You cannot take annual leave more than twice a year.')
 
-        if granted_days and total_days:
-            remain = self.instance.remain
-            if remain is not None and remain < granted_days:
-                raise forms.ValidationError(f"Granted days ({granted_days}) cannot be greater than remaining days ({remain}).")
+            last_leave = existing_leaves.order_by('-created').first()
+            if last_leave:
+                remaining_days = last_leave.remain
+                if granted_days > remaining_days:
+                    raise ValidationError(f'You only have {remaining_days} days remaining for this year.')
+
         return cleaned_data
+    
 
 class ExecappForm(forms.ModelForm):
     class Meta:
         model = ExecutiveAppointment
-        fields = ['designation', 'date', 'status']
+        fields = ['department','cpost', 'date', 'status']
 
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
@@ -227,7 +237,7 @@ class ExecappForm(forms.ModelForm):
         for field in self.fields.values():
             # field.required=True
             field.widget.attrs.update(
-                {'class': 'text-center mt-2 text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
+                {'class': 'text-center mt-1 text-xs focus:outline-none border-b-2 border-cyan-700 text-cyan-800 p-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
 
 
 class RetireForm(forms.ModelForm):
@@ -244,4 +254,4 @@ class RetireForm(forms.ModelForm):
         for field in self.fields.values():
             # field.required=True
             field.widget.attrs.update(
-                {'class': 'text-center mt-2 text-xs focus:outline-none border-b-2 border-cyan-900 text-cyan-950 py-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})
+                {'class': 'text-center mt-1 text-xs focus:outline-none border-b-2 border-cyan-700 text-cyan-800 p-2 rounded shadow-sm shadow-black hover:border-cyan-700 focus:border-cyan-700'})

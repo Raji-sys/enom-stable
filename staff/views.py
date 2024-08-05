@@ -26,6 +26,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 User = get_user_model()
 from django.db.models import Prefetch
+from django.db import transaction
 
 
 
@@ -414,15 +415,6 @@ class UpdateUserView(UpdateView):
         return self.render_to_response(self.get_context_data(form=form))
 
 
-# def get_senate_lga_state_zone(request, lga_id,state_id,zone_id):
-#     senates = SenateDistrict.objects.filter(lga_id=lga_id)
-#     lgas = LGA.objects.filter(state_id=state_id)
-#     states = State.objects.filter(zone_id=zone_id)
-#     senate_list = [{'id': senate.id, 'name': senate.name} for senate in senates]
-#     lga_list = [{'id': lga.id, 'name': lga.name} for lga in lgas]
-#     state_list = [{'id': state.id, 'name': state.name} for state in states]
-#     return JsonResponse({'senates': senate_list},{'lgas':lga_list},{'states':state_list})
-
 def get_states_by_zone(request, zone_id):
     states = State.objects.filter(zone_id=zone_id)
     state_list = [{'id': state.id, 'name': state.name} for state in states]
@@ -529,6 +521,9 @@ class ProfileDetailView(DetailView):
         }
 
         context.update({form_name: form_class() for form_name, form_class in form_classes.items()})
+ # Add leave status to the context
+        current_leave = Leave.objects.filter(user=user, year=timezone.now().year).last()
+        context['leave_status'] = current_leave.leave_status if current_leave else "No leave taken this year."
 
         return context
 
@@ -792,35 +787,50 @@ class LeaveCreateView(CreateView):
     form_class = LeaveForm
     template_name = 'staff/leave.html'
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
     def form_valid(self, form):
         if self.request.user.is_superuser:
             username_from_url = self.kwargs.get('username')
             user = get_object_or_404(User, username=username_from_url)
-            # form.instance.user = user
         else:
-            # form.instance.user = self.request.user
-            user=self.request.user
+            user = self.request.user
         
         form.instance.user = user
-        nature=form.cleaned_data.get('nature')
-        year=form.cleaned_data.get('year')
         
-        if nature == 'ANNUAL':
-            existing_leave_count = Leave.objects.filter(user=user, year=year).count()
-            if existing_leave_count >= 2:
-                form.add_error('year', 'Only two leaves are allowed per year')
-                return self.form_invalid(form)
+        try:
+            instance = form.save(commit=False)
+            
+            existing_leaves = Leave.objects.filter(
+                user=user,
+                year=instance.year,
+                nature_of_leave=instance.nature_of_leave
+            )
+            
+            if existing_leaves.exists():
+                last_leave = existing_leaves.latest('created')
+                instance.balance = last_leave.remain
+                instance.total_days = last_leave.remain
+            else:
+                instance.balance = instance.total_days
+            
+            instance.save()
+            
+            messages.success(self.request, 'Leave Added Successfully')
+            return super().form_valid(form)
+        except ValidationError as e:
+            for error in e.messages:
+                form.add_error(None, error)
+            return self.form_invalid(form)
 
-            previous_leave = Leave.objects.filter(user=user, year=year).first()
-            if previous_leave:
-                remaining_days = previous_leave.total_days - previous_leave.granted_days
-                form.instance.total_days = remaining_days
-                form.add_error('total_days', f'You have {remaining_days} days remaining.')
+    def form_invalid(self, form):
+        messages.error(self.request, 'Error Adding Leave. Please check the form for errors.')
+        return super().form_invalid(form)
 
-        return super().form_valid(form)
-    
     def get_success_url(self):
-        messages.success(self.request, 'Leave Added Successfully')
         return reverse_lazy('profile_details', kwargs={'username': self.kwargs['username']})
 
 
@@ -829,6 +839,15 @@ class LeaveUpdateView(UpdateView):
     model = Leave
     form_class = LeaveForm
     template_name = 'staff/leave-update.html'
+
+    def form_valid(self, form):
+        try:
+            return super().form_valid(form)
+        except ValidationError as e:
+            for field, errors in e.message_dict.items():
+                for error in errors:
+                    form.add_error(field, error)
+            return self.form_invalid(form)
 
     def get_success_url(self):
         messages.success(self.request, 'Leave Updated Successfully')

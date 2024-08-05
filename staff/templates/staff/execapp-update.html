@@ -1,32 +1,17 @@
 {% extends "base.html" %}
  {% block title %}executive appointment update form{% endblock%} 
  {% block content %}
- <div class="shadow-2xl shadow-cyan-900 text-sm m-4 rounded-lg">
+ <div class="shadow-sm w-fit mx-auto shadow-cyan-900 text-xs rounded-lg">
   <div class="font-semibold uppercase text-sm shadow-cyan-900 rounded-xl bg-white p-4">
 <section class=" text-center  border-cyan-700 text-sm">
-        <h2 class="bg-cyan-800 text-white uppercase max-sm:text-lg text-xl text-center border-b-2 border-t-2 border-cyan-900 p-2 rounded-3xl mx-auto">executive appointment update form</h2> 
-            {% for message in messages %}
-      <div class="mt-4">
-        {%if message.success %}
-           <div class="uk-alert-success rounded-2xl text-sm" uk-alert>
-            <a href class="uk-alert-close font-bold" uk-close></a>
-            <p class="text-green-700 font-semibold">{{ message }}</p>
-            </div>
-            {%else%}
-            <div class="uk-alert-success rounded-2xl text-sm" uk-alert>
-            <a href class="uk-alert-close font-bold" uk-close></a>
-            <p class="text-rose-700 font-semibold">{{ message }}</p>
-            </div> 
-        {% endif %}
-      </div>
-      {% endfor %}
+        <h2 class="bg-cyan-800 text-white uppercase text-xs w-fit text-center border-b-2 border-t-2 border-cyan-900 p-2 rounded-3xl mx-auto">executive appointment update form</h2> 
       <div class="flex justify-center text-md text-red-500">
           {% if form.errors %}
           {{form.errors}}
           {% endif %}
         </div>
   </section>
-<form method="post" enctype="multipart/form-data" class="flex flex-col">
+<form method="post" enctype="multipart/form-data" class="flex flex-col text-xs">
   {% csrf_token %}
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mx-auto p-2">  
     {% for field in form %}
@@ -36,7 +21,7 @@
     </div>
     {%endfor%}
   </div>
-<div class="text-center mt-2">
+<div class="text-center">
     <button type="submit" class="focus:opacity-10 uppercase border-b-4 border-gray-500 focus:border-cyan-600 bg-gradient-to-r
     from-cyan-900 via-cyan-600 to-cyan-900 text-white py-2 px-2 rounded shadow-lg hover:border-cyan-700 ">Submit</button>
     <a href="{%url 'profile_details' username=object.user.username %}" class="focus:opacity-10 uppercase border-b-4 border-gray-500 focus:border-rose-600 bg-gradient-to-r
@@ -45,5 +30,34 @@
   </form>
   </div>
   </div>
+  <script>
+    function initializePage() {
+        // Load posts function (as before)
+        function load_posts() {
+        const departmentId = document.getElementById('id_department').value;
+        const url = `/get_posts_by_department/${departmentId}/`;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const postSelect = document.getElementById('id_cpost');
+                postSelect.innerHTML = ''; // Clear existing options
+                data.posts.forEach(post => {
+                    const option = document.createElement('option');
+                    option.value = post.id;
+                    option.text = post.name;
+                    postSelect.add(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    const departmentField = document.getElementById('id_department');
+    if (departmentField) {
+        departmentField.addEventListener('change', load_posts);
+    }
+}
+
+window.addEventListener('load', initializePage);
+</script>
 {% endblock %}
 

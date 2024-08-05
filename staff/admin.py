@@ -104,7 +104,6 @@ class GovappForm(forms.ModelForm):
 
 @admin.register(GovernmentAppointment)
 class GovappAdmin(ImportMixin,admin.ModelAdmin):
-    form=GovappForm
     readonly_fields=()
     exclude=()
     list_display = ['user','full_name']
@@ -113,40 +112,28 @@ class GovappAdmin(ImportMixin,admin.ModelAdmin):
     list_per_page = 10
 
 
-class PromotionForm(forms.ModelForm):
-    pass
 
 @admin.register(Promotion)
 class PromotionAdmin(ImportMixin,admin.ModelAdmin):
     pass
 
-
-class LeaveForm(forms.ModelForm):
-    pass
-
-
 @admin.register(Leave)
 class LeaveAdmin(ImportMixin,admin.ModelAdmin):
     pass
 
-
-class DisciplineForm(forms.ModelForm):
-    pass
+@admin.register(LeaveTypes)
+class LeaveTypesAdmin(ImportMixin,admin.ModelAdmin):
+    list_display = ['name','updated']
+    list_filter = ['name']
+    search_fields = ['name']
+    list_per_page = 10
 
 @admin.register(Discipline)
 class DisciplineAdmin(ImportMixin,admin.ModelAdmin):
     pass
 
-
-class ExecappForm(forms.ModelForm):
-    pass
-
 @admin.register(ExecutiveAppointment)
 class ExecappAdmin(ImportMixin,admin.ModelAdmin):
-    pass
-
-
-class ReitrementForm(forms.ModelForm):
     pass
 
 @admin.register(Retirement)

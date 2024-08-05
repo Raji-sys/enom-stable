@@ -1,7 +1,5 @@
 {%extends "base.html" %}
-
 {% block title %}profile{% endblock%}
-
 {% block content %}
 <div class=" mx-auto">
   <div class="max-w-xl mx-auto bg-gradient-to-r from-cyan-50 to-blue-50 rounded-xl shadow-lg p-2 m-2 mb-4">
@@ -20,7 +18,6 @@
   {% endif %}
 </div>
       <ul class="uk-flex-center mt-2 text-xs text-white rounded-xl" uk-tab>
-
       <li>
         <a class="p-2 shadow-sm shadow-black justify-center bg-teal-700  text-xs rounded-xl" href="#">
       <i class="fa-solid fa-circle-info fa-xl text-white"></i>&nbsp;<span class="text-white text-xs">PERSONAL INFO</span></a>
@@ -67,37 +64,37 @@
   <div class="text-gray-800 max-sm:p-2 p-1 rounded-xl mx-auto">
     <table class="w-full mt-0 bg-white shadow-sm overflow-hidden">
       <thead>
-        <tr class="text-xs bg-teal-800 text-white text-center">
-          <th scope="col" class="border-2 border-cyan-800 p-2">FILE NUMBER</th>
-        <th scope="col" class="border-2 border-cyan-800 p-2 ">SEX</th>
-        <th scope="col" class="border-2 border-cyan-800 p-2 ">DATE OF BIRTH</th>
-  <th scope="col" class="border-2 border-cyan-800 p-2 ">PHONE NUMBER</th>
-  <th scope="col" class="border-2 border-cyan-800 p-2 ">MARITAL STATUS</th>
-  <th scope="col" class="border-2 border-cyan-800 p-2 ">STATE OF ORIGIN</th>
-  <th scope="col" class="border-2 border-cyan-800 p-2 ">LGA</th>
-  <th scope="col" class="border-2 border-cyan-800 p-2 ">SENATORIAL DISTRICT</th>
-  <th scope="col" class="border-2 border-cyan-800 p-2 ">RELIGION</th>
-  <th scope="col" class="border-2 border-cyan-800 p-2 ">RESIDENTIAL ADDRESS</th>
-  <th scope="col" class="border-2 border-cyan-800 p-2 ">PERMANENT HOME ADDRESS</th>
-  <th scope="col" class="border-2 border-cyan-800 p-2 ">GEO-POLITICAL ZONE</th>
-  <th scope="col" class="border-2 border-cyan-800 p-2 ">UPDATE</th>  
+  <tr class="text-xs bg-teal-800 text-white text-center">
+  <th scope="col" class="border-2 border-teal-800 p-2">FILE NUMBER</th>
+  <th scope="col" class="border-2 border-teal-800 p-2 ">SEX</th>
+  <th scope="col" class="border-2 border-teal-800 p-2 ">DATE OF BIRTH</th>
+  <th scope="col" class="border-2 border-teal-800 p-2 ">PHONE NUMBER</th>
+  <th scope="col" class="border-2 border-teal-800 p-2 ">MARITAL STATUS</th>
+  <th scope="col" class="border-2 border-teal-800 p-2 ">STATE OF ORIGIN</th>
+  <th scope="col" class="border-2 border-teal-800 p-2 ">LGA</th>
+  <th scope="col" class="border-2 border-teal-800 p-2 ">SENATORIAL DISTRICT</th>
+  <th scope="col" class="border-2 border-teal-800 p-2 ">RELIGION</th>
+  <th scope="col" class="border-2 border-teal-800 p-2 ">RESIDENTIAL ADDRESS</th>
+  <th scope="col" class="border-2 border-teal-800 p-2 ">PERMANENT HOME ADDRESS</th>
+  <th scope="col" class="border-2 border-teal-800 p-2 ">GEO-POLITICAL ZONE</th>
+  <th scope="col" class="border-2 border-teal-800 p-2 ">UPDATE</th>  
 </tr>
 </thead>
 <tbody >
 <tr class="text-xs text-gray-800 text-center">
-<td scope="col" class="border-2 border-cyan-800 p-2">{{profile.file_no|default_if_none:''|upper}}</td>
-<td class="border-2 p-2 border-cyan-800 text-center">{{profile.gender|default_if_none:''|upper}}</td>
-<td class="border-2 p-2 border-cyan-800 text-center">{{profile.dob|date:'d-M-Y'|default_if_none:''|upper}}</td>
-<td class="border-2 p-2 border-cyan-800 text-center">{{profile.phone|default_if_none:''|upper}}</td>
-<td class="border-2 p-2 border-cyan-800 text-center">{{profile.marital_status|default_if_none:''|upper}}</td>
-<td class="border-2 p-2 border-cyan-800 text-center">{{profile.state|default_if_none:''|upper}}</td>
-<td class="border-2 p-2 border-cyan-800 text-center">{{profile.lga|default_if_none:''|upper}}</td>
-<td class="border-2 p-2 border-cyan-800 text-center">{{profile.senate_district|default_if_none:''|upper}}</td>
-<td class="border-2 p-2 border-cyan-800 text-center">{{profile.religion|default_if_none:''|upper}}</td>
-<td class="border-2 p-2 border-cyan-800 text-center">{{profile.res_add|default_if_none:''|upper}}</td>
-<td class="border-2 p-2 border-cyan-800 text-center">{{profile.per_res_addr|default_if_none:''|upper}}</td>
-<td class="border-2 p-2 border-cyan-800 text-center">{{profile.zone|default_if_none:''|upper}}</td>
-<td class="border-r-2 border-cyan-800 border-b-2 flex flex-row justify-center p-7 gap-2"> 
+<td scope="col" class="border-2 border-teal-800 p-2">{{profile.file_no|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-teal-800 text-center">{{profile.gender|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-teal-800 text-center">{{profile.dob|date:'d-M-Y'|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-teal-800 text-center">{{profile.phone|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-teal-800 text-center">{{profile.marital_status|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-teal-800 text-center">{{profile.state|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-teal-800 text-center">{{profile.lga|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-teal-800 text-center">{{profile.senate_district|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-teal-800 text-center">{{profile.religion|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-teal-800 text-center">{{profile.res_add|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-teal-800 text-center">{{profile.per_res_addr|default_if_none:''|upper}}</td>
+<td class="border-2 p-2 border-teal-800 text-center">{{profile.zone|default_if_none:''|upper}}</td>
+<td class="border-r-2 border-teal-800 border-b-2 flex flex-row justify-center p-7 gap-2"> 
   <a class="justify-center text-cyan-900 " href ="{% url 'update_profile' profile.pk %}"><i class="fa-solid fa-square-pen fa-xl"></i></a>
   <a class="justify-center text-blue-800 " href="{%url 'update_user' profile.user.pk %}"><i class="fa-solid fa-user-circle fa-xl"></i></a>
 </td>
@@ -113,16 +110,16 @@
         <div  class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
         <table class="w-full mt-0 bg-white shadow-sm  overflow-hidden">
           <tr class="text-xs bg-orange-600 text-white">
-            <th scope="col" class="border-2 border-orange-800 p-2">department</th>
-            <th scope="col" class="border-2 border-orange-800 p-2 ">ippis</th>
-            <th scope="row" class="border-2 border-orange-800 p-2 ">date of first appointment</th>
-    <th scope="col" class="border-2 border-orange-800 p-2 ">type of appointment</th>
-    <th scope="col" class="border-2 border-orange-800 p-2 ">current post</th>
-    <th scope="col" class="border-2 border-orange-800 p-2 ">salary per annum at first appointment</th>
-    <th scope="col" class="border-2 border-orange-800 p-2 ">salary scale</th>
-    <th scope="col" class="border-2 border-orange-800 p-2 ">grade level</th>
-    <th scope="col" class="border-2 border-orange-800 p-2 ">step</th>
-    <th scope="col" class="border-2 border-orange-800 p-2">update</th>
+            <th scope="col" class="border-2 border-orange-600 p-2">department</th>
+            <th scope="col" class="border-2 border-orange-600 p-2 ">ippis</th>
+            <th scope="row" class="border-2 border-orange-600 p-2 ">date of first appointment</th>
+    <th scope="col" class="border-2 border-orange-600 p-2 ">type of appointment</th>
+    <th scope="col" class="border-2 border-orange-600 p-2 ">current post</th>
+    <th scope="col" class="border-2 border-orange-600 p-2 ">salary per annum at first appointment</th>
+    <th scope="col" class="border-2 border-orange-600 p-2 ">salary scale</th>
+    <th scope="col" class="border-2 border-orange-600 p-2 ">grade level</th>
+    <th scope="col" class="border-2 border-orange-600 p-2 ">step</th>
+    <th scope="col" class="border-2 border-orange-600 p-2">update</th>
   </tr>
   <tbody >
 <tr class="text-xs">
@@ -304,7 +301,7 @@
   <td class="border-2 border-rose-800 p-2 text-center">{{forloop.counter}}</td>
   <td class="border-2 border-rose-800 p-2 text-center">{{d.offense|default_if_none:''}}</td>
   <td class="border-2 border-rose-800 p-2 text-center">{{d.decision|default_if_none:''}}</td>
-  <td class="border-2 border-rose-800 p-2 text-center">{{d.date|date:'d-M-Y'|default_if_none:''}}</td>
+  <td class="border-2 border-rose-800 p-2 text-center">{{d.updated|date:'d-M-Y'|default_if_none:''}}</td>
   <td class="border-2 border-rose-800 p-2 text-center">{{d.comment|default_if_none:''}}</td>
   <td class="border-2 border-rose-800 p-2 text-center">{{d.updated|default_if_none:''|date:'d-M-Y'}}</td>
   <td class="border-r-2 border-rose-800 border-b-2 flex flex-row justify-center p-5 gap-2"> 
@@ -327,41 +324,47 @@
     <li class="">
     <div class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
       <table class="w-full mt-0 bg-white shadow-sm overflow-hidden">
+        <div class="p-2 border-b border-gray-200 text-center">
+          <p class="bg-blue-500 w-fit mx-auto p-2 rounded-xl text-xs text-white">
+            <i class="fa-solid fa-warning fa-xl"></i>
+            {{ leave_status }}</p>
+        </div>
+  
         <div class="text-center">
           <a href="{% url 'leave' username=profile.user.username %}" class=" inline-block p-2">
             <i class="fa-solid fa-plus-circle fa-xl text-amber-600"></i></a>
           </div>
             <thead>
     <tr class="text-xs bg-amber-600 text-white text-center">
-      <th scope="col" class="border-2 border-amber-800 p-2 ">#</th>
-      <th scope="col" class="border-2 border-amber-800 p-2 ">nature of leave</th>
-      <th scope="col" class="border-2 border-amber-800 p-2 ">year</th>
-      <th scope="col" class="border-2 border-amber-800 p-2 ">start date</th>
-      <th scope="col" class="border-2 border-amber-800 p-2 ">total days</th>
-      <th scope="col" class="border-2 border-amber-800 p-2 ">no of days granted</th>
-      <th scope="col" class="border-2 border-amber-800 p-2 ">balance</th>
-      <th scope="col" class="border-2 border-amber-800 p-2 ">return date</th>
-      <th scope="col" class="border-2 border-amber-800 p-2 ">status</th>
-      <th scope="col" class="border-2 border-amber-800 p-2 ">comments</th>
-      <th scope="col" class="border-2 border-amber-800 p-2 ">applied on</th>
-      <th scope="col" class="border-2 p-2 border-amber-800">action</th>
+      <th scope="col" class="border-2 border-amber-600 p-2 ">#</th>
+      <th scope="col" class="border-2 border-amber-600 p-2 ">nature of leave</th>
+      <th scope="col" class="border-2 border-amber-600 p-2 ">year</th>
+      <th scope="col" class="border-2 border-amber-600 p-2 ">start date</th>
+      <th scope="col" class="border-2 border-amber-600 p-2 ">total days</th>
+      <th scope="col" class="border-2 border-amber-600 p-2 ">no of days granted</th>
+      <th scope="col" class="border-2 border-amber-600 p-2 ">balance</th>
+      <th scope="col" class="border-2 border-amber-600 p-2 ">return date</th>
+      <th scope="col" class="border-2 border-amber-600 p-2 ">status</th>
+      <th scope="col" class="border-2 border-amber-600 p-2 ">comments</th>
+      <th scope="col" class="border-2 border-amber-600 p-2 ">applied on</th>
+      <th scope="col" class="border-2 p-2 border-amber-600">action</th>
     </tr>
   </thead>
 <tbody >
-<tr class="p-2 text-xs text-center">
   {% for l in leave %}
-  <td class="border-2 border-amber-800 p-2 text-center">{{forloop.counter}}</td>
-  <td class="border-2 border-amber-800 p-2 text-center">{{l.nature|default_if_none:''}}</td>
-  <td class="border-2 border-amber-800 p-2 text-center">{{l.year|default_if_none:''}}</td>
-  <td class="border-2 border-amber-800 p-2 text-center">{{l.start_date|date:'d-M-Y'|default_if_none:''}}</td>
-  <td class="border-2 border-amber-800 p-2 text-center">{{l.total_days|default_if_none:''}}</td>
-  <td class="border-2 border-amber-800 p-2 text-center">{{l.granted_days|default_if_none:''}}</td>
-  <td class="border-2 border-amber-800 p-2 text-center">{{l.remain|default_if_none:''}}</td>
-  <td class="border-2 border-amber-800 p-2 text-center">{{l.return_on|default_if_none:''}}</td>
-  <td class="border-2 border-amber-800 p-2 text-center">{{l.status|default_if_none:''}}</td>
-  <td class="border-2 border-amber-800 p-2 text-center">{{l.comment|default_if_none:''}}</td>
-  <td class="border-2 border-amber-800 p-2 text-center">{{l.updated|default_if_none:''|date:'d-M-Y'}}<p>signed by: {{request.user}}</p></td>
-  <td class="border-r-2 border-amber-800 border-b-2 flex flex-row justify-center p-9 gap-2"> 
+<tr class="text-xs text-center">
+  <td class="border-2 border-amber-800  text-center">{{forloop.counter}}</td>
+  <td class="border-2 border-amber-800  text-center">{{l.nature_of_leave|default_if_none:''}}</td>
+  <td class="border-2 border-amber-800  text-center">{{l.year|default_if_none:''}}</td>
+  <td class="border-2 border-amber-800  text-center">{{l.start_date|date:'d-M-Y'|default_if_none:''}}</td>
+  <td class="border-2 border-amber-800  text-center">{{l.total_days|default_if_none:''}}</td>
+  <td class="border-2 border-amber-800  text-center">{{l.granted_days|default_if_none:''}}</td>
+  <td class="border-2 border-amber-800  text-center">{{l.remain|default_if_none:''}}</td>
+  <td class="border-2 border-amber-800  text-center">{{l.return_on|default_if_none:''}}</td>
+  <td class="border-2 border-amber-800  text-center">{{l.status|default_if_none:''}}</td>
+  <td class="border-2 border-amber-800  text-center">{{l.comment|default_if_none:''}}</td>
+  <td class="border-2 border-amber-800  text-center">{{l.updated|default_if_none:''|date:'d-M-Y'}}<p>signed by: {{request.user}}</p></td>
+  <td class="border-r-2 border-amber-800 border-b-2 flex flex-row justify-center p-5 gap-2"> 
   <a href="{%url 'leave_update' l.pk %}" class="justify-center text-cyan-900"><i class="fa-solid fa-square-pen fa-xl"></i></a>
 <a href="{% url 'leave_delete' l.pk %}" class="justify-center text-rose-800"><i class="fa-solid fa-trash fa-xl"></i></a>
 </td>
@@ -381,12 +384,11 @@
     <li class="">
 <div class="text-gray-800 max-sm:p-2 p-1 rounded-xl">
   <div class="text-center">
-    <a href="{% url 'execapp' username=profile.user.username %}" class="inline-block p-2 ">
+    <a href="{% url 'execapp' username=profile.user.username %}" class="inline-block p-2 text-blue-700">
       <i class="fa-solid fa-plus-circle fa-xl text-blue-700"></i></a>
   </div>
   <table class="w-full mt-0 bg-white shadow-sm overflow-hidden">
     <thead>
-
       <tr class=" text-xs bg-blue-700 text-white text-center">
         <th scope="col" class="border-2 border-blue-800 p-2 ">#</th>
         <th scope="col" class="border-2 border-blue-800 p-2 ">designation</th>
@@ -397,14 +399,14 @@
       </tr>
     </thead>
     <tbody >
-<tr class="p-2 text-xs text-center">
-  {% for e in execapp %}
+      {% for e in execapp %}
+      <tr class="p-2 text-xs text-center">
   <td class="border-2 border-blue-800 p-2 text-center">{{forloop.counter}}</td>
-  <td class="border-2 border-blue-800 p-2 text-center">{{e.designation|default_if_none:''}}</td>
-  <td class="border-2 border-blue-800 p-2 text-center">{{e.date_of_appointment|date:'d-M-Y'|default_if_none:''}}</td>
+  <td class="border-2 border-blue-800 p-2 text-center">{{e.cpost|default_if_none:''}}</td>
+  <td class="border-2 border-blue-800 p-2 text-center">{{e.date|date:'d-M-Y'|default_if_none:''}}</td>
   <td class="border-2 border-blue-800 p-2 text-center">{{e.status|default_if_none:''}}</td>
   <td class="border-2 border-blue-800 p-2 text-center">{{e.updated|default_if_none:''|date:'d-M-Y'}}</td>
-  <td class="border-r-2 border-blue-800 border-b-2 flex flex-row justify-center p-4 gap-2"> 
+  <td class="border-r-2 border-blue-800 border-b-2 flex flex-row justify-center p-5 gap-2"> 
   <a href="{%url 'execapp_update' e.pk %}" class="justify-center text-cyan-900"><i class="fa-solid fa-square-pen fa-xl"></i></a>
   <a href="{% url 'execapp_delete' e.pk %}" class="justify-center text-rose-800"><i class="fa-solid fa-trash fa-xl"></i></a>
   </td>
