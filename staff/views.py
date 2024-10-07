@@ -216,7 +216,7 @@ class StatsView(TemplateView):
         cpost_counts = GovernmentAppointment.objects.values('cpost').annotate(pc=Count('id'))
         ss_counts = GovernmentAppointment.objects.values('salary_scale').annotate(pc=Count('id'))
         gl_counts = GovernmentAppointment.objects.values('grade_level').annotate(pc=Count('id'))
-        sc_counts = Qualification.objects.values('school_department').annotate(pc=Count('id'))
+        sc_counts = Qualification.objects.values('school').annotate(pc=Count('id'))
         context['pc'] = pc
         context['gender_counts'] = gender_counts
         context['geo_counts'] = geo_counts
